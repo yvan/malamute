@@ -25,7 +25,7 @@
 -(instancetype) startBrowsing:(MCPeerID *)myPeerID{
     
     //THIS NEXT PART SEARCHES FOR OTHER PEERS WHO ARE ADVERTISING THEMSELVES.
-    _autobrowser = [[MCNearbyServiceBrowser alloc] initWithPeer:myPeerID serviceType:@"AirDoc"];
+    _autobrowser = [[MCNearbyServiceBrowser alloc] initWithPeer:myPeerID serviceType:@"malamute"];
     _autobrowser.delegate = self;
     [_autobrowser startBrowsingForPeers];
     return self;

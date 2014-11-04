@@ -7,8 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SessionWrapper.h"
+#import "BrowserWrapper.h"
+#import "AdvertiserWrapper.h"
 
-@interface ViewController : UIViewController
+@interface ViewController : UIViewController <SessionWrapperDelegate, BrowserWrapperDelegate, AdvertiserWrapperDelegate>
 
 
 @end
