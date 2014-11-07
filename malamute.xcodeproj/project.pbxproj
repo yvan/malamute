@@ -17,6 +17,8 @@
 		E9616C741A040163004BFEA4 /* SessionWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = E9616C731A040163004BFEA4 /* SessionWrapper.m */; };
 		E9616C771A04022D004BFEA4 /* AdvertiserWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = E9616C761A04022D004BFEA4 /* AdvertiserWrapper.m */; };
 		E9616C7A1A0402BB004BFEA4 /* BrowserWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = E9616C791A0402BB004BFEA4 /* BrowserWrapper.m */; };
+		F33C42291A0ACFF600189C4F /* filesystemTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F33C42281A0ACFF600189C4F /* filesystemTests.m */; };
+		F3A0F9D91A0D4AE4005BFB24 /* MCTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F3A0F9D81A0D4AE4005BFB24 /* MCTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +51,8 @@
 		E9616C761A04022D004BFEA4 /* AdvertiserWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdvertiserWrapper.m; sourceTree = "<group>"; };
 		E9616C781A0402BB004BFEA4 /* BrowserWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BrowserWrapper.h; sourceTree = "<group>"; };
 		E9616C791A0402BB004BFEA4 /* BrowserWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BrowserWrapper.m; sourceTree = "<group>"; };
+		F33C42281A0ACFF600189C4F /* filesystemTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = filesystemTests.m; sourceTree = "<group>"; };
+		F3A0F9D81A0D4AE4005BFB24 /* MCTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MCTests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,7 +124,9 @@
 		E9616C651A03FBAF004BFEA4 /* malamuteTests */ = {
 			isa = PBXGroup;
 			children = (
+				F3A0F9D81A0D4AE4005BFB24 /* MCTests.m */,
 				E9616C681A03FBAF004BFEA4 /* malamuteTests.m */,
+				F33C42281A0ACFF600189C4F /* filesystemTests.m */,
 				E9616C661A03FBAF004BFEA4 /* Supporting Files */,
 			);
 			path = malamuteTests;
@@ -247,7 +253,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F33C42291A0ACFF600189C4F /* filesystemTests.m in Sources */,
 				E9616C691A03FBAF004BFEA4 /* malamuteTests.m in Sources */,
+				F3A0F9D91A0D4AE4005BFB24 /* MCTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -430,6 +438,7 @@
 				E9616C6E1A03FBAF004BFEA4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E9616C6F1A03FBAF004BFEA4 /* Build configuration list for PBXNativeTarget "malamuteTests" */ = {
 			isa = XCConfigurationList;
@@ -438,6 +447,7 @@
 				E9616C711A03FBAF004BFEA4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

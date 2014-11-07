@@ -14,5 +14,9 @@
 @interface ViewController : UIViewController <SessionWrapperDelegate, BrowserWrapperDelegate, AdvertiserWrapperDelegate>
 
 
+@property (nonatomic) SessionWrapper *sessionWrapper;
+@property (nonatomic) BrowserWrapper *browserWrapper;
+@property (nonatomic) AdvertiserWrapper *advertiserWrapper;
+
 @end
 
