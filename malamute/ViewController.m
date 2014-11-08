@@ -10,18 +10,58 @@
 
 @interface ViewController ()
 
+@property (nonatomic, strong) NSString *documentsDirectory;
+@property (nonatomic, strong) NSMutableArray *arrFiles;
+
+-(NSArray *)getAllDocDirFiles;
+
 
 @end
 
 @implementation ViewController
 
+#pragma marg - Private Methods Implementation
+
+-(NSArray *)getAllDocDirFiles{
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSError *error;
+    NSArray *allFiles = [fileManager contentsOfDirectoryAtPath:_documentsDirectory error:&error];
+    
+    if (error) {
+        NSLog(@"%@", [error localizedDescription]);
+        return nil;
+    }
+    
+    return allFiles;
+}
 
 
 #pragma mark - SessionWrapperDelegate
 
 -(void) didFinishReceivingResource:(MCSession *)session resourceName:(NSString *)resourceName fromPeer:(MCPeerID *)peerID atURL:(NSURL *)localURL withError:(NSError *)error{
+    NSLog(@"We got the file/resoruce.");
+
+    if (error) {
+        NSLog(@"%@", [error localizedDescription]);
+    }
     
-    NSLog(@"We got the file/resoruce."); 
+    NSString *destinationPath = [_documentsDirectory stringByAppendingPathComponent:resourceName];
+    NSURL *destinationURL = [NSURL fileURLWithPath:destinationPath];
+    
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSError *errorCopy;
+    
+    [fileManager copyItemAtURL:localURL toURL:destinationURL error:&errorCopy];
+    if (errorCopy) {
+        NSLog(@"%@", [errorCopy localizedDescription]);
+    }
+    
+    [_arrFiles removeAllObjects];
+    _arrFiles = nil;
+    _arrFiles = [[NSMutableArray alloc] initWithArray:[self getAllDocDirFiles]];
+    
+    //reload files
+    //similar to [_tblFiles performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
 }
 
 -(void) didStartReceivingResource:(MCSession *)session resourceName:(NSString *)resourceName fromPeer:(MCPeerID *)peerID withProgress:(NSProgress *)progress{
