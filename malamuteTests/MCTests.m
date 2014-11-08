@@ -55,7 +55,7 @@
 }
 
 -(void) testBrowserInit {
-    XCTAssertNotNil(viewController.browserWrapper, @"View controllr should have a browser wrapper");
+    XCTAssertNotNil(viewController.browserWrapper, @"View controller should have a browser wrapper");
 }
 
 - (void)testPerformanceExample {

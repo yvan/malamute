@@ -17,6 +17,8 @@
     UIApplication* app;
     ViewController* viewController;
     MCPeerID* testPeer;
+    NSData* testFile;
+    NSString* testFilePath;
 }
 @end
 
@@ -28,12 +30,21 @@
     viewController = [[ViewController alloc] init];
     [viewController viewDidLoad];
     testPeer = [[MCPeerID alloc] initWithDisplayName:@"testPeerID"];
+    
+    
+    //copy testFile from supporting files folder
+    
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    testFilePath = [[NSBundle mainBundle] resourcePath];
+    NSArray* resourceFiles = [fileManager contentsOfDirectoryAtPath:testFilePath error:nil];
+    testFile = resourceFiles[0];
     // Put setup code here. This method is called before the invocation of each test method in the class.
 }
 
 - (void)tearDown {
     // Put teardown code here. This method is called after the invocation of each test method in the class.
     [super tearDown];
+    [viewController viewDidDisappear:YES];
     app = nil;
     viewController = nil;
     testPeer = nil;
@@ -43,11 +54,18 @@
     // This is an example of a functional test case.
     XCTAssert(YES, @"Pass");
 }
+-(void) testTestFilePath{
+    XCTAssertNotNil(testFilePath, @"Test File path should not be nil");
+}
+-(void) testTestFile{
+    XCTAssertNotNil(testFile, @"Test File should not be nil");
+}
 
-/*-(void)testReceivingResource{
-    [viewController didFinishReceivingResource:viewController.sessionWrapper.session resourceName:@"Something.jpeg" fromPeer:testPeer atURL:[[NSURL alloc] initFileURLWithPath:@"malamute/docs/test/" isDirectory:YES ] withError:nil];
-    XCTAssert(YES, @"I don't know");
-}*/
+-(void)testReceivingResource{
+    NSError * error;
+    [viewController didFinishReceivingResource:viewController.sessionWrapper.session resourceName:@"testfile1.rtf" fromPeer:testPeer atURL:[[NSURL alloc] initFileURLWithPath:testFilePath isDirectory:NO] withError:error];
+    XCTAssertNotNil(error, @"Receiving a resource should occur with no error");
+}
 
 - (void)testPerformanceExample {
     // This is an example of a performance test case.

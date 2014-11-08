@@ -19,6 +19,8 @@
 		E9616C7A1A0402BB004BFEA4 /* BrowserWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = E9616C791A0402BB004BFEA4 /* BrowserWrapper.m */; };
 		F33C42291A0ACFF600189C4F /* filesystemTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F33C42281A0ACFF600189C4F /* filesystemTests.m */; };
 		F3A0F9D91A0D4AE4005BFB24 /* MCTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F3A0F9D81A0D4AE4005BFB24 /* MCTests.m */; };
+		F3C761321A0EC7B700E2EF55 /* testfile1.rtf in Resources */ = {isa = PBXBuildFile; fileRef = F3C761311A0EC7B700E2EF55 /* testfile1.rtf */; };
+		F3C761341A0ECA7500E2EF55 /* testfile1 in Resources */ = {isa = PBXBuildFile; fileRef = F3C761331A0ECA7500E2EF55 /* testfile1 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +55,8 @@
 		E9616C791A0402BB004BFEA4 /* BrowserWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BrowserWrapper.m; sourceTree = "<group>"; };
 		F33C42281A0ACFF600189C4F /* filesystemTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = filesystemTests.m; sourceTree = "<group>"; };
 		F3A0F9D81A0D4AE4005BFB24 /* MCTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MCTests.m; sourceTree = "<group>"; };
+		F3C761311A0EC7B700E2EF55 /* testfile1.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; name = testfile1.rtf; path = malamuteTests/testfile1.rtf; sourceTree = SOURCE_ROOT; };
+		F3C761331A0ECA7500E2EF55 /* testfile1 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = testfile1; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +110,7 @@
 				E9616C761A04022D004BFEA4 /* AdvertiserWrapper.m */,
 				E9616C561A03FBAE004BFEA4 /* Main.storyboard */,
 				E9616C591A03FBAE004BFEA4 /* Images.xcassets */,
+				F3C761311A0EC7B700E2EF55 /* testfile1.rtf */,
 				E9616C5B1A03FBAF004BFEA4 /* LaunchScreen.xib */,
 				E9616C4C1A03FBAE004BFEA4 /* Supporting Files */,
 			);
@@ -127,6 +132,7 @@
 				F3A0F9D81A0D4AE4005BFB24 /* MCTests.m */,
 				E9616C681A03FBAF004BFEA4 /* malamuteTests.m */,
 				F33C42281A0ACFF600189C4F /* filesystemTests.m */,
+				F3C761331A0ECA7500E2EF55 /* testfile1 */,
 				E9616C661A03FBAF004BFEA4 /* Supporting Files */,
 			);
 			path = malamuteTests;
@@ -230,6 +236,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F3C761341A0ECA7500E2EF55 /* testfile1 in Resources */,
+				F3C761321A0EC7B700E2EF55 /* testfile1.rtf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
