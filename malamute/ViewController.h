@@ -18,5 +18,14 @@
 @property (nonatomic) BrowserWrapper *browserWrapper;
 @property (nonatomic) AdvertiserWrapper *advertiserWrapper;
 
+@property (nonatomic, strong) NSString *documentsDirectory;
+@property (nonatomic, strong) NSMutableArray *arrFiles;
+
+
+-(NSArray *)getAllDocDirFiles;
+-(void) deleteAllDocumdentsFromSandbox;
+
+
+
 @end
 
