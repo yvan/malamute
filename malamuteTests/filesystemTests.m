@@ -35,23 +35,13 @@
     NSString* testFile1Name = @"testfile1.txt";
     NSString* testFile2Name = @"testfile2.txt";
     
-    
     //copy testFile from supporting files folder
     
     NSFileManager *fileManager = [NSFileManager defaultManager];
     testFilePath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent: testFile1Name];
     
-    //NSArray *fileList = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[[NSBundle mainBundle] resourcePath] error: nil];
     testFile = [[NSFileManager defaultManager] contentsAtPath:testFilePath];
-    
-   // NSLog(@"the fileList is %d",[fileList count]);
-    
-  //  NSArray* resourceFiles = [fileManager contentsOfDirectoryAtPath:testFilePath error:nil];
-  //  for(int i = 0; i < [fileList count]; i++){
-  //      NSLog(@"RESOURCE-------------%@", fileList[i]);
-  //  }
-  //  testFile = resourceFiles[4];
-    
+   
     // Put setup code here. This method is called before the invocation of each test method in the class.
 }
 
