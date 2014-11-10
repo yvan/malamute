@@ -29,15 +29,29 @@
     app = [UIApplication sharedApplication];
     viewController = [[ViewController alloc] init];
     [viewController viewDidLoad];
+    [viewController deleteAllDocumdentsFromSandbox];
     testPeer = [[MCPeerID alloc] initWithDisplayName:@"testPeerID"];
+    
+    NSString* testFile1Name = @"testfile1.txt";
+    NSString* testFile2Name = @"testfile2.txt";
     
     
     //copy testFile from supporting files folder
     
     NSFileManager *fileManager = [NSFileManager defaultManager];
-    testFilePath = [[NSBundle mainBundle] resourcePath];
-    NSArray* resourceFiles = [fileManager contentsOfDirectoryAtPath:testFilePath error:nil];
-    testFile = resourceFiles[0];
+    testFilePath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent: testFile1Name];
+    
+    //NSArray *fileList = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[[NSBundle mainBundle] resourcePath] error: nil];
+    testFile = [[NSFileManager defaultManager] contentsAtPath:testFilePath];
+    
+   // NSLog(@"the fileList is %d",[fileList count]);
+    
+  //  NSArray* resourceFiles = [fileManager contentsOfDirectoryAtPath:testFilePath error:nil];
+  //  for(int i = 0; i < [fileList count]; i++){
+  //      NSLog(@"RESOURCE-------------%@", fileList[i]);
+  //  }
+  //  testFile = resourceFiles[4];
+    
     // Put setup code here. This method is called before the invocation of each test method in the class.
 }
 
@@ -48,6 +62,9 @@
     app = nil;
     viewController = nil;
     testPeer = nil;
+    testFilePath = nil;
+    testFile = nil;
+    [viewController deleteAllDocumdentsFromSandbox];
 }
 
 - (void)testExample {
@@ -60,11 +77,27 @@
 -(void) testTestFile{
     XCTAssertNotNil(testFile, @"Test File should not be nil");
 }
+-(void) testDocumentsDirectory{
+    XCTAssertNotNil(viewController.documentsDirectory, @"Documents directory should not be nil");
+}
 
 -(void)testReceivingResource{
-    NSError * error;
-    [viewController didFinishReceivingResource:viewController.sessionWrapper.session resourceName:@"testfile1.rtf" fromPeer:testPeer atURL:[[NSURL alloc] initFileURLWithPath:testFilePath isDirectory:NO] withError:error];
-    XCTAssertNotNil(error, @"Receiving a resource should occur with no error");
+    int count = [viewController.arrFiles count];
+    [viewController didFinishReceivingResource:viewController.sessionWrapper.session resourceName:@"testfile123.txt" fromPeer:testPeer atURL:[NSURL fileURLWithPath:testFilePath] withError:nil];
+    XCTAssertTrue((count +1 ==[viewController.arrFiles count]), @"Receiving a document should increase the doc count by 1");
+}
+
+-(void)testDocsCount{
+    int count = [viewController.arrFiles count];
+    XCTAssertTrue((count == 0), @"Docs should be null in the beginning");
+}
+-(void) testDeleteDocs{
+    [viewController didFinishReceivingResource:viewController.sessionWrapper.session resourceName:@"testfile1.txt" fromPeer:testPeer atURL:[NSURL fileURLWithPath:testFilePath] withError:nil];
+    [viewController didFinishReceivingResource:viewController.sessionWrapper.session resourceName:@"testfile2.txt" fromPeer:testPeer atURL:[NSURL fileURLWithPath:testFilePath] withError:nil];
+    [viewController didFinishReceivingResource:viewController.sessionWrapper.session resourceName:@"testfile3.txt" fromPeer:testPeer atURL:[NSURL fileURLWithPath:testFilePath] withError:nil];
+    XCTAssertTrue(([viewController.arrFiles count] > 0), @"Docs should not be empty after receiving some files.");
+    [viewController deleteAllDocumdentsFromSandbox];
+    XCTAssertTrue(([viewController.arrFiles count] == 0), @"Delete should delete all docs");
 }
 
 - (void)testPerformanceExample {
