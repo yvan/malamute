@@ -10,8 +10,6 @@
 
 @interface ViewController ()
 
-@property (nonatomic, strong) NSString *documentsDirectory;
-@property (nonatomic, strong) NSMutableArray *arrFiles;
 
 -(NSArray *)getAllDocDirFiles;
 
@@ -28,21 +26,32 @@
     NSArray *allFiles = [fileManager contentsOfDirectoryAtPath:_documentsDirectory error:&error];
     
     if (error) {
-        NSLog(@"%@", [error localizedDescription]);
+        NSLog(@"%@", error);
         return nil;
     }
     
     return allFiles;
 }
 
+-(void) deleteAllDocumdentsFromSandbox{
+    NSFileManager* fileManager = [NSFileManager defaultManager];
+    NSError* error;
+    for(int i = 0; i <[_arrFiles count]; i++){
+        [fileManager removeItemAtPath:[_documentsDirectory stringByAppendingPathComponent:_arrFiles[i]] error:&error];
+    }
+    if(error){
+        NSLog(@"ERROR DELETING ALL FILES %@", [error localizedDescription]);
+    }
+    _arrFiles = [self getAllDocDirFiles];
+}
+
 
 #pragma mark - SessionWrapperDelegate
 
 -(void) didFinishReceivingResource:(MCSession *)session resourceName:(NSString *)resourceName fromPeer:(MCPeerID *)peerID atURL:(NSURL *)localURL withError:(NSError *)error{
-    NSLog(@"We got the file/resoruce.");
 
     if (error) {
-        NSLog(@"%@", [error localizedDescription]);
+        NSLog(@"Error %@", [error localizedDescription]);
     }
     
     NSString *destinationPath = [_documentsDirectory stringByAppendingPathComponent:resourceName];
@@ -53,7 +62,7 @@
     
     [fileManager copyItemAtURL:localURL toURL:destinationURL error:&errorCopy];
     if (errorCopy) {
-        NSLog(@"%@", [errorCopy localizedDescription]);
+        NSLog(@"Error Copying the file %@", errorCopy);
     }
     
     [_arrFiles removeAllObjects];
@@ -81,7 +90,13 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    //Init document directory and array of files
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    _documentsDirectory = [[NSString alloc] initWithString:[paths objectAtIndex:0]];
+    _arrFiles = [self getAllDocDirFiles];
 
+    //init session, adversiter, and browser wrapper
     _sessionWrapper = [[SessionWrapper alloc] initSessionWithName:@"yvan"];
     _advertiserWrapper = [[AdvertiserWrapper alloc] startAdvertising:_sessionWrapper.myPeerID];
     _browserWrapper = [[BrowserWrapper alloc] startBrowsing:_sessionWrapper.myPeerID];
