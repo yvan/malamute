@@ -18,9 +18,15 @@
 		E9616C771A04022D004BFEA4 /* AdvertiserWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = E9616C761A04022D004BFEA4 /* AdvertiserWrapper.m */; };
 		E9616C7A1A0402BB004BFEA4 /* BrowserWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = E9616C791A0402BB004BFEA4 /* BrowserWrapper.m */; };
 		F33C42291A0ACFF600189C4F /* filesystemTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F33C42281A0ACFF600189C4F /* filesystemTests.m */; };
+		F37DE4301A114D620022D837 /* testfile1.txt in Resources */ = {isa = PBXBuildFile; fileRef = F37DE42F1A114D620022D837 /* testfile1.txt */; };
+		F37DE4311A114D620022D837 /* testfile1.txt in Resources */ = {isa = PBXBuildFile; fileRef = F37DE42F1A114D620022D837 /* testfile1.txt */; };
+		F37DE4331A114D6A0022D837 /* testfile2.txt in Resources */ = {isa = PBXBuildFile; fileRef = F37DE4321A114D6A0022D837 /* testfile2.txt */; };
+		F37DE4341A114D6A0022D837 /* testfile2.txt in Resources */ = {isa = PBXBuildFile; fileRef = F37DE4321A114D6A0022D837 /* testfile2.txt */; };
+		F37DE4361A114D7D0022D837 /* testfile1.txt in Resources */ = {isa = PBXBuildFile; fileRef = F37DE4351A114D7D0022D837 /* testfile1.txt */; };
+		F37DE4371A114D7D0022D837 /* testfile1.txt in Resources */ = {isa = PBXBuildFile; fileRef = F37DE4351A114D7D0022D837 /* testfile1.txt */; };
+		F37DE4391A114D820022D837 /* testfile2.txt in Resources */ = {isa = PBXBuildFile; fileRef = F37DE4381A114D820022D837 /* testfile2.txt */; };
+		F37DE43A1A114D820022D837 /* testfile2.txt in Resources */ = {isa = PBXBuildFile; fileRef = F37DE4381A114D820022D837 /* testfile2.txt */; };
 		F3A0F9D91A0D4AE4005BFB24 /* MCTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F3A0F9D81A0D4AE4005BFB24 /* MCTests.m */; };
-		F3C761321A0EC7B700E2EF55 /* testfile1.rtf in Resources */ = {isa = PBXBuildFile; fileRef = F3C761311A0EC7B700E2EF55 /* testfile1.rtf */; };
-		F3C761341A0ECA7500E2EF55 /* testfile1 in Resources */ = {isa = PBXBuildFile; fileRef = F3C761331A0ECA7500E2EF55 /* testfile1 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,9 +60,11 @@
 		E9616C781A0402BB004BFEA4 /* BrowserWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BrowserWrapper.h; sourceTree = "<group>"; };
 		E9616C791A0402BB004BFEA4 /* BrowserWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BrowserWrapper.m; sourceTree = "<group>"; };
 		F33C42281A0ACFF600189C4F /* filesystemTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = filesystemTests.m; sourceTree = "<group>"; };
+		F37DE42F1A114D620022D837 /* testfile1.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = testfile1.txt; sourceTree = "<group>"; };
+		F37DE4321A114D6A0022D837 /* testfile2.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = testfile2.txt; sourceTree = "<group>"; };
+		F37DE4351A114D7D0022D837 /* testfile1.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = testfile1.txt; sourceTree = "<group>"; };
+		F37DE4381A114D820022D837 /* testfile2.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = testfile2.txt; sourceTree = "<group>"; };
 		F3A0F9D81A0D4AE4005BFB24 /* MCTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MCTests.m; sourceTree = "<group>"; };
-		F3C761311A0EC7B700E2EF55 /* testfile1.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; name = testfile1.rtf; path = malamuteTests/testfile1.rtf; sourceTree = SOURCE_ROOT; };
-		F3C761331A0ECA7500E2EF55 /* testfile1 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = testfile1; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,7 +118,6 @@
 				E9616C761A04022D004BFEA4 /* AdvertiserWrapper.m */,
 				E9616C561A03FBAE004BFEA4 /* Main.storyboard */,
 				E9616C591A03FBAE004BFEA4 /* Images.xcassets */,
-				F3C761311A0EC7B700E2EF55 /* testfile1.rtf */,
 				E9616C5B1A03FBAF004BFEA4 /* LaunchScreen.xib */,
 				E9616C4C1A03FBAE004BFEA4 /* Supporting Files */,
 			);
@@ -120,6 +127,8 @@
 		E9616C4C1A03FBAE004BFEA4 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				F37DE4381A114D820022D837 /* testfile2.txt */,
+				F37DE4351A114D7D0022D837 /* testfile1.txt */,
 				E9616C4D1A03FBAE004BFEA4 /* Info.plist */,
 				E9616C4E1A03FBAE004BFEA4 /* main.m */,
 			);
@@ -132,7 +141,6 @@
 				F3A0F9D81A0D4AE4005BFB24 /* MCTests.m */,
 				E9616C681A03FBAF004BFEA4 /* malamuteTests.m */,
 				F33C42281A0ACFF600189C4F /* filesystemTests.m */,
-				F3C761331A0ECA7500E2EF55 /* testfile1 */,
 				E9616C661A03FBAF004BFEA4 /* Supporting Files */,
 			);
 			path = malamuteTests;
@@ -141,6 +149,8 @@
 		E9616C661A03FBAF004BFEA4 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				F37DE4321A114D6A0022D837 /* testfile2.txt */,
+				F37DE42F1A114D620022D837 /* testfile1.txt */,
 				E9616C671A03FBAF004BFEA4 /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -226,8 +236,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F37DE4301A114D620022D837 /* testfile1.txt in Resources */,
+				F37DE4391A114D820022D837 /* testfile2.txt in Resources */,
 				E9616C581A03FBAE004BFEA4 /* Main.storyboard in Resources */,
+				F37DE4331A114D6A0022D837 /* testfile2.txt in Resources */,
 				E9616C5D1A03FBAF004BFEA4 /* LaunchScreen.xib in Resources */,
+				F37DE4361A114D7D0022D837 /* testfile1.txt in Resources */,
 				E9616C5A1A03FBAE004BFEA4 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -236,8 +250,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F3C761341A0ECA7500E2EF55 /* testfile1 in Resources */,
-				F3C761321A0EC7B700E2EF55 /* testfile1.rtf in Resources */,
+				F37DE4311A114D620022D837 /* testfile1.txt in Resources */,
+				F37DE43A1A114D820022D837 /* testfile2.txt in Resources */,
+				F37DE4371A114D7D0022D837 /* testfile1.txt in Resources */,
+				F37DE4341A114D6A0022D837 /* testfile2.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
