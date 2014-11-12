@@ -19,8 +19,10 @@
 @property (nonatomic) BrowserWrapper *browserWrapper;
 @property (nonatomic) AdvertiserWrapper *advertiserWrapper;
 
-@property (nonatomic, strong) NSString *documentsDirectory;
-@property (nonatomic, strong) NSMutableArray *arrFiles;
+@property (nonatomic) BOOL selectEnabled;
+@property (nonatomic) NSMutableArray *selectedFiles;
+@property (nonatomic, strong) NSString *selectedFile;
+
 @property (nonatomic, strong) FileSystem *fileSystem;
 
 

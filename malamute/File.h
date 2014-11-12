@@ -14,5 +14,6 @@
 @property (nonatomic, strong) NSURL* url;
 @property (nonatomic, strong) NSString* sender;
 @property (nonatomic, strong) NSDate* dateCreated;
+@property (nonatomic) BOOL isDirectory;
 
 @end
