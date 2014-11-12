@@ -18,7 +18,7 @@
 
 @property (nonatomic, readonly) MCNearbyServiceBrowser *autobrowser;
 @property (nonatomic, readonly) BOOL browsing;
-@property (nonatomic) id <BrowserHelperDelegate> browserDelegate;
+@property (nonatomic) id <BrowserWrapperDelegate> browserDelegate;
 
 -(instancetype) startBrowsing:(MCPeerID *)myPeerId;
 -(void) stopBrowsing;

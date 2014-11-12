@@ -12,7 +12,7 @@ static NSString* const ServiceName = @"malamute";
 
 @interface SessionWrapper()
 
-@property (nonatomic) MCSession *session;
+//@property (nonatomic) MCSession *session;
 @property (nonatomic) MCPeerID *myPeerID;
 @property (nonatomic) NSMutableArray *connectedPeerIDs;
 
@@ -51,7 +51,6 @@ static NSString* const ServiceName = @"malamute";
 //initializes a sesssion (called from ViewController.m)
 //advertising/browsing are done in respective helpers
 -(instancetype) initSessionWithName: (NSString *)name{
-    
     _connectedPeerIDs = [NSMutableArray new];
     _myPeerID = [[MCPeerID alloc] initWithDisplayName:name];
     _session = [[MCSession alloc] initWithPeer: _myPeerID];
