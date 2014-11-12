@@ -11,7 +11,7 @@
 @implementation File
 
 @synthesize name;
-@synthesize path;
+@synthesize url;
 @synthesize sender;
 @synthesize dateCreated;
 
