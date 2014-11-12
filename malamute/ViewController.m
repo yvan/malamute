@@ -20,10 +20,10 @@
 
 #pragma marg - Private Methods Implementation
 
--(NSArray *)getAllDocDirFiles{
+-(NSMutableArray *)getAllDocDirFiles{
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSError *error;
-    NSArray *allFiles = [fileManager contentsOfDirectoryAtPath:_documentsDirectory error:&error];
+    NSMutableArray *allFiles = [fileManager contentsOfDirectoryAtPath:_documentsDirectory error:&error];
     
     if (error) {
         NSLog(@"%@", error);

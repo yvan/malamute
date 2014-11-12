@@ -10,6 +10,7 @@
 #import "SessionWrapper.h"
 #import "BrowserWrapper.h"
 #import "AdvertiserWrapper.h"
+#import "FileSystem.h"
 
 @interface ViewController : UIViewController <SessionWrapperDelegate, BrowserWrapperDelegate, AdvertiserWrapperDelegate>
 
@@ -20,9 +21,10 @@
 
 @property (nonatomic, strong) NSString *documentsDirectory;
 @property (nonatomic, strong) NSMutableArray *arrFiles;
+@property (nonatomic, strong) FileSystem *fileSystem;
 
 
--(NSArray *)getAllDocDirFiles;
+-(NSMutableArray *)getAllDocDirFiles;
 -(void) deleteAllDocumdentsFromSandbox;
 
 
