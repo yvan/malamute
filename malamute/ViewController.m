@@ -71,7 +71,7 @@
 /*** IMPLEMENT DELEGATE METHODS FROM EACH WRAPPER'S PROTOCOL HERE ***/
 
 - (void)viewDidLoad {
-g
+
     [super viewDidLoad];
     
     //Init document directory of file system
