@@ -42,7 +42,7 @@
     NSFileManager* fileManager = [NSFileManager defaultManager];
     NSError* error;
     for(int i = 0; i <[_privateDocs count]; i++){
-        NSURL* docsPath = [((File*)_privateDocs[i]) url];
+        NSURL* docUrl = [((File*)_privateDocs[i]) url];
         [fileManager removeItemAtURL:docUrl error:&error ];
     }
     if(error){
