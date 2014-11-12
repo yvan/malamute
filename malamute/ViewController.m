@@ -43,9 +43,9 @@
 /*** IMPLEMENT DELEGATE METHODS FROM EACH WRAPPER'S PROTOCOL HERE ***/
 
 - (void)viewDidLoad {
-    _sessionWrapper = [_sessionWrapper initSessionWithName:@"yvan"];
-    _advertiserWrapper = [_advertiserWrapper startAdvertising:_sessionWrapper.myPeerID];
-    _browserWrapper = [_browserWrapper startBrowsing:_sessionWrapper.myPeerID];
+    _sessionWrapper = [_sessionWrapper initSessionWithName: @"yvan"];
+    _advertiserWrapper = [_advertiserWrapper startAdvertising: _sessionWrapper.myPeerID];
+    _browserWrapper = [_browserWrapper startBrowsing: _sessionWrapper.myPeerID];
 
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
