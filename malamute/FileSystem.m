@@ -11,6 +11,14 @@
 
 @implementation FileSystem
 
+-(id) init{
+    self = [super init];
+    _sharedDocs = [[NSMutableArray alloc] init];
+    _privateDocs = [[NSMutableArray alloc] init];
+    _documentsDirectory = [[NSString alloc] init];
+    return self;
+}
+
 -(NSMutableArray *)getAllDocDirFiles{
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSError *error;
@@ -24,7 +32,13 @@
     return allFiles;
 }
 
--(void) deleteAllDocumdentsFromSandbox{
+-(void) printAllFiles{
+    for(int i = 0; i < [_privateDocs count]; i++){
+        NSLog(@"%@", _privateDocs[i]);
+    }
+}
+
+-(void) deleteAllDocumentsFromSandbox{
     NSFileManager* fileManager = [NSFileManager defaultManager];
     NSError* error;
     for(int i = 0; i <[_privateDocs count]; i++){

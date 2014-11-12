@@ -20,5 +20,7 @@
 -(void) deleteAllDocumdentsFromSandbox;
 -(BOOL) isValidPath:(NSString*) path;
 -(void) saveDocumentToSandbox:(File*)document;
+-(void) printAllFiles;
 
+    
 @end
