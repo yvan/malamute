@@ -11,7 +11,7 @@
 @interface File : NSObject
 
 @property (nonatomic, strong) NSString* name;
-@property (nonatomic, strong) NSString* path;
+@property (nonatomic, strong) NSURL* url;
 @property (nonatomic, strong) NSString* sender;
 @property (nonatomic, strong) NSDate* dateCreated;
 
