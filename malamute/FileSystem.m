@@ -28,7 +28,7 @@
     NSFileManager* fileManager = [NSFileManager defaultManager];
     NSError* error;
     for(int i = 0; i <[_privateDocs count]; i++){
-        NSString* docsPath = [((File*)_privateDocs[i]) path];
+        NSString* docsPath = [((File*)_privateDocs[i]) url];
         [fileManager removeItemAtPath:[_documentsDirectory stringByAppendingPathComponent:docsPath] error:&error];
     }
     if(error){
