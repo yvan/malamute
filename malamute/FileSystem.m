@@ -42,8 +42,8 @@
     NSFileManager* fileManager = [NSFileManager defaultManager];
     NSError* error;
     for(int i = 0; i <[_privateDocs count]; i++){
-        NSString* docsPath = [((File*)_privateDocs[i]) url];
-        [fileManager removeItemAtPath:[_documentsDirectory stringByAppendingPathComponent:docsPath] error:&error];
+        NSURL* docsPath = [((File*)_privateDocs[i]) url];
+        [fileManager removeItemAtURL:docUrl error:&error ];
     }
     if(error){
         NSLog(@"ERROR DELETING ALL FILES %@", [error localizedDescription]);
