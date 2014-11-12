@@ -11,7 +11,7 @@
 @interface ViewController ()
 
 
--(NSArray *)getAllDocDirFiles;
+//-(NSArray *)getAllDocDirFiles;
 
 
 @end
@@ -20,7 +20,7 @@
 
 #pragma marg - Private Methods Implementation
 
--(NSMutableArray *)getAllDocDirFiles{
+/*-(NSMutableArray *)getAllDocDirFiles{
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSError *error;
     NSMutableArray *allFiles = [fileManager contentsOfDirectoryAtPath:_documentsDirectory error:&error];
@@ -31,9 +31,9 @@
     }
     
     return allFiles;
-}
+}*/
 
--(void) deleteAllDocumdentsFromSandbox{
+/*-(void) deleteAllDocumdentsFromSandbox{
     NSFileManager* fileManager = [NSFileManager defaultManager];
     NSError* error;
     for(int i = 0; i <[_arrFiles count]; i++){
@@ -43,7 +43,7 @@
         NSLog(@"ERROR DELETING ALL FILES %@", [error localizedDescription]);
     }
     _arrFiles = [self getAllDocDirFiles];
-}
+}*/
 
 
 #pragma mark - SessionWrapperDelegate
@@ -54,7 +54,16 @@
         NSLog(@"Error %@", [error localizedDescription]);
     }
     
-    NSString *destinationPath = [_documentsDirectory stringByAppendingPathComponent:resourceName];
+    File* newFile = [[File alloc] init];
+    newFile.name =resourceName;
+    newFile.sender = peerID.displayName;
+    newFile.dateCreated = [NSDate date];
+    newFile.url = localURL;
+    
+    [_fileSystem.sharedDocs addObject:newFile];
+    //reload uicollection view
+    
+   /* NSString *destinationPath = [_documentsDirectory stringByAppendingPathComponent:resourceName];
     NSURL *destinationURL = [NSURL fileURLWithPath:destinationPath];
     
     NSFileManager *fileManager = [NSFileManager defaultManager];
@@ -67,7 +76,7 @@
     
     [_arrFiles removeAllObjects];
     _arrFiles = nil;
-    _arrFiles = [[NSMutableArray alloc] initWithArray:[self getAllDocDirFiles]];
+    _arrFiles = [[NSMutableArray alloc] initWithArray:[self getAllDocDirFiles]];*/
     
     //reload files
     //similar to [_tblFiles performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
@@ -91,10 +100,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    //Init document directory and array of files
+    //Init document directory of file system
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    _documentsDirectory = [[NSString alloc] initWithString:[paths objectAtIndex:0]];
-    _arrFiles = [self getAllDocDirFiles];
+    _fileSystem.documentsDirectory = [[NSString alloc] initWithString:[paths objectAtIndex:0]];
 
     //init session, adversiter, and browser wrapper
     _sessionWrapper = [[SessionWrapper alloc] initSessionWithName:@"yvan"];

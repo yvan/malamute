@@ -24,7 +24,7 @@
 @property (nonatomic, strong) FileSystem *fileSystem;
 
 
--(NSMutableArray *)getAllDocDirFiles;
+//-(NSMutableArray *)getAllDocDirFiles;
 -(void) deleteAllDocumdentsFromSandbox;
 
 
