@@ -29,7 +29,7 @@
     app = [UIApplication sharedApplication];
     viewController = [[ViewController alloc] init];
     [viewController viewDidLoad];
-    [viewController deleteAllDocumdentsFromSandbox];
+    //[viewController.fileSystem deleteAllDocumdentsFromSandbox];
     testPeer = [[MCPeerID alloc] initWithDisplayName:@"testPeerID"];
     
     NSString* testFile1Name = @"testfile1.txt";
@@ -68,27 +68,39 @@
     XCTAssertNotNil(testFile, @"Test File should not be nil");
 }
 -(void) testDocumentsDirectory{
-    XCTAssertNotNil(viewController.documentsDirectory, @"Documents directory should not be nil");
+    XCTAssertNotNil(viewController.fileSystem, @"File system should not be nil");
+}
+-(void) testSharedDocuments{
+    XCTAssertNotNil(viewController.fileSystem.sharedDocs, @"Filesystem shared documents array should not be nil");
+}
+-(void) testPrivateDocuments{
+    XCTAssertNotNil(viewController.fileSystem.privateDocs, @"Filesystem private documents array should not be nil");
+
 }
 
 -(void)testReceivingResource{
-    int count = [viewController.arrFiles count];
+    int count = [viewController.fileSystem.sharedDocs count];
     [viewController didFinishReceivingResource:viewController.sessionWrapper.session resourceName:@"testfile123.txt" fromPeer:testPeer atURL:[NSURL fileURLWithPath:testFilePath] withError:nil];
-    XCTAssertTrue((count +1 ==[viewController.arrFiles count]), @"Receiving a document should increase the doc count by 1");
+    XCTAssertTrue((count +1 ==[viewController.fileSystem.sharedDocs count]), @"Receiving a document should increase the shared doc count by 1");
 }
 
--(void)testDocsCount{
-    int count = [viewController.arrFiles count];
-    XCTAssertTrue((count == 0), @"Docs should be null in the beginning");
+-(void)testSharedDocsCount{
+    int count = [viewController.fileSystem.sharedDocs count];
+    XCTAssertTrue((count == 0), @"Shared Docs should be null in the beginning");
 }
--(void) testDeleteDocs{
+-(void)testPrivateDocsCount{
+    int count = [viewController.fileSystem.privateDocs count];
+    XCTAssertTrue((count == 0), @"Private Docs should be null in the beginning");
+}
+
+/*-(void) testDeleteDocs{
     [viewController didFinishReceivingResource:viewController.sessionWrapper.session resourceName:@"testfile1.txt" fromPeer:testPeer atURL:[NSURL fileURLWithPath:testFilePath] withError:nil];
     [viewController didFinishReceivingResource:viewController.sessionWrapper.session resourceName:@"testfile2.txt" fromPeer:testPeer atURL:[NSURL fileURLWithPath:testFilePath] withError:nil];
     [viewController didFinishReceivingResource:viewController.sessionWrapper.session resourceName:@"testfile3.txt" fromPeer:testPeer atURL:[NSURL fileURLWithPath:testFilePath] withError:nil];
-    XCTAssertTrue(([viewController.arrFiles count] > 0), @"Docs should not be empty after receiving some files.");
-    [viewController deleteAllDocumdentsFromSandbox];
-    XCTAssertTrue(([viewController.arrFiles count] == 0), @"Delete should delete all docs");
-}
+    XCTAssertTrue(([viewController.fileSystem.sharedDocs count] > 0), @"Docs should not be empty after receiving some files.");
+    [viewController.fileSystem deleteAllDocumdentsFromSandbox];
+    XCTAssertTrue(([viewController.fileSystem.sharedDocs count] == 0), @"Delete should delete all docs");
+}*/
 
 - (void)testPerformanceExample {
     // This is an example of a performance test case.
