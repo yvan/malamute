@@ -18,33 +18,6 @@
 
 @implementation ViewController
 
-#pragma marg - Private Methods Implementation
-
-/*-(NSMutableArray *)getAllDocDirFiles{
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSError *error;
-    NSMutableArray *allFiles = [fileManager contentsOfDirectoryAtPath:_documentsDirectory error:&error];
-    
-    if (error) {
-        NSLog(@"%@", error);
-        return nil;
-    }
-    
-    return allFiles;
-}*/
-
-/*-(void) deleteAllDocumdentsFromSandbox{
-    NSFileManager* fileManager = [NSFileManager defaultManager];
-    NSError* error;
-    for(int i = 0; i <[_arrFiles count]; i++){
-        [fileManager removeItemAtPath:[_documentsDirectory stringByAppendingPathComponent:_arrFiles[i]] error:&error];
-    }
-    if(error){
-        NSLog(@"ERROR DELETING ALL FILES %@", [error localizedDescription]);
-    }
-    _arrFiles = [self getAllDocDirFiles];
-}*/
-
 
 #pragma mark - SessionWrapperDelegate
 
