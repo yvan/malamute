@@ -101,6 +101,7 @@
     [super viewDidLoad];
     
     //Init document directory of file system
+    _fileSystem = [[FileSystem alloc] init];
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     _fileSystem.documentsDirectory = [[NSString alloc] initWithString:[paths objectAtIndex:0]];
 
