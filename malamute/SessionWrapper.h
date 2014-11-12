@@ -18,7 +18,7 @@
 
 @interface SessionWrapper : NSObject <MCSessionDelegate>
 
-@property (nonatomic, readonly) MCSession *session;
+@property (nonatomic) MCSession *session;
 @property (nonatomic, readonly) MCPeerID *myPeerID;
 @property (nonatomic) id <SessionWrapperDelegate> sessionDelegate;
 
