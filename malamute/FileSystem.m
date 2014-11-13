@@ -22,7 +22,7 @@
 -(NSMutableArray *)getAllDocDirFiles{
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSError *error;
-    NSMutableArray *allFiles = [fileManager contentsOfDirectoryAtPath:_documentsDirectory error:&error];
+    NSMutableArray *allFiles = (NSMutableArray*) [fileManager contentsOfDirectoryAtPath:_documentsDirectory error:&error];
     
     if (error) {
         NSLog(@"%@", error);
@@ -53,7 +53,7 @@
 
 
 -(BOOL) isValidPath:(NSString*) path{
-    return nil;
+    return !([[NSFileManager defaultManager] fileExistsAtPath:path]);
 }
 
 -(void) saveDocumentToSandbox:(File*)document{
@@ -61,8 +61,11 @@
     //add to private documents array
     
     NSString *destinationPath = [_documentsDirectory stringByAppendingPathComponent:document.name];
+    int suffix = 1;
     while(![self isValidPath:destinationPath]){
         //prompt user to rename the file
+        destinationPath = [_documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%i%@", suffix, document.name]];
+        suffix++;
     }
     
     NSURL *destinationURL = [NSURL fileURLWithPath:destinationPath];

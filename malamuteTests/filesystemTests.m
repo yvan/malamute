@@ -92,7 +92,23 @@
     int count = [viewController.fileSystem.privateDocs count];
     XCTAssertTrue((count == 0), @"Private Docs should be null in the beginning");
 }
-
+-(void)testSavingDocs{
+    [viewController didFinishReceivingResource:viewController.sessionWrapper.session resourceName:@"testfile123.txt" fromPeer:testPeer atURL:[NSURL fileURLWithPath:testFilePath] withError:nil];
+    [viewController.fileSystem saveDocumentToSandbox:(File*)viewController.fileSystem.sharedDocs[0]];
+    NSMutableArray* files = [viewController.fileSystem getAllDocDirFiles];
+    XCTAssertTrue(viewController.fileSystem.sharedDocs[0] == viewController.fileSystem.privateDocs[0], @"Document should be on both shared and private docs after saving it");
+    
+}
+-(void)testInValidUrl{
+    [viewController didFinishReceivingResource:viewController.sessionWrapper.session resourceName:@"testfile123.txt" fromPeer:testPeer atURL:[NSURL fileURLWithPath:testFilePath] withError:nil];
+    [viewController.fileSystem saveDocumentToSandbox:(File*)viewController.fileSystem.sharedDocs[0]];
+    XCTAssertTrue([viewController.fileSystem isValidPath:testFilePath]== false, @"File path should be invalid after saving it");
+}
+-(void)testValidUrl{
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSString* validPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent: @"123456890abcdefghijklmno.txt.pdf"];
+    XCTAssertTrue([viewController.fileSystem isValidPath:validPath]== true, @"File path should be invalid after saving it");
+}
 /*-(void) testDeleteDocs{
     [viewController didFinishReceivingResource:viewController.sessionWrapper.session resourceName:@"testfile1.txt" fromPeer:testPeer atURL:[NSURL fileURLWithPath:testFilePath] withError:nil];
     [viewController didFinishReceivingResource:viewController.sessionWrapper.session resourceName:@"testfile2.txt" fromPeer:testPeer atURL:[NSURL fileURLWithPath:testFilePath] withError:nil];

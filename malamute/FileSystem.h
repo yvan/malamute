@@ -16,8 +16,8 @@
 @property (nonatomic, strong) NSMutableArray* privateDocs;
 @property (nonatomic, strong) NSString* documentsDirectory;
 
--(NSArray *)getAllDocDirFiles;
--(void) deleteAllDocumdentsFromSandbox;
+-(NSMutableArray *)getAllDocDirFiles;
+-(void) deleteAllDocumentsFromSandbox;
 -(BOOL) isValidPath:(NSString*) path;
 -(void) saveDocumentToSandbox:(File*)document;
 -(void) printAllFiles;
