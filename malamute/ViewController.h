@@ -31,11 +31,9 @@
 
 
 //-(NSMutableArray *)getAllDocDirFiles;
--(void) deleteAllDocumdentsFromSandbox;
+//-(void) deleteAllDocumdentsFromSandbox;
 
 -(IBAction) clickedButton:(id)sender;
--(IBAction) selectedFile:(id)sender; //method for when user selects a file.
-
 
 @end
 

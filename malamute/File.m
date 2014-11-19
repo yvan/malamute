@@ -10,13 +10,6 @@
 
 @implementation File
 
-//Why do we need synthesize here???? i commented it out because @synthesizing prevents us
-//from using the actual property names
-/*@synthesize name;
-@synthesize url;
-@synthesize sender;
-@synthesize dateCreated;*/
-
 //inits a File object with a name and url path
 -(instancetype)initWithName:(NSString*) name andURL:(NSURL*)url{
     

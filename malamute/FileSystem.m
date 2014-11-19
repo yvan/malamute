@@ -51,7 +51,6 @@
         NSLog(@"%@", error);
         return nil;
     }
-    
     return allFiles;
 }
 
@@ -72,9 +71,9 @@
 
 
 -(void) saveDocumentToSandbox:(File*)document{
+    
     //move file from file's path to documents folder path, update file
     //add to private documents array
-    
     NSString *destinationPath = [_documentsDirectory stringByAppendingPathComponent:document.name];
     int suffix = 1;
     while(![self isValidPath:destinationPath]){
@@ -84,7 +83,6 @@
     }
     
     NSURL *destinationURL = [NSURL fileURLWithPath:destinationPath];
-    
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSError *errorCopy;
     
