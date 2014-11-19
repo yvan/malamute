@@ -11,6 +11,7 @@
 
 @implementation FileSystem
 
+#pragma mark - Setup and Whole FileSystem Methods
 //creates the file system
 -(id) init{
     self = [super init];
@@ -19,8 +20,26 @@
     _documentsDirectory = [[NSString alloc] init];
     [self createNewDir:@"private"];
     [self createNewDir:@"shared"];
+    [self makeDummyFiles]; //comment out in prodution version
     return self;
 }
+
+//tests to see if a path is valid
+-(BOOL) isValidPath:(NSString*) path{
+    return !([[NSFileManager defaultManager] fileExistsAtPath:path]);
+}
+
+//prints all the files in privatedocs then shareddocs
+-(void) printAllFiles{
+    for(int i = 0; i < [_privateDocs count]; i++){
+        NSLog(@"Private Doc %i:%@",i, _privateDocs[i]);
+    }
+    for(int i = 0; i < [_sharedDocs count]; i++){
+        NSLog(@"Shared Doc %i:%@",i, _sharedDocs[i]);
+    }
+}
+
+#pragma mark - File Manipulation Methods
 
 //gets all the files in teh documents directory
 -(NSMutableArray *)getAllDocDirFiles{
@@ -36,16 +55,7 @@
     return allFiles;
 }
 
-//prints all the files in privatedocs then shareddocs
--(void) printAllFiles{
-    for(int i = 0; i < [_privateDocs count]; i++){
-        NSLog(@"Private Doc %i:%@",i, _privateDocs[i]);
-    }
-    for(int i = 0; i < [_sharedDocs count]; i++){
-        NSLog(@"Shared Doc %i:%@",i, _sharedDocs[i]);
-    }
-}
-
+//deletes...all documents from sandbox? what?
 -(void) deleteAllDocumentsFromSandbox{
     
     NSFileManager* fileManager = [NSFileManager defaultManager];
@@ -60,10 +70,6 @@
     _privateDocs = [self getAllDocDirFiles];
 }
 
-
--(BOOL) isValidPath:(NSString*) path{
-    return !([[NSFileManager defaultManager] fileExistsAtPath:path]);
-}
 
 -(void) saveDocumentToSandbox:(File*)document{
     //move file from file's path to documents folder path, update file
@@ -188,6 +194,41 @@ inDomains:NSUserDomainMask];
         }
     }
     return YES;
+}
+
+//makes a set of dummy files for us to test useability
+-(void) makeDummyFiles{
+    
+    NSArray* documents = [[NSFileManager defaultManager]URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask];
+    NSString *private = [[[documents objectAtIndex:0] absoluteString] stringByAppendingString:@"private/"];
+    NSLog(private);
+    NSString *shared = [[[documents objectAtIndex:0] absoluteString] stringByAppendingString:@"shared/"];
+    NSString *testfile1 = [private stringByAppendingPathComponent:@"testfile1.txt"];
+    File *testfileobj1 = [[File alloc] initWithName:@"testfile1.txt" andURL:[NSURL URLWithString:testfile1]];
+    [_privateDocs addObject:testfileobj1];
+    NSString *testfile2 = [private stringByAppendingString:@"testfile2.txt"];
+    File *testfileobj2 = [[File alloc] initWithName:@"testfile2.txt" andURL:[NSURL URLWithString:testfile2]];
+    [_privateDocs addObject:testfileobj2];
+    NSString *testfile3 = [shared stringByAppendingString:@"testfile3.txt"];
+    File *testfileobj3 = [[File alloc] initWithName:@"testfile3.txt" andURL:[NSURL URLWithString:testfile3]];
+    [_sharedDocs addObject:testfileobj3];
+    NSString *testfile4 = [shared stringByAppendingString:@"testfile4.txt"];
+    File *testfileobj4 = [[File alloc] initWithName:@"testfile4.txt" andURL:[NSURL URLWithString:testfile4]];
+    [_sharedDocs addObject:testfileobj4];
+    NSString *string = @"text-test";
+    NSError *writeError = nil;
+    [string writeToFile:testfile1 atomically:YES encoding:NSUTF8StringEncoding error:&writeError];
+    NSLog(@"First: %@", writeError.localizedFailureReason);
+    NSLog(@"First: %@", testfileobj1.url);
+    [string writeToFile:testfile2 atomically:YES encoding:NSUTF8StringEncoding error:&writeError];
+    NSLog(@"Second: %@", writeError.localizedFailureReason);
+    NSLog(@"First: %@", testfileobj2.url);
+    [string writeToFile:testfile3 atomically:YES encoding:NSUTF8StringEncoding error:&writeError];
+    NSLog(@"Third: %@", writeError.localizedFailureReason);
+    NSLog(@"First: %@", testfileobj3.url);
+    [string writeToFile:testfile4 atomically:YES encoding:NSUTF8StringEncoding error:&writeError];
+    NSLog(@"Fourth: %@", writeError.localizedFailureReason);
+    NSLog(@"First: %@", testfileobj4.url);
 }
 
 @end

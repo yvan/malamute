@@ -47,7 +47,6 @@
 
 -(IBAction) clickedButton:(id)sender{
     
-    
     if(_privateOrShared){
         if(_buttonState == 0){
             [_selectSendButton setTitle:@"Move to Private" forState:UIControlStateNormal];
@@ -59,16 +58,13 @@
             [_fileSystem moveFiles:_selectedFiles from:_fileSystem.sharedDocs to:_fileSystem.privateDocs withInfo:_privateOrShared];
         }
     }else{
-        
         if(_buttonState == 0){
-            
             [_selectSendButton setTitle:@"Move to Shared" forState:UIControlStateNormal];
             _buttonState = 1;
             _selectEnabled = YES;
             _collectionOfFiles.allowsMultipleSelection = YES;
         }
         else{
-            
             [_fileSystem moveFiles:_selectedFiles from:_fileSystem.privateDocs to:_fileSystem.sharedDocs withInfo:_privateOrShared];
         }
     }
@@ -89,14 +85,19 @@
     
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"fileOrFolder" forIndexPath:indexPath];
     
-    cell.backgroundView = [self assignIconForFileType:@"sample_file1.txt"];
-    cell.selectedBackgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"txt-sel.png"]];
-    //instead of just one file here there has to be a method/algorithm that identifies each cell
-    
+    //set the appropriate seleted iamge image (red in-filled image)
+    if(_privateOrShared == 0){
+        cell.backgroundView = [self assignIconForFileType:[_fileSystem.privateDocs objectAtIndex:indexPath.row]];
+        cell.selectedBackgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@-sel.png",[_fileSystem.privateDocs objectAtIndex:indexPath.row]]]];
+    }else{
+        cell.backgroundView = [self assignIconForFileType:[_fileSystem.sharedDocs objectAtIndex:indexPath.row]];
+        cell.selectedBackgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@-sel.png",[_fileSystem.sharedDocs objectAtIndex:indexPath.row]]]];
+    }
+    cell.backgroundColor = [UIColor blackColor];
     return cell;
 }
 
-/*- (UICollectionReusableView *)collectionView:
+/*- (UICollectionReusableView *)co2llectionView:
  (UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
  {
  return [[UICollectionReusableView alloc] init];
@@ -112,9 +113,7 @@
         UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"fileOrFolder" forIndexPath:indexPath];
         _selectedFile = _privateOrShared == 0 ? [_fileSystem.privateDocs objectAtIndex:indexPath.row]:[_fileSystem.sharedDocs objectAtIndex:indexPath.row];
         [_selectedFiles addObject:_selectedFile];
-        [_selectedFiles addObject:(File *)fileSelected];
         NSLog(@"touched");
-        
     }
     else{
         [collectionView deselectItemAtIndexPath:indexPath animated:NO];

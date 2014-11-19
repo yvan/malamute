@@ -68,7 +68,7 @@
     XCTAssertNotNil(testFile, @"Test File should not be nil");
 }
 -(void) testDocumentsDirectory{
-    XCTAssertNotNil(viewController.fileSystem, @"File system should not be nil");
+    XCTAssertNotNil(viewController.fileSystem.documentsDirectory, @"File system should not be nil");
 }
 -(void) testSharedDocuments{
     XCTAssertNotNil(viewController.fileSystem.sharedDocs, @"Filesystem shared documents array should not be nil");

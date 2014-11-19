@@ -22,10 +22,6 @@
 		F37DE4311A114D620022D837 /* testfile1.txt in Resources */ = {isa = PBXBuildFile; fileRef = F37DE42F1A114D620022D837 /* testfile1.txt */; };
 		F37DE4331A114D6A0022D837 /* testfile2.txt in Resources */ = {isa = PBXBuildFile; fileRef = F37DE4321A114D6A0022D837 /* testfile2.txt */; };
 		F37DE4341A114D6A0022D837 /* testfile2.txt in Resources */ = {isa = PBXBuildFile; fileRef = F37DE4321A114D6A0022D837 /* testfile2.txt */; };
-		F37DE4361A114D7D0022D837 /* testfile1.txt in Resources */ = {isa = PBXBuildFile; fileRef = F37DE4351A114D7D0022D837 /* testfile1.txt */; };
-		F37DE4371A114D7D0022D837 /* testfile1.txt in Resources */ = {isa = PBXBuildFile; fileRef = F37DE4351A114D7D0022D837 /* testfile1.txt */; };
-		F37DE4391A114D820022D837 /* testfile2.txt in Resources */ = {isa = PBXBuildFile; fileRef = F37DE4381A114D820022D837 /* testfile2.txt */; };
-		F37DE43A1A114D820022D837 /* testfile2.txt in Resources */ = {isa = PBXBuildFile; fileRef = F37DE4381A114D820022D837 /* testfile2.txt */; };
 		F3A0F9D91A0D4AE4005BFB24 /* MCTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F3A0F9D81A0D4AE4005BFB24 /* MCTests.m */; };
 		F3FEA0171A1303AF003E88AE /* FileSystem.m in Sources */ = {isa = PBXBuildFile; fileRef = F3FEA0161A1303AF003E88AE /* FileSystem.m */; };
 		F3FEA01A1A1306B1003E88AE /* File.m in Sources */ = {isa = PBXBuildFile; fileRef = F3FEA0191A1306B1003E88AE /* File.m */; };
@@ -64,8 +60,6 @@
 		F33C42281A0ACFF600189C4F /* filesystemTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = filesystemTests.m; sourceTree = "<group>"; };
 		F37DE42F1A114D620022D837 /* testfile1.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = testfile1.txt; sourceTree = "<group>"; };
 		F37DE4321A114D6A0022D837 /* testfile2.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = testfile2.txt; sourceTree = "<group>"; };
-		F37DE4351A114D7D0022D837 /* testfile1.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = testfile1.txt; sourceTree = "<group>"; };
-		F37DE4381A114D820022D837 /* testfile2.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = testfile2.txt; sourceTree = "<group>"; };
 		F3A0F9D81A0D4AE4005BFB24 /* MCTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MCTests.m; sourceTree = "<group>"; };
 		F3FEA0151A1303AF003E88AE /* FileSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileSystem.h; sourceTree = "<group>"; };
 		F3FEA0161A1303AF003E88AE /* FileSystem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileSystem.m; sourceTree = "<group>"; };
@@ -137,8 +131,6 @@
 		E9616C4C1A03FBAE004BFEA4 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				F37DE4381A114D820022D837 /* testfile2.txt */,
-				F37DE4351A114D7D0022D837 /* testfile1.txt */,
 				E9616C4D1A03FBAE004BFEA4 /* Info.plist */,
 				E9616C4E1A03FBAE004BFEA4 /* main.m */,
 			);
@@ -247,11 +239,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				F37DE4301A114D620022D837 /* testfile1.txt in Resources */,
-				F37DE4391A114D820022D837 /* testfile2.txt in Resources */,
 				E9616C581A03FBAE004BFEA4 /* Main.storyboard in Resources */,
 				F37DE4331A114D6A0022D837 /* testfile2.txt in Resources */,
 				E9616C5D1A03FBAF004BFEA4 /* LaunchScreen.xib in Resources */,
-				F37DE4361A114D7D0022D837 /* testfile1.txt in Resources */,
 				E9616C5A1A03FBAE004BFEA4 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -261,8 +251,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				F37DE4311A114D620022D837 /* testfile1.txt in Resources */,
-				F37DE43A1A114D820022D837 /* testfile2.txt in Resources */,
-				F37DE4371A114D7D0022D837 /* testfile1.txt in Resources */,
 				F37DE4341A114D6A0022D837 /* testfile2.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
