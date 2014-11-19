@@ -137,7 +137,9 @@ inDomains:NSUserDomainMask];
                 
                 NSLog(fileExtension); // just a debug to make sure things look right
                 copyingToDirectory = [copyingFromDirectory  URLByAppendingPathExtension:fileExtension];
-                if (![fm copyItemAtURL:copyingFromDirectory  toURL:copyingToDirectory error:&error]) {
+                
+                //MOVE TO THE NEW DIRECTORY (does a copy and deletes the old one)
+                if (![fm moveItemAtURL:copyingFromDirectory  toURL:copyingToDirectory error:&error]) {
                     
                    NSLog(@"%@",error);
                 }

@@ -133,6 +133,8 @@
     [sharedDirectory addObject:testfile3];
     [selectedFiles addObject:testfile1];
     [selectedFiles addObject:testfile2];
+    [viewController.fileSystem createNewDir:@"private"];
+    [viewController.fileSystem createNewDir:@"shared"];
     XCTAssertTrue([viewController.fileSystem moveFiles:selectedFiles from:privateDirectory to:sharedDirectory withInfo:YES]);
 }
 
