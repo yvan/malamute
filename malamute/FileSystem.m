@@ -11,6 +11,7 @@
 
 @implementation FileSystem
 
+//creates the file system
 -(id) init{
     self = [super init];
     _sharedDocs = [[NSMutableArray alloc] init];
@@ -21,6 +22,7 @@
     return self;
 }
 
+//gets all the files in teh documents directory
 -(NSMutableArray *)getAllDocDirFiles{
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSError *error;
@@ -34,9 +36,13 @@
     return allFiles;
 }
 
+//prints all the files in privatedocs then shareddocs
 -(void) printAllFiles{
     for(int i = 0; i < [_privateDocs count]; i++){
-        NSLog(@"%@", _privateDocs[i]);
+        NSLog(@"Private Doc %i:%@",i, _privateDocs[i]);
+    }
+    for(int i = 0; i < [_sharedDocs count]; i++){
+        NSLog(@"Shared Doc %i:%@",i, _sharedDocs[i]);
     }
 }
 
