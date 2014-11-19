@@ -109,10 +109,28 @@ inDomains:NSUserDomainMask];
                 // Copy the data to ~/Library/Application Support/<bundle_ID>/Data.backup
                 NSURL* copyingFromDirectory = [[appSupportDir URLByAppendingPathComponent:appBundleID] URLByAppendingPathComponent: file.name];
                 NSURL* copyingToDirectory;
+                
+                NSInteger finalDot = 0;
+                NSString *fileExtension = @"";
+                
+                for (NSInteger index=0; index<file.name.length;index++){
+                    if([file.name characterAtIndex:index] == '.'){
+                        finalDot = index;
+                    }
+                    if(index == file.name.length-1){
+                        
+                        fileExtension = [file.name substringFromIndex:finalDot+1];
+                    }
+                    if(finalDot == 0){
+                        
+                        fileExtension = @"directory";
+                    }
+                }
+                
                 if(privateOrShared){
-                    copyingToDirectory = [copyingFromDirectory  URLByAppendingPathExtension:@"private"];
+                    copyingToDirectory = [copyingFromDirectory  URLByAppendingPathExtension:fileExtension];
                 }else{
-                    copyingToDirectory = [copyingFromDirectory  URLByAppendingPathExtension:@"documents"];
+                    copyingToDirectory = [copyingFromDirectory  URLByAppendingPathExtension:fileExtension];
                 }
                 
                 if (![fm copyItemAtURL:copyingFromDirectory  toURL:copyingToDirectory error:&error]) {
@@ -121,7 +139,6 @@ inDomains:NSUserDomainMask];
                 }
             }
         });
-        
     }
     
     for(File* file in selectedFiles){
