@@ -28,6 +28,9 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="clickedButton:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="nRE-CB-1kl"/>
+                                </connections>
                             </button>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="4Tu-Y7-NRX">
                                 <rect key="frame" x="0.0" y="65" width="600" height="415"/>
@@ -89,6 +92,9 @@
                             </mask>
                         </variation>
                     </view>
+                    <connections>
+                        <outlet property="selectSendButton" destination="mDF-qb-Ja9" id="GCa-Gm-pb4"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>

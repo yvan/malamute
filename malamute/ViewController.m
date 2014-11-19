@@ -18,6 +18,7 @@
 
 @implementation ViewController
 
+#pragma mark - FileUtility
 
 //didn't use NSRange bec. it's non obvious
 -(UIImageView *) assignIconForFileType:(NSString *) filename{
@@ -42,6 +43,37 @@
     return iconViewForCell;
 }
 
+#pragma mark - IBActions
+
+-(IBAction) clickedButton:(id)sender{
+    
+    
+    if(_privateOrShared){
+        if(_buttonState == 0){
+            [_selectSendButton setTitle:@"Move to Private" forState:UIControlStateNormal];
+            _buttonState = 1;
+            _selectEnabled = YES;
+            _collectionOfFiles.allowsMultipleSelection = YES;
+        }
+        else{
+            [_fileSystem moveFiles:_selectedFiles from:_fileSystem.sharedDocs to:_fileSystem.privateDocs withInfo:_privateOrShared];
+        }
+    }else{
+        
+        if(_buttonState == 0){
+            
+            [_selectSendButton setTitle:@"Move to Shared" forState:UIControlStateNormal];
+            _buttonState = 1;
+            _selectEnabled = YES;
+            _collectionOfFiles.allowsMultipleSelection = YES;
+        }
+        else{
+            
+            [_fileSystem moveFiles:_selectedFiles from:_fileSystem.privateDocs to:_fileSystem.sharedDocs withInfo:_privateOrShared];
+        }
+    }
+}
+
 #pragma mark - UICollectionViewDatasource
 
 - (NSInteger)numberOfSectionsInCollectionView: (UICollectionView *)collectionView {
@@ -50,9 +82,7 @@
 
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
     
-    //**Need to determine whether or not we're in Shared Folder or Documents Folder**//
-    //so add an entry for privateDocs, for now just do sharedDocs
-    return [_fileSystem.sharedDocs count];
+    return _privateOrShared == 0 ? [_fileSystem.privateDocs count]:[_fileSystem.sharedDocs count];
 }
 
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
@@ -78,11 +108,11 @@
     
     if(_selectEnabled){
         
+        File *fileSelected = [[File alloc] init];
         UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"fileOrFolder" forIndexPath:indexPath];
-        //**Need to determine whether or not we're in Shared Folder or Documents Folder**//
-        //so add an entry for privateDocs, for now just do sharedDocs
-        _selectedFile = [_fileSystem.sharedDocs objectAtIndex:indexPath.row];
+        _selectedFile = _privateOrShared == 0 ? [_fileSystem.privateDocs objectAtIndex:indexPath.row]:[_fileSystem.sharedDocs objectAtIndex:indexPath.row];
         [_selectedFiles addObject:_selectedFile];
+        [_selectedFiles addObject:(File *)fileSelected];
         NSLog(@"touched");
         
     }
@@ -99,7 +129,7 @@
         //**Need to determine whether or not we're in Shared Folder or Documents Folder**//
         //so add an entry for privateDocs, for now just do sharedDocs
         _selectedFile = [_fileSystem.sharedDocs objectAtIndex:indexPath.row];
-        [_selectedFiles addObject:_selectedFile];
+        [_selectedFiles removeObject:_selectedFile];
     }
     NSLog(@"untouched");
 }
@@ -176,6 +206,7 @@
     
     //Init document directory of file system
     _fileSystem = [[FileSystem alloc] init];
+    _selectedFiles = [[NSMutableArray alloc] init];
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     _fileSystem.documentsDirectory = [[NSString alloc] initWithString:[paths objectAtIndex:0]];
 

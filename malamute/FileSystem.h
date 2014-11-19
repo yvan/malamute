@@ -16,11 +16,11 @@
 @property (nonatomic, strong) NSMutableArray* privateDocs;
 @property (nonatomic, strong) NSString* documentsDirectory;
 
+-(void) printAllFiles;
 -(NSMutableArray *)getAllDocDirFiles;
 -(void) deleteAllDocumentsFromSandbox;
 -(BOOL) isValidPath:(NSString*) path;
 -(void) saveDocumentToSandbox:(File*)document;
--(void) printAllFiles;
+-(BOOL) moveFiles:(NSMutableArray*)selectedFiles from:(NSMutableArray*)firstDirectory to:(NSMutableArray*)secondDirectory withInfo:(BOOL)privateOrShared;
 
-    
 @end

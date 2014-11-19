@@ -14,12 +14,16 @@
 
 @interface ViewController : UIViewController <SessionWrapperDelegate, BrowserWrapperDelegate, AdvertiserWrapperDelegate>
 
+@property (nonatomic, strong) IBOutlet UIButton *selectSendButton;
+@property (nonatomic, strong) IBOutlet UICollectionView *collectionOfFiles;
 
 @property (nonatomic) SessionWrapper *sessionWrapper;
 @property (nonatomic) BrowserWrapper *browserWrapper;
 @property (nonatomic) AdvertiserWrapper *advertiserWrapper;
 
 @property (nonatomic) BOOL selectEnabled;
+@property (nonatomic) BOOL privateOrShared;// 0 for documents directory, 1 for shared directory
+@property (nonatomic) NSInteger buttonState; //0 is original "Select" 1 is "send to.."
 @property (nonatomic) NSMutableArray *selectedFiles;
 @property (nonatomic, strong) NSString *selectedFile;
 
@@ -29,6 +33,8 @@
 //-(NSMutableArray *)getAllDocDirFiles;
 -(void) deleteAllDocumdentsFromSandbox;
 
+-(IBAction) clickedButton:(id)sender;
+-(IBAction) selectedFile:(id)sender; //method for when user selects a file.
 
 
 @end

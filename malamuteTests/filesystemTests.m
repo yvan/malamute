@@ -109,6 +109,33 @@
     NSString* validPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent: @"123456890abcdefghijklmno.txt.pdf"];
     XCTAssertTrue([viewController.fileSystem isValidPath:validPath]== true, @"File path should be invalid after saving it");
 }
+
+-(void)testMoveSelectedFiles{
+    
+    NSMutableArray* selectedFiles = [[NSMutableArray alloc]init];
+    NSMutableArray* privateDirectory = [[NSMutableArray alloc]init];
+    NSMutableArray* sharedDirectory = [[NSMutableArray alloc]init];
+    File* testfile1 = [[File alloc] init];
+    File* testfile2 = [[File alloc] init];
+    File* testfile3 = [[File alloc] init];
+    
+    testfile1.name = @"testfile1.txt";
+    testfile1.url = (NSURL *)[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent: testfile1.name];
+    testfile1.dateCreated = [NSDate date];
+    testfile2.name = @"testfile1.txt";
+    testfile2.url = (NSURL *)[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent: testfile1.name];
+    testfile2.dateCreated = [NSDate date];
+    testfile3.name = @"testfile1.txt";
+    testfile3.url = (NSURL *)[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent: testfile1.name];
+    testfile3.dateCreated = [NSDate date];
+    [privateDirectory addObject:testfile1];
+    [privateDirectory addObject:testfile2];
+    [sharedDirectory addObject:testfile3];
+    [selectedFiles addObject:testfile1];
+    [selectedFiles addObject:testfile2];
+    XCTAssertTrue([viewController.fileSystem moveFiles:selectedFiles from:privateDirectory to:sharedDirectory withInfo:YES]);
+}
+
 /*-(void) testDeleteDocs{
     [viewController didFinishReceivingResource:viewController.sessionWrapper.session resourceName:@"testfile1.txt" fromPeer:testPeer atURL:[NSURL fileURLWithPath:testFilePath] withError:nil];
     [viewController didFinishReceivingResource:viewController.sessionWrapper.session resourceName:@"testfile2.txt" fromPeer:testPeer atURL:[NSURL fileURLWithPath:testFilePath] withError:nil];

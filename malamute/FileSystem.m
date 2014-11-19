@@ -39,6 +39,7 @@
 }
 
 -(void) deleteAllDocumentsFromSandbox{
+    
     NSFileManager* fileManager = [NSFileManager defaultManager];
     NSError* error;
     for(int i = 0; i <[_privateDocs count]; i++){
@@ -81,6 +82,60 @@
     [_privateDocs addObject:document];
 }
 
-
+-(BOOL)moveFiles:(NSMutableArray*)selectedFiles from:(NSMutableArray*)firstDirectory to:(NSMutableArray*)secondDirectory withInfo:(BOOL)privateOrShared{
+    
+    //Get App data directory
+    NSArray* directories = [[NSFileManager defaultManager]URLsForDirectory:NSApplicationSupportDirectory
+inDomains:NSUserDomainMask];
+    
+    if([directories count] > 0){
+        // Build a path to ~/Library/Application Support/<bundle_ID>/Data
+        // where <bundleID> is the actual bundle ID of the application.
+        NSURL* appSupportDir = (NSURL*)[directories objectAtIndex:0];
+        NSString* appBundleID = [[NSBundle mainBundle] bundleIdentifier];
+        
+        // Perform the copy asynchronously.
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            // It's good habit to alloc/init the file manager for move/copy operations,
+            // just in case you decide to add a delegate later.
+            NSFileManager* fm = [[NSFileManager alloc] init];
+            NSError* error;
+            
+            for(File* file in selectedFiles){
+                
+                [firstDirectory removeObject:file]; //remove each file from the original directory array
+                [secondDirectory addObject:file]; //put each file in the new directory array
+                
+                // Copy the data to ~/Library/Application Support/<bundle_ID>/Data.backup
+                NSURL* copyingFromDirectory = [[appSupportDir URLByAppendingPathComponent:appBundleID] URLByAppendingPathComponent: file.name];
+                NSURL* copyingToDirectory;
+                if(privateOrShared){
+                    copyingToDirectory = [copyingFromDirectory  URLByAppendingPathExtension:@"private"];
+                }else{
+                    copyingToDirectory = [copyingFromDirectory  URLByAppendingPathExtension:@"documents"];
+                }
+                
+                if (![fm copyItemAtURL:copyingFromDirectory  toURL:copyingToDirectory error:&error]) {
+                    
+                    NSLog(@"copy error!");
+                }
+            }
+        });
+        
+    }
+    
+    for(File* file in selectedFiles){
+        
+        NSURL* appSupportDir = (NSURL*)[directories objectAtIndex:0];
+        NSString* appBundleID = [[NSBundle mainBundle] bundleIdentifier];
+        NSURL* isValidPath = [[appSupportDir URLByAppendingPathComponent:appBundleID] URLByAppendingPathComponent: file.name];
+        
+        if(![self isValidPath:[isValidPath absoluteString]]){
+            
+            return NO;
+        }//all files sucessfully path transferred is never triggers.
+    }
+    return YES;
+}
 
 @end
