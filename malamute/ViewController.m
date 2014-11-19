@@ -10,10 +10,6 @@
 
 @interface ViewController ()
 
-
-//-(NSArray *)getAllDocDirFiles;
-
-
 @end
 
 @implementation ViewController

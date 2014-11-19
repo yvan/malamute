@@ -29,10 +29,6 @@
 
 @property (nonatomic, strong) FileSystem *fileSystem;
 
-
-//-(NSMutableArray *)getAllDocDirFiles;
-//-(void) deleteAllDocumdentsFromSandbox;
-
 -(IBAction) clickedButton:(id)sender;
 
 @end
