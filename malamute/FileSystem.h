@@ -22,5 +22,6 @@
 -(BOOL) isValidPath:(NSString*) path;
 -(void) saveDocumentToSandbox:(File*)document;
 -(BOOL) moveFiles:(NSMutableArray*)selectedFiles from:(NSMutableArray*)firstDirectory to:(NSMutableArray*)secondDirectory withInfo:(BOOL)privateOrShared;
+-(BOOL)createNewDir:(NSString*)dirname;
 
 @end

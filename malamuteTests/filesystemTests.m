@@ -122,11 +122,11 @@
     testfile1.name = @"testfile1.txt";
     testfile1.url = (NSURL *)[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent: testfile1.name];
     testfile1.dateCreated = [NSDate date];
-    testfile2.name = @"testfile1.txt";
-    testfile2.url = (NSURL *)[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent: testfile1.name];
+    testfile2.name = @"testfile2.txt";
+    testfile2.url = (NSURL *)[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent: testfile2.name];
     testfile2.dateCreated = [NSDate date];
-    testfile3.name = @"testfile1.txt";
-    testfile3.url = (NSURL *)[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent: testfile1.name];
+    testfile3.name = @"testfile3.txt";
+    testfile3.url = (NSURL *)[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent: testfile3.name];
     testfile3.dateCreated = [NSDate date];
     [privateDirectory addObject:testfile1];
     [privateDirectory addObject:testfile2];
@@ -134,6 +134,12 @@
     [selectedFiles addObject:testfile1];
     [selectedFiles addObject:testfile2];
     XCTAssertTrue([viewController.fileSystem moveFiles:selectedFiles from:privateDirectory to:sharedDirectory withInfo:YES]);
+}
+
+
+-(void)testCreateNewDir{
+    XCTAssertTrue([viewController.fileSystem createNewDir:@"private"]);
+    XCTAssertTrue([viewController.fileSystem createNewDir:@"shared"]);
 }
 
 /*-(void) testDeleteDocs{
