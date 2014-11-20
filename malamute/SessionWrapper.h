@@ -20,6 +20,7 @@
 
 @property (nonatomic) MCSession *session;
 @property (nonatomic, readonly) MCPeerID *myPeerID;
+@property (nonatomic) NSMutableArray *connectedPeerIDs;
 @property (nonatomic) id <SessionWrapperDelegate> sessionDelegate;
 
 -(void) destroySession;

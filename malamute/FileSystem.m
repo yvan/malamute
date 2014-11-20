@@ -71,6 +71,12 @@
     _privateDocs = [self getAllDocDirFiles];
 }
 
+-(void) saveDocumentsToSandbox:(NSArray*) documents {
+    for(int i = 0; i < [documents count]; i++){
+        File* fileToSave = (File*)[documents objectAtIndex:i];
+        [self saveDocumentToSandbox:fileToSave];
+    }
+}
 
 -(void) saveDocumentToSandbox:(File*)document{
     
