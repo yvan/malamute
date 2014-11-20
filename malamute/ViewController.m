@@ -62,7 +62,7 @@
         else{
            // [_fileSystem moveFiles:_selectedFiles from:_fileSystem.sharedDocs to:_fileSystem.privateDocs withInfo:_privateOrShared];
             [_fileSystem saveDocumentsToSandbox:_selectedFiles];
-
+            [_selectedFiles removeAllObjects];
             [_selectSendButton setTitle:@"Sent! Select More files..." forState:UIControlStateNormal];
             _buttonState = 0;
             _selectEnabled = NO;
@@ -80,6 +80,7 @@
             //[_fileSystem moveFiles:_selectedFiles from:_fileSystem.privateDocs to:_fileSystem.sharedDocs withInfo:_privateOrShared];
             [_sessionWrapper sendFiles:_selectedFiles toPeers:_sessionWrapper.connectedPeerIDs];
             [_fileSystem.sharedDocs addObjectsFromArray:_selectedFiles];
+            [_selectedFiles removeAllObjects];
             [_selectSendButton setTitle:@"Sent! Select More files..." forState:UIControlStateNormal];
             _buttonState = 0;
             _selectEnabled = NO;
@@ -98,6 +99,7 @@
         _privateOrShared = 1;
         _buttonState = 0;
         _selectEnabled = NO;
+        [_selectedFiles removeAllObjects];
         [_collectionOfFiles reloadData];
         NSLog(@"switch to shared");
     }
@@ -110,6 +112,7 @@
         _privateOrShared = 0;
         _buttonState = 0;
         _selectEnabled = NO;
+        [_selectedFiles removeAllObjects];
         [_collectionOfFiles reloadData];
         NSLog(@"switch to private");
     }
