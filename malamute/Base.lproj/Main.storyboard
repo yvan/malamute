@@ -29,7 +29,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="clickedButton:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="nRE-CB-1kl"/>
+                                    <action selector="clickedSelectSendButton:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="J5J-Fa-89w"/>
                                 </connections>
                             </button>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="4Tu-Y7-NRX">
@@ -76,7 +76,7 @@
                                     </mask>
                                 </variation>
                                 <connections>
-                                    <action selector="clickedButton:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="l6r-zO-tlK"/>
+                                    <action selector="clickedSelectDirectoryButton:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="4Iq-HB-cbA"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HTo-xX-NbO">
@@ -100,7 +100,7 @@
                                     </mask>
                                 </variation>
                                 <connections>
-                                    <action selector="clickedButton:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="fwP-Db-t5k"/>
+                                    <action selector="clickedSelectDirectoryButton:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="Wwn-Sc-fwt"/>
                                 </connections>
                             </button>
                         </subviews>

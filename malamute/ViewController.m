@@ -48,39 +48,43 @@
 
 #pragma mark - IBActions
 
--(IBAction) clickedButton:(id)sender{ //shared
-    
-    if(sender == _selectSendButton){ //selectSendButton Clicked
-        NSLog(@"blah1");
-        if(_privateOrShared){//_privateOrShared folder = 1 for shared, and 0 for private
-            NSLog(@"blahshared");
-            if(_buttonState == 0){
-                [_selectSendButton setTitle:@"Move to Private" forState:UIControlStateNormal];
-                _buttonState = 1;
-                _selectEnabled = YES;
-                _collectionOfFiles.allowsMultipleSelection = YES;
-            }
-            else{
-                [_fileSystem moveFiles:_selectedFiles from:_fileSystem.sharedDocs to:_fileSystem.privateDocs withInfo:_privateOrShared];
-                _buttonState = 0;
-                [_selectSendButton setTitle:@"Sent! Select More files..." forState:UIControlStateNormal];
-                
-            }
-        }else{//we are IN the private folder
-            NSLog(@"blahprivate");
-            if(_buttonState == 0){
-                [_selectSendButton setTitle:@"Move to Shared" forState:UIControlStateNormal];
-                _buttonState = 1;
-                _selectEnabled = YES;
-                _collectionOfFiles.allowsMultipleSelection = YES;
-            }
-            else{
-                [_fileSystem moveFiles:_selectedFiles from:_fileSystem.privateDocs to:_fileSystem.sharedDocs withInfo:_privateOrShared];
-                _buttonState = 0;
-                [_selectSendButton setTitle:@"Sent! Select More files..." forState:UIControlStateNormal];
-            }
+-(IBAction) clickedSelectSendButton:(id)sender{ //shared
+    NSLog(@"blah1");
+    if(_privateOrShared){//_privateOrShared folder = 1 for shared, and 0 for private
+        NSLog(@"blahshared");
+        if(_buttonState == 0){
+            [_selectSendButton setTitle:@"Move to Private" forState:UIControlStateNormal];
+            _buttonState = 1;
+            _selectEnabled = YES;
+            _collectionOfFiles.allowsMultipleSelection = YES;
         }
-    }if(sender == _selectDirectoryModeShared){ //selectDirectoryMode Clicked
+        else{
+            [_fileSystem moveFiles:_selectedFiles from:_fileSystem.sharedDocs to:_fileSystem.privateDocs withInfo:_privateOrShared];
+            [_selectSendButton setTitle:@"Sent! Select More files..." forState:UIControlStateNormal];
+            _buttonState = 0;
+            _selectEnabled = NO;
+            
+        }
+    }else{//we are IN the private folder
+        NSLog(@"blahprivate");
+        if(_buttonState == 0){
+            [_selectSendButton setTitle:@"Move to Shared" forState:UIControlStateNormal];
+            _buttonState = 1;
+            _selectEnabled = YES;
+            _collectionOfFiles.allowsMultipleSelection = YES;
+        }
+        else{
+            [_fileSystem moveFiles:_selectedFiles from:_fileSystem.privateDocs to:_fileSystem.sharedDocs withInfo:_privateOrShared];
+            [_selectSendButton setTitle:@"Sent! Select More files..." forState:UIControlStateNormal];
+            _buttonState = 0;
+            _selectEnabled = NO;
+        }
+    }
+}
+
+-(IBAction) clickedSelectDirectoryButton:(id)sender{
+    
+    if(sender == _selectDirectoryModeShared){ //selectDirectoryMode Clicked
         
         [_selectSendButton setTitle:@"Select Files" forState:UIControlStateNormal];
         [_selectDirectoryModeShared setTitle:@"Shared" forState:UIControlStateNormal];
@@ -88,21 +92,21 @@
         [_selectDirectoryModePrivate setBackgroundColor: [UIColor colorWithRed:214.0/255.0 green:9.0/255.0 blue:22.0/255.0 alpha:1.0]];
         _privateOrShared = 1;
         _buttonState = 0;
+        _selectEnabled = NO;
+        [_collectionOfFiles reloadData];
         NSLog(@"switch to shared");
-        //reload the uicollectionview with the array of "shared files"
-        
     }
     if(sender == _selectDirectoryModePrivate){
         [_selectSendButton setTitle:@"Select Files" forState:UIControlStateNormal];
-
+        
         [_selectDirectoryModePrivate setTitle:@"Private" forState:UIControlStateNormal];
         [_selectDirectoryModePrivate setBackgroundColor: [UIColor colorWithRed:135.0/255.0 green:9.0/255.0 blue:22.0/255.0 alpha:1.0]];
         [_selectDirectoryModeShared setBackgroundColor: [UIColor colorWithRed:214.0/255.0 green:9.0/255.0 blue:22.0/255.0 alpha:1.0]];
         _privateOrShared = 0;
         _buttonState = 0;
+        _selectEnabled = NO;
+        [_collectionOfFiles reloadData];
         NSLog(@"switch to private");
-        //reload the uicollectionview with the array of "private files"
-        
     }
 }
 

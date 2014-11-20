@@ -31,7 +31,8 @@
 
 @property (nonatomic, strong) FileSystem *fileSystem;
 
--(IBAction) clickedButton:(id)sender;
+-(IBAction) clickedSelectSendButton:(id)sender;
+-(IBAction) clickedSelectDirectoryButton:(id)sender;
 
 @end
 
