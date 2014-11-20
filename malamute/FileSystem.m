@@ -17,7 +17,9 @@
     self = [super init];
     _sharedDocs = [[NSMutableArray alloc] init];
     _privateDocs = [[NSMutableArray alloc] init];
-    _documentsDirectory = [[NSString alloc] init];
+    NSArray* documents = [[NSFileManager defaultManager]URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask];
+    _documentsDirectory = [[documents objectAtIndex:0] absoluteString];
+
     [self createNewDir:@"private"];
     [self createNewDir:@"shared"];
     [self makeDummyFiles]; //comment out in prodution version

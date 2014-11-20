@@ -43,25 +43,43 @@
 
 -(IBAction) clickedButton:(id)sender{
     
-    if(_privateOrShared){
-        if(_buttonState == 0){
-            [_selectSendButton setTitle:@"Move to Private" forState:UIControlStateNormal];
-            _buttonState = 1;
-            _selectEnabled = YES;
-            _collectionOfFiles.allowsMultipleSelection = YES;
+    if(sender == _selectSendButton){ //selectSendButton Clicked
+        if(_privateOrShared){//we are IN the shared folder
+            if(_buttonState == 0){
+                [_selectSendButton setTitle:@"Move to Private" forState:UIControlStateNormal];
+                NSLog(@"blah1");
+                _buttonState = 1;
+                _selectEnabled = YES;
+                _collectionOfFiles.allowsMultipleSelection = YES;
+            }
+            else{
+                [_fileSystem moveFiles:_selectedFiles from:_fileSystem.sharedDocs to:_fileSystem.privateDocs withInfo:_privateOrShared];
+            }
+        }else{//we are IN the private folder
+            if(_buttonState == 0){
+                NSLog(@"blah2");
+                [_selectSendButton setTitle:@"Move to Shared" forState:UIControlStateNormal];
+                _buttonState = 1;
+                _selectEnabled = YES;
+                _collectionOfFiles.allowsMultipleSelection = YES;
+            }
+            else{
+                [_fileSystem moveFiles:_selectedFiles from:_fileSystem.privateDocs to:_fileSystem.sharedDocs withInfo:_privateOrShared];
+            }
         }
-        else{
-            [_fileSystem moveFiles:_selectedFiles from:_fileSystem.sharedDocs to:_fileSystem.privateDocs withInfo:_privateOrShared];
-        }
-    }else{
-        if(_buttonState == 0){
-            [_selectSendButton setTitle:@"Move to Shared" forState:UIControlStateNormal];
-            _buttonState = 1;
-            _selectEnabled = YES;
-            _collectionOfFiles.allowsMultipleSelection = YES;
-        }
-        else{
-            [_fileSystem moveFiles:_selectedFiles from:_fileSystem.privateDocs to:_fileSystem.sharedDocs withInfo:_privateOrShared];
+    }
+    if(sender == _selectDirectoryMode){ //selectDirectoryMode Clicked
+        [_selectSendButton setTitle:@"Select Files" forState:UIControlStateNormal];
+        if(_privateOrShared){//we are IN shared folder want to switch to private folder
+            [_selectDirectoryMode setTitle:@"Private Folder" forState:UIControlStateNormal];
+            _privateOrShared = 0;
+            NSLog(@"switch to private");
+            //reload the uicollectionview with the array of "private files"
+        }else{
+            [_selectDirectoryMode setTitle:@"Shared Folder" forState:UIControlStateNormal];
+            _privateOrShared = 1;
+            NSLog(@"switch to shared");
+            //reload the uicollectionview with the array of "shared files"
         }
     }
 }
@@ -83,13 +101,12 @@
     
     //set the appropriate seleted iamge image (red in-filled image)
     if(_privateOrShared == 0){
-        cell.backgroundView = [self assignIconForFileType:[_fileSystem.privateDocs objectAtIndex:indexPath.row]];
+        cell.backgroundView = [self assignIconForFileType:((File *)[_fileSystem.privateDocs objectAtIndex:indexPath.row]).name];
         cell.selectedBackgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@-sel.png",[_fileSystem.privateDocs objectAtIndex:indexPath.row]]]];
     }else{
-        cell.backgroundView = [self assignIconForFileType:[_fileSystem.sharedDocs objectAtIndex:indexPath.row]];
+        cell.backgroundView = [self assignIconForFileType:((File *)[_fileSystem.sharedDocs objectAtIndex:indexPath.row]).name];
         cell.selectedBackgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@-sel.png",[_fileSystem.sharedDocs objectAtIndex:indexPath.row]]]];
     }
-    cell.backgroundColor = [UIColor blackColor];
     return cell;
 }
 
@@ -204,13 +221,17 @@
     _selectedFiles = [[NSMutableArray alloc] init];
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     _fileSystem.documentsDirectory = [[NSString alloc] initWithString:[paths objectAtIndex:0]];
-
-    //init session, adversiter, and browser wrapper
+    [_collectionOfFiles setDelegate:self];
+    [_collectionOfFiles setDataSource:self];
+    [_collectionOfFiles reloadData];
+    
+    //Init session, adversiter, and browser wrapper
     _sessionWrapper = [[SessionWrapper alloc] initSessionWithName:@"yvan"];
     _advertiserWrapper = [[AdvertiserWrapper alloc] startAdvertising:_sessionWrapper.myPeerID];
     _browserWrapper = [[BrowserWrapper alloc] startBrowsing:_sessionWrapper.myPeerID];
-    
-    // Do any additional setup after loading the view, typically from a nib.
+    [_collectionOfFiles registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"fileOrFolder"];
+    [_collectionOfFiles reloadData];
+    //Do any additional setup after loading the view, typically from a nib.
 }
 
 - (void)didReceiveMemoryWarning {

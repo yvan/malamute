@@ -12,10 +12,11 @@
 #import "AdvertiserWrapper.h"
 #import "FileSystem.h"
 
-@interface ViewController : UIViewController <SessionWrapperDelegate, BrowserWrapperDelegate, AdvertiserWrapperDelegate>
+@interface ViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, SessionWrapperDelegate, BrowserWrapperDelegate, AdvertiserWrapperDelegate>
 
 @property (nonatomic, strong) IBOutlet UIButton *selectSendButton;
 @property (nonatomic, strong) IBOutlet UICollectionView *collectionOfFiles;
+@property (nonatomic, strong) IBOutlet UIButton *selectDirectoryMode;
 
 @property (nonatomic) SessionWrapper *sessionWrapper;
 @property (nonatomic) BrowserWrapper *browserWrapper;

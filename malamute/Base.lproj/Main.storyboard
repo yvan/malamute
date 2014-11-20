@@ -19,7 +19,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mDF-qb-Ja9">
-                                <rect key="frame" x="0.0" y="480" width="600" height="120"/>
+                                <rect key="frame" x="0.0" y="442" width="600" height="120"/>
                                 <color key="backgroundColor" red="0.84079908290000005" green="0.03448211768" blue="0.085475290280000005" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="mDF-qb-Ja9" secondAttribute="height" multiplier="5:1" id="3QE-OQ-Hcq"/>
@@ -32,8 +32,36 @@
                                     <action selector="clickedButton:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="nRE-CB-1kl"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PbL-WE-cJh">
+                                <rect key="frame" x="0.0" y="560" width="300" height="40"/>
+                                <color key="backgroundColor" red="0.84079908290000005" green="0.03448211768" blue="0.085475290280000005" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="PbL-WE-cJh" secondAttribute="height" multiplier="23:15" constant="238.66666666666666" id="DWY-6J-z1k"/>
+                                </constraints>
+                                <state key="normal" title="Private">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="clickedButton:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="l6r-zO-tlK"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HTo-xX-NbO">
+                                <rect key="frame" x="300" y="560" width="300" height="40"/>
+                                <color key="backgroundColor" red="0.84079908290000005" green="0.03448211768" blue="0.085475290280000005" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="HTo-xX-NbO" secondAttribute="height" multiplier="23:15" constant="238.66666666666666" id="bVs-3D-5Gf"/>
+                                </constraints>
+                                <state key="normal" title="Shared">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="clickedButton:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="fwP-Db-t5k"/>
+                                </connections>
+                            </button>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="4Tu-Y7-NRX">
-                                <rect key="frame" x="0.0" y="65" width="600" height="415"/>
+                                <rect key="frame" x="0.0" y="28" width="600" height="415"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="eRD-o3-El7">
                                     <size key="itemSize" width="50" height="50"/>
@@ -51,54 +79,67 @@
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
                                     </collectionViewCell>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="s84-rE-fRW">
-                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        </view>
-                                    </collectionViewCell>
                                 </cells>
+                                <connections>
+                                    <outlet property="dataSource" destination="vXZ-lx-hvc" id="bE8-Ai-GK5"/>
+                                    <outlet property="delegate" destination="vXZ-lx-hvc" id="eC0-Aw-I5I"/>
+                                </connections>
                             </collectionView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="PbL-WE-cJh" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="-16" id="2Le-Oh-x9d"/>
                             <constraint firstItem="mDF-qb-Ja9" firstAttribute="top" secondItem="4Tu-Y7-NRX" secondAttribute="bottom" constant="1" id="3uV-Mo-CyT"/>
                             <constraint firstAttribute="trailingMargin" secondItem="4Tu-Y7-NRX" secondAttribute="trailing" constant="-16" id="4TH-OS-kpi"/>
+                            <constraint firstItem="HTo-xX-NbO" firstAttribute="top" secondItem="mDF-qb-Ja9" secondAttribute="bottom" constant="-2" id="7Ko-CC-AvZ"/>
+                            <constraint firstItem="HTo-xX-NbO" firstAttribute="width" secondItem="HTo-xX-NbO" secondAttribute="height" multiplier="23:15" constant="238.66666666666666" id="7Q2-S4-TS0"/>
+                            <constraint firstItem="HTo-xX-NbO" firstAttribute="leading" secondItem="PbL-WE-cJh" secondAttribute="trailing" id="8B6-nt-E4v"/>
                             <constraint firstItem="mDF-qb-Ja9" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="460" id="8d4-U5-Tih"/>
                             <constraint firstItem="mDF-qb-Ja9" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" id="AQi-ma-XaD"/>
+                            <constraint firstItem="HTo-xX-NbO" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="284" id="AiB-xT-wve"/>
                             <constraint firstItem="4Tu-Y7-NRX" firstAttribute="bottom" secondItem="2fi-mo-0CV" secondAttribute="top" constant="-138" id="App-9D-hWX"/>
+                            <constraint firstItem="PbL-WE-cJh" firstAttribute="top" secondItem="mDF-qb-Ja9" secondAttribute="bottom" constant="-2" id="BWH-yI-ACw"/>
+                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="PbL-WE-cJh" secondAttribute="bottom" id="DWw-y8-35B"/>
                             <constraint firstItem="4Tu-Y7-NRX" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="-16" id="E1i-lg-Ssg"/>
                             <constraint firstAttribute="trailingMargin" secondItem="mDF-qb-Ja9" secondAttribute="trailing" constant="-3" id="ERu-EP-arF"/>
                             <constraint firstItem="mDF-qb-Ja9" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="-16" id="OZD-xa-6jI"/>
+                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="HTo-xX-NbO" secondAttribute="bottom" id="Sg7-Oh-oGc"/>
                             <constraint firstItem="4Tu-Y7-NRX" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="45" id="WpG-ij-Nbh"/>
+                            <constraint firstItem="4Tu-Y7-NRX" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="8" id="a4D-6Y-kgO"/>
                             <constraint firstItem="mDF-qb-Ja9" firstAttribute="leading" secondItem="4Tu-Y7-NRX" secondAttribute="trailing" constant="-600" id="cM5-2h-jHl"/>
+                            <constraint firstItem="HTo-xX-NbO" firstAttribute="leading" secondItem="PbL-WE-cJh" secondAttribute="trailing" id="m4C-Un-SUv"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="HTo-xX-NbO" secondAttribute="trailing" constant="-16" id="nmb-X4-Zfq"/>
                             <constraint firstAttribute="trailingMargin" secondItem="mDF-qb-Ja9" secondAttribute="trailingMargin" id="oHS-Fz-Lwe"/>
-                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="mDF-qb-Ja9" secondAttribute="bottom" id="rdg-TZ-PmA"/>
+                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="mDF-qb-Ja9" secondAttribute="bottom" constant="38" id="rdg-TZ-PmA"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="PbL-WE-cJh" secondAttribute="trailing" constant="284" id="vTj-1s-SEA"/>
                             <constraint firstItem="mDF-qb-Ja9" firstAttribute="trailing" secondItem="kh9-bI-dsS" secondAttribute="trailingMargin" constant="16" id="zGr-oM-eRT"/>
-                            <constraint firstItem="mDF-qb-Ja9" firstAttribute="top" secondItem="4Tu-Y7-NRX" secondAttribute="bottom" id="zZv-Ks-Exf"/>
+                            <constraint firstItem="mDF-qb-Ja9" firstAttribute="top" secondItem="4Tu-Y7-NRX" secondAttribute="bottom" constant="-1" id="zZv-Ks-Exf"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
                                 <exclude reference="App-9D-hWX"/>
+                                <exclude reference="WpG-ij-Nbh"/>
                                 <exclude reference="3uV-Mo-CyT"/>
                                 <exclude reference="8d4-U5-Tih"/>
                                 <exclude reference="AQi-ma-XaD"/>
                                 <exclude reference="ERu-EP-arF"/>
                                 <exclude reference="cM5-2h-jHl"/>
                                 <exclude reference="oHS-Fz-Lwe"/>
+                                <exclude reference="7Q2-S4-TS0"/>
+                                <exclude reference="AiB-xT-wve"/>
+                                <exclude reference="m4C-Un-SUv"/>
                             </mask>
                         </variation>
                     </view>
                     <connections>
+                        <outlet property="collectionOfFiles" destination="4Tu-Y7-NRX" id="suZ-PO-MdO"/>
+                        <outlet property="selectDirectoryMode" destination="PbL-WE-cJh" id="zAf-nJ-LZM"/>
                         <outlet property="selectSendButton" destination="mDF-qb-Ja9" id="GCa-Gm-pb4"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="311" y="418"/>
+            <point key="canvasLocation" x="-83.5" y="485"/>
         </scene>
     </scenes>
 </document>
