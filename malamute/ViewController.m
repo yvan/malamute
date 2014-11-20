@@ -17,7 +17,7 @@
 #pragma mark - FileUtility
 
 //didn't use NSRange bec. it's non obvious
--(UIImageView *) assignIconForFileType:(NSString *) filename{
+-(UIImageView *) assignIconForFileType:(NSString *) filename withBool:(BOOL)selected{
     
     NSInteger finalDot = 0;
     NSString *fileExtension = @"";
@@ -35,7 +35,13 @@
             fileExtension = @"directory";
         }
     }
-    UIImageView *iconViewForCell = [[UIImageView alloc] initWithImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@.png", fileExtension]]];
+    NSLog(@"%@", fileExtension);
+    UIImageView *iconViewForCell;
+    if(selected){
+        iconViewForCell = [[UIImageView alloc] initWithImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@-sel.png", fileExtension]]];
+    }else{
+        iconViewForCell = [[UIImageView alloc] initWithImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@.png", fileExtension]]];
+    }
     return iconViewForCell;
 }
 
@@ -101,11 +107,11 @@
     
     //set the appropriate seleted iamge image (red in-filled image)
     if(_privateOrShared == 0){
-        cell.backgroundView = [self assignIconForFileType:((File *)[_fileSystem.privateDocs objectAtIndex:indexPath.row]).name];
-        cell.selectedBackgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@-sel.png",[_fileSystem.privateDocs objectAtIndex:indexPath.row]]]];
+        cell.backgroundView = [self assignIconForFileType:((File *)[_fileSystem.privateDocs objectAtIndex:indexPath.row]).name withBool:0];
+        cell.selectedBackgroundView = [self assignIconForFileType:((File *)[_fileSystem.sharedDocs objectAtIndex:indexPath.row]).name withBool:1];
     }else{
-        cell.backgroundView = [self assignIconForFileType:((File *)[_fileSystem.sharedDocs objectAtIndex:indexPath.row]).name];
-        cell.selectedBackgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@-sel.png",[_fileSystem.sharedDocs objectAtIndex:indexPath.row]]]];
+        cell.backgroundView = [self assignIconForFileType:((File *)[_fileSystem.sharedDocs objectAtIndex:indexPath.row]).name withBool:0];
+        cell.selectedBackgroundView = [self assignIconForFileType:((File *)[_fileSystem.sharedDocs objectAtIndex:indexPath.row]).name withBool:1];
     }
     return cell;
 }
