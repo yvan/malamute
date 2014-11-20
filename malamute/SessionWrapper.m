@@ -7,6 +7,7 @@
 //
 
 #import "SessionWrapper.h"
+#import "File.h"
 
 static NSString* const ServiceName = @"malamute";
 
@@ -14,7 +15,6 @@ static NSString* const ServiceName = @"malamute";
 
 //@property (nonatomic) MCSession *session;
 @property (nonatomic) MCPeerID *myPeerID;
-@property (nonatomic) NSMutableArray *connectedPeerIDs;
 
 @end
 
@@ -68,11 +68,24 @@ static NSString* const ServiceName = @"malamute";
 //takes an array of files and an array of peerIds and sends
 //all of those files to those peer ids.
 -(void)sendFiles:(NSArray *)Files toPeers:(NSArray *)peerIDs{
-    
-    
-    /* Insert Code that does NSFilemanager here*/
-    /* Possibly will need a loop to loop through all files in array*/
-    /* [_session sendData:Files toPeers:@[peerID] withMode:MCSessionSendDataReliable error:&error]; */
+
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+
+        for(int i = 0; i < [Files count]; i++){
+            NSLog(@"%i", i);
+            File* fileToSend = (File*)[Files objectAtIndex:i];
+            for(int j =0; j < [peerIDs count]; j++){
+                NSLog(@"%i", j);
+
+                MCPeerID* idToSend = (MCPeerID*)[peerIDs objectAtIndex:j];
+                [_session sendResourceAtURL:fileToSend.url withName:fileToSend.name toPeer: idToSend withCompletionHandler:^(NSError *error) {
+                    if(error){
+                        NSLog(@"%@",[error localizedDescription]);
+                    }
+                }];
+            }
+        }
+    });
 }
 
 #pragma mark - MCSessionDelegate

@@ -15,6 +15,7 @@
 
 @implementation ViewController
 
+
 #pragma mark - FileUtility
 
 //didn't use NSRange bec. it's non obvious
@@ -59,7 +60,9 @@
             _collectionOfFiles.allowsMultipleSelection = YES;
         }
         else{
-            [_fileSystem moveFiles:_selectedFiles from:_fileSystem.sharedDocs to:_fileSystem.privateDocs withInfo:_privateOrShared];
+           // [_fileSystem moveFiles:_selectedFiles from:_fileSystem.sharedDocs to:_fileSystem.privateDocs withInfo:_privateOrShared];
+            [_fileSystem saveDocumentsToSandbox:_selectedFiles];
+
             [_selectSendButton setTitle:@"Sent! Select More files..." forState:UIControlStateNormal];
             _buttonState = 0;
             _selectEnabled = NO;
@@ -74,7 +77,9 @@
             _collectionOfFiles.allowsMultipleSelection = YES;
         }
         else{
-            [_fileSystem moveFiles:_selectedFiles from:_fileSystem.privateDocs to:_fileSystem.sharedDocs withInfo:_privateOrShared];
+            //[_fileSystem moveFiles:_selectedFiles from:_fileSystem.privateDocs to:_fileSystem.sharedDocs withInfo:_privateOrShared];
+            [_sessionWrapper sendFiles:_selectedFiles toPeers:_sessionWrapper.connectedPeerIDs];
+            [_fileSystem.sharedDocs addObjectsFromArray:_selectedFiles];
             [_selectSendButton setTitle:@"Sent! Select More files..." forState:UIControlStateNormal];
             _buttonState = 0;
             _selectEnabled = NO;
@@ -203,24 +208,7 @@
     
     [_fileSystem.sharedDocs addObject:newFile];
     //reload uicollection view
-    
-   /* NSString *destinationPath = [_documentsDirectory stringByAppendingPathComponent:resourceName];
-    NSURL *destinationURL = [NSURL fileURLWithPath:destinationPath];
-    
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSError *errorCopy;
-    
-    [fileManager copyItemAtURL:localURL toURL:destinationURL error:&errorCopy];
-    if (errorCopy) {
-        NSLog(@"Error Copying the file %@", errorCopy);
-    }
-    
-    [_arrFiles removeAllObjects];
-    _arrFiles = nil;
-    _arrFiles = [[NSMutableArray alloc] initWithArray:[self getAllDocDirFiles]];*/
-    
-    //reload files
-    //similar to [_tblFiles performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
+    [_collectionOfFiles reloadData];
 }
 
 -(void) didStartReceivingResource:(MCSession *)session resourceName:(NSString *)resourceName fromPeer:(MCPeerID *)peerID withProgress:(NSProgress *)progress{

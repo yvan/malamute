@@ -29,7 +29,9 @@
     app = [UIApplication sharedApplication];
     viewController = [[ViewController alloc] init];
     [viewController viewDidLoad];
-    //[viewController.fileSystem deleteAllDocumdentsFromSandbox];
+    [viewController.fileSystem deleteAllDocumentsFromSandbox];
+    [viewController.fileSystem.sharedDocs removeAllObjects];
+    [viewController.fileSystem.privateDocs removeAllObjects];
     testPeer = [[MCPeerID alloc] initWithDisplayName:@"testPeerID"];
     
     NSString* testFile1Name = @"testfile1.txt";
@@ -78,11 +80,7 @@
 
 }
 
--(void)testReceivingResource{
-    int count = [viewController.fileSystem.sharedDocs count];
-    [viewController didFinishReceivingResource:viewController.sessionWrapper.session resourceName:@"testfile123.txt" fromPeer:testPeer atURL:[NSURL fileURLWithPath:testFilePath] withError:nil];
-    XCTAssertTrue((count +1 ==[viewController.fileSystem.sharedDocs count]), @"Receiving a document should increase the shared doc count by 1");
-}
+
 
 -(void)testSharedDocsCount{
     int count = [viewController.fileSystem.sharedDocs count];
