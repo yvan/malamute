@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface ViewController ()
 
@@ -47,23 +48,27 @@
 
 #pragma mark - IBActions
 
--(IBAction) clickedButton:(id)sender{
+-(IBAction) clickedButton:(id)sender{ //shared
     
     if(sender == _selectSendButton){ //selectSendButton Clicked
-        if(_privateOrShared){//we are IN the shared folder
+        NSLog(@"blah1");
+        if(_privateOrShared){//_privateOrShared folder = 1 for shared, and 0 for private
+            NSLog(@"blahshared");
             if(_buttonState == 0){
                 [_selectSendButton setTitle:@"Move to Private" forState:UIControlStateNormal];
-                NSLog(@"blah1");
                 _buttonState = 1;
                 _selectEnabled = YES;
                 _collectionOfFiles.allowsMultipleSelection = YES;
             }
             else{
                 [_fileSystem moveFiles:_selectedFiles from:_fileSystem.sharedDocs to:_fileSystem.privateDocs withInfo:_privateOrShared];
+                _buttonState = 0;
+                [_selectSendButton setTitle:@"Sent! Select More files..." forState:UIControlStateNormal];
+                
             }
         }else{//we are IN the private folder
+            NSLog(@"blahprivate");
             if(_buttonState == 0){
-                NSLog(@"blah2");
                 [_selectSendButton setTitle:@"Move to Shared" forState:UIControlStateNormal];
                 _buttonState = 1;
                 _selectEnabled = YES;
@@ -71,22 +76,33 @@
             }
             else{
                 [_fileSystem moveFiles:_selectedFiles from:_fileSystem.privateDocs to:_fileSystem.sharedDocs withInfo:_privateOrShared];
+                _buttonState = 0;
+                [_selectSendButton setTitle:@"Sent! Select More files..." forState:UIControlStateNormal];
             }
         }
-    }
-    if(sender == _selectDirectoryMode){ //selectDirectoryMode Clicked
+    }if(sender == _selectDirectoryModeShared){ //selectDirectoryMode Clicked
+        
         [_selectSendButton setTitle:@"Select Files" forState:UIControlStateNormal];
-        if(_privateOrShared){//we are IN shared folder want to switch to private folder
-            [_selectDirectoryMode setTitle:@"Private Folder" forState:UIControlStateNormal];
-            _privateOrShared = 0;
-            NSLog(@"switch to private");
-            //reload the uicollectionview with the array of "private files"
-        }else{
-            [_selectDirectoryMode setTitle:@"Shared Folder" forState:UIControlStateNormal];
-            _privateOrShared = 1;
-            NSLog(@"switch to shared");
-            //reload the uicollectionview with the array of "shared files"
-        }
+        [_selectDirectoryModeShared setTitle:@"Shared" forState:UIControlStateNormal];
+        [_selectDirectoryModeShared setBackgroundColor: [UIColor colorWithRed:135.0/255.0 green:9.0/255.0 blue:22.0/255.0 alpha:1.0]];
+        [_selectDirectoryModePrivate setBackgroundColor: [UIColor colorWithRed:214.0/255.0 green:9.0/255.0 blue:22.0/255.0 alpha:1.0]];
+        _privateOrShared = 1;
+        _buttonState = 0;
+        NSLog(@"switch to shared");
+        //reload the uicollectionview with the array of "shared files"
+        
+    }
+    if(sender == _selectDirectoryModePrivate){
+        [_selectSendButton setTitle:@"Select Files" forState:UIControlStateNormal];
+
+        [_selectDirectoryModePrivate setTitle:@"Private" forState:UIControlStateNormal];
+        [_selectDirectoryModePrivate setBackgroundColor: [UIColor colorWithRed:135.0/255.0 green:9.0/255.0 blue:22.0/255.0 alpha:1.0]];
+        [_selectDirectoryModeShared setBackgroundColor: [UIColor colorWithRed:214.0/255.0 green:9.0/255.0 blue:22.0/255.0 alpha:1.0]];
+        _privateOrShared = 0;
+        _buttonState = 0;
+        NSLog(@"switch to private");
+        //reload the uicollectionview with the array of "private files"
+        
     }
 }
 
@@ -221,7 +237,7 @@
 - (void)viewDidLoad {
 
     [super viewDidLoad];
-    
+    _privateOrShared = 1; //start us off in the shared directory
     //Init document directory of file system
     _fileSystem = [[FileSystem alloc] init];
     _selectedFiles = [[NSMutableArray alloc] init];
@@ -230,6 +246,14 @@
     [_collectionOfFiles setDelegate:self];
     [_collectionOfFiles setDataSource:self];
     [_collectionOfFiles reloadData];
+    
+    //set borders on buttons
+    [[_selectDirectoryModePrivate layer] setBorderWidth:0.5f];
+    [[_selectDirectoryModePrivate layer] setBorderColor:[UIColor blackColor].CGColor];
+    [[_selectDirectoryModeShared layer] setBorderWidth:0.5f];
+    [[_selectDirectoryModeShared layer] setBorderColor:[UIColor blackColor].CGColor];
+    [[_selectSendButton layer] setBorderWidth:0.5f];
+    [[_selectSendButton layer] setBorderColor:[UIColor blackColor].CGColor];
     
     //Init session, adversiter, and browser wrapper
     _sessionWrapper = [[SessionWrapper alloc] initSessionWithName:@"yvan"];

@@ -16,7 +16,8 @@
 
 @property (nonatomic, strong) IBOutlet UIButton *selectSendButton;
 @property (nonatomic, strong) IBOutlet UICollectionView *collectionOfFiles;
-@property (nonatomic, strong) IBOutlet UIButton *selectDirectoryMode;
+@property (nonatomic, strong) IBOutlet UIButton *selectDirectoryModeShared;
+@property (nonatomic, strong) IBOutlet UIButton *selectDirectoryModePrivate;
 
 @property (nonatomic) SessionWrapper *sessionWrapper;
 @property (nonatomic) BrowserWrapper *browserWrapper;
