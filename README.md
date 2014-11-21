@@ -1,4 +1,4 @@
 malamute
 ========
 
-Share photos between phones with no internet
+WIP - Share photos between phones with no internet
