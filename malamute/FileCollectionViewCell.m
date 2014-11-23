@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Yvan Scher. All rights reserved.
 //
 
-#import "FileCellCollectionViewCell.h"
+#import "FileCollectionViewCell.h"
 
-@implementation FileCellCollectionViewCell
+@implementation FileCollectionViewCell
 
 @end

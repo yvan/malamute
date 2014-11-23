@@ -7,10 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "FileSystem.h"
 #import "SessionWrapper.h"
 #import "BrowserWrapper.h"
 #import "AdvertiserWrapper.h"
-#import "FileSystem.h"
+#import "FileCollectionViewCell.h"
 
 @interface ViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, SessionWrapperDelegate, BrowserWrapperDelegate, AdvertiserWrapperDelegate>
 

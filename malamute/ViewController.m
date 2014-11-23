@@ -15,6 +15,8 @@
 
 @implementation ViewController
 
+static BOOL const PRIVATE = 0;
+static BOOL const SHARED = 1;
 
 #pragma mark - FileUtility
 
@@ -37,13 +39,28 @@
             fileExtension = @"directory";
         }
     }
-    NSLog(@"%@", fileExtension);
+
     UIImageView *iconViewForCell;
     if(selected){
-        iconViewForCell = [[UIImageView alloc] initWithImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@-sel.png", fileExtension]]];
+        CGSize newSize = CGSizeMake(50.0, 50.0);
+        UIGraphicsBeginImageContextWithOptions(newSize, NO, 0.0);
+        UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"%@-sel.png", fileExtension]];
+        [image drawInRect:CGRectMake(0, 0, newSize.width, newSize.height)];
+        UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+        iconViewForCell = [[UIImageView alloc] initWithImage:newImage];
     }else{
-        iconViewForCell = [[UIImageView alloc] initWithImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@.png", fileExtension]]];
+        CGSize newSize = CGSizeMake(50.0, 50.0);
+        UIGraphicsBeginImageContextWithOptions(newSize, NO, 0.0);
+        UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"%@.png", fileExtension]];
+        [image drawInRect:CGRectMake(0, 0, newSize.width, newSize.height)];
+        UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+        iconViewForCell = [[UIImageView alloc] initWithImage:newImage];
     }
+    iconViewForCell.frame = CGRectMake(iconViewForCell.frame.origin.x, iconViewForCell.frame.origin.y, 10, 10);
+    //iconViewForCell.contentMode = UIViewContentModeCenter;
+    iconViewForCell.clipsToBounds = YES;
     return iconViewForCell;
 }
 
@@ -51,7 +68,7 @@
 
 -(IBAction) clickedSelectSendButton:(id)sender{ //shared
     NSLog(@"blah1");
-    if(_privateOrShared){//_privateOrShared folder = 1 for shared, and 0 for private
+    if(_privateOrShared == SHARED){//we are in shared folder
         NSLog(@"blahshared");
         if(_buttonState == 0){
             [_selectSendButton setTitle:@"Move to Private" forState:UIControlStateNormal];
@@ -66,7 +83,6 @@
             [_selectSendButton setTitle:@"Sent! Select More files..." forState:UIControlStateNormal];
             _buttonState = 0;
             _selectEnabled = NO;
-            
         }
     }else{//we are IN the private folder
         NSLog(@"blahprivate");
@@ -96,7 +112,7 @@
         [_selectDirectoryModeShared setTitle:@"Shared" forState:UIControlStateNormal];
         [_selectDirectoryModeShared setBackgroundColor: [UIColor colorWithRed:135.0/255.0 green:9.0/255.0 blue:22.0/255.0 alpha:1.0]];
         [_selectDirectoryModePrivate setBackgroundColor: [UIColor colorWithRed:214.0/255.0 green:9.0/255.0 blue:22.0/255.0 alpha:1.0]];
-        _privateOrShared = 1;
+        _privateOrShared = SHARED;
         _buttonState = 0;
         _selectEnabled = NO;
         [_selectedFiles removeAllObjects];
@@ -109,7 +125,7 @@
         [_selectDirectoryModePrivate setTitle:@"Private" forState:UIControlStateNormal];
         [_selectDirectoryModePrivate setBackgroundColor: [UIColor colorWithRed:135.0/255.0 green:9.0/255.0 blue:22.0/255.0 alpha:1.0]];
         [_selectDirectoryModeShared setBackgroundColor: [UIColor colorWithRed:214.0/255.0 green:9.0/255.0 blue:22.0/255.0 alpha:1.0]];
-        _privateOrShared = 0;
+        _privateOrShared = PRIVATE;
         _buttonState = 0;
         _selectEnabled = NO;
         [_selectedFiles removeAllObjects];
@@ -126,20 +142,22 @@
 
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
     
-    return _privateOrShared == 0 ? [_fileSystem.privateDocs count]:[_fileSystem.sharedDocs count];
+    return _privateOrShared == PRIVATE ? [_fileSystem.privateDocs count]:[_fileSystem.sharedDocs count];
 }
 
--(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
+-(FileCollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     
-    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"fileOrFolder" forIndexPath:indexPath];
-    
+    FileCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"fileOrFolder" forIndexPath:indexPath];
     //set the appropriate seleted iamge image (red in-filled image)
-    if(_privateOrShared == 0){
+    if(_privateOrShared == PRIVATE){
         cell.backgroundView = [self assignIconForFileType:((File *)[_fileSystem.privateDocs objectAtIndex:indexPath.row]).name withBool:0];
         cell.selectedBackgroundView = [self assignIconForFileType:((File *)[_fileSystem.privateDocs objectAtIndex:indexPath.row]).name withBool:1];
+        cell.cellLabel.text = ((File *)[_fileSystem.privateDocs objectAtIndex:indexPath.row]).name;
+
     }else{
         cell.backgroundView = [self assignIconForFileType:((File *)[_fileSystem.sharedDocs objectAtIndex:indexPath.row]).name withBool:0];
         cell.selectedBackgroundView = [self assignIconForFileType:((File *)[_fileSystem.sharedDocs objectAtIndex:indexPath.row]).name withBool:1];
+        cell.cellLabel.text = ((File *)[_fileSystem.sharedDocs objectAtIndex:indexPath.row]).name;
     }
     return cell;
 }
@@ -155,11 +173,10 @@
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     
     if(_selectEnabled){
-        
-        File *fileSelected = [[File alloc] init];
-        UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"fileOrFolder" forIndexPath:indexPath];
-        _selectedFile = _privateOrShared == 0 ? [_fileSystem.privateDocs objectAtIndex:indexPath.row]:[_fileSystem.sharedDocs objectAtIndex:indexPath.row];
+        FileCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"fileOrFolder" forIndexPath:indexPath];
+        _selectedFile = _privateOrShared == PRIVATE ? [_fileSystem.privateDocs objectAtIndex:indexPath.row]:[_fileSystem.sharedDocs objectAtIndex:indexPath.row];
         [_selectedFiles addObject:_selectedFile];
+        cell.cellLabel.text = @"derp2";
         NSLog(@"touched");
     }
     else{
@@ -185,8 +202,8 @@
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
     
     CGSize fileIconSize;
-    fileIconSize.height = 50;
-    fileIconSize.width = 50;
+    fileIconSize.height = 72;
+    fileIconSize.width = 72;
     return fileIconSize;
 }
 
@@ -232,7 +249,7 @@
 - (void)viewDidLoad {
 
     [super viewDidLoad];
-    _privateOrShared = 1; //start us off in the shared directory
+    _privateOrShared = SHARED; //start us off in the shared directory
     //Init document directory of file system
     _fileSystem = [[FileSystem alloc] init];
     _selectedFiles = [[NSMutableArray alloc] init];
@@ -240,7 +257,6 @@
     _fileSystem.documentsDirectory = [[NSString alloc] initWithString:[paths objectAtIndex:0]];
     [_collectionOfFiles setDelegate:self];
     [_collectionOfFiles setDataSource:self];
-    [_collectionOfFiles reloadData];
     
     //set borders on buttons
     [[_selectDirectoryModePrivate layer] setBorderWidth:0.5f];
@@ -254,7 +270,10 @@
     _sessionWrapper = [[SessionWrapper alloc] initSessionWithName:@"yvan"];
     _advertiserWrapper = [[AdvertiserWrapper alloc] startAdvertising:_sessionWrapper.myPeerID];
     _browserWrapper = [[BrowserWrapper alloc] startBrowsing:_sessionWrapper.myPeerID];
-    [_collectionOfFiles registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"fileOrFolder"];
+    
+    //DO NOT USE registerClass when we have made a ptototype cell on the storyboard.
+    //[_collectionOfFiles registerClass:[FileCollectionViewCell class] forCellWithReuseIdentifier:@"fileOrFolder"];
+    
     [_collectionOfFiles reloadData];
     //Do any additional setup after loading the view, typically from a nib.
 }

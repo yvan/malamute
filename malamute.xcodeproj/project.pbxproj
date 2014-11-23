@@ -17,6 +17,7 @@
 		E9616C741A040163004BFEA4 /* SessionWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = E9616C731A040163004BFEA4 /* SessionWrapper.m */; };
 		E9616C771A04022D004BFEA4 /* AdvertiserWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = E9616C761A04022D004BFEA4 /* AdvertiserWrapper.m */; };
 		E9616C7A1A0402BB004BFEA4 /* BrowserWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = E9616C791A0402BB004BFEA4 /* BrowserWrapper.m */; };
+		E972A0691A1FF0280034FE02 /* FileCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E972A0681A1FF0280034FE02 /* FileCollectionViewCell.m */; };
 		F33C42291A0ACFF600189C4F /* filesystemTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F33C42281A0ACFF600189C4F /* filesystemTests.m */; };
 		F37DE4301A114D620022D837 /* testfile1.txt in Resources */ = {isa = PBXBuildFile; fileRef = F37DE42F1A114D620022D837 /* testfile1.txt */; };
 		F37DE4311A114D620022D837 /* testfile1.txt in Resources */ = {isa = PBXBuildFile; fileRef = F37DE42F1A114D620022D837 /* testfile1.txt */; };
@@ -57,6 +58,8 @@
 		E9616C761A04022D004BFEA4 /* AdvertiserWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdvertiserWrapper.m; sourceTree = "<group>"; };
 		E9616C781A0402BB004BFEA4 /* BrowserWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BrowserWrapper.h; sourceTree = "<group>"; };
 		E9616C791A0402BB004BFEA4 /* BrowserWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BrowserWrapper.m; sourceTree = "<group>"; };
+		E972A0671A1FF0280034FE02 /* FileCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileCollectionViewCell.h; sourceTree = "<group>"; };
+		E972A0681A1FF0280034FE02 /* FileCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileCollectionViewCell.m; sourceTree = "<group>"; };
 		F33C42281A0ACFF600189C4F /* filesystemTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = filesystemTests.m; sourceTree = "<group>"; };
 		F37DE42F1A114D620022D837 /* testfile1.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = testfile1.txt; sourceTree = "<group>"; };
 		F37DE4321A114D6A0022D837 /* testfile2.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = testfile2.txt; sourceTree = "<group>"; };
@@ -114,6 +117,8 @@
 				F3FEA0161A1303AF003E88AE /* FileSystem.m */,
 				F3FEA0181A1306B1003E88AE /* File.h */,
 				F3FEA0191A1306B1003E88AE /* File.m */,
+				E972A0671A1FF0280034FE02 /* FileCollectionViewCell.h */,
+				E972A0681A1FF0280034FE02 /* FileCollectionViewCell.m */,
 				E9616C721A040163004BFEA4 /* SessionWrapper.h */,
 				E9616C731A040163004BFEA4 /* SessionWrapper.m */,
 				E9616C781A0402BB004BFEA4 /* BrowserWrapper.h */,
@@ -266,6 +271,7 @@
 				F3FEA01A1A1306B1003E88AE /* File.m in Sources */,
 				E9616C771A04022D004BFEA4 /* AdvertiserWrapper.m in Sources */,
 				F3FEA0171A1303AF003E88AE /* FileSystem.m in Sources */,
+				E972A0691A1FF0280034FE02 /* FileCollectionViewCell.m in Sources */,
 				E9616C741A040163004BFEA4 /* SessionWrapper.m in Sources */,
 				E9616C551A03FBAE004BFEA4 /* ViewController.m in Sources */,
 				E9616C521A03FBAE004BFEA4 /* AppDelegate.m in Sources */,

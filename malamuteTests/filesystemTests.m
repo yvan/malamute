@@ -117,14 +117,18 @@
     File* testfile2 = [[File alloc] init];
     File* testfile3 = [[File alloc] init];
     
+    NSArray* documents = [[NSFileManager defaultManager]URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask];
+    NSString *private = [[[documents objectAtIndex:0] absoluteString] stringByAppendingString:@"private/"];
+    NSString *shared = [[[documents objectAtIndex:0] absoluteString] stringByAppendingString:@"shared/"];
+    
     testfile1.name = @"testfile1.txt";
-    testfile1.url = (NSURL *)[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent: testfile1.name];
+    testfile1.url = (NSURL *)[private stringByAppendingPathComponent: testfile1.name];
     testfile1.dateCreated = [NSDate date];
     testfile2.name = @"testfile2.txt";
-    testfile2.url = (NSURL *)[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent: testfile2.name];
+    testfile2.url = (NSURL *)[private stringByAppendingPathComponent: testfile2.name];
     testfile2.dateCreated = [NSDate date];
     testfile3.name = @"testfile3.txt";
-    testfile3.url = (NSURL *)[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent: testfile3.name];
+    testfile3.url = (NSURL *)[shared stringByAppendingPathComponent: testfile3.name];
     testfile3.dateCreated = [NSDate date];
     [privateDirectory addObject:testfile1];
     [privateDirectory addObject:testfile2];
