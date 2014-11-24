@@ -19,7 +19,9 @@
     _privateDocs = [[NSMutableArray alloc] init];
     NSArray* documents = [[NSFileManager defaultManager]URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask];
     _documentsDirectory = [[documents objectAtIndex:0] absoluteString];
-
+    
+    [self saveFileSystemToJSON];
+    [self populateArraysWithFileSystem];
     [self createNewDir:@"private"];
     [self createNewDir:@"shared"];
     [self makeDummyFiles]; //comment out in prodution version
@@ -152,8 +154,6 @@ inDomains:NSUserDomainMask];
                         fileExtension = @"directory";
                     }*/
                 }
-                
-                NSLog(fileExtension); // just a debug to make sure things look right
                 copyingToDirectory = [copyingFromDirectory  URLByAppendingPathExtension:fileExtension];
                 
                 //MOVE TO THE NEW DIRECTORY (does a copy and deletes the old one)
@@ -193,13 +193,89 @@ inDomains:NSUserDomainMask];
     
     if([documents count] > 0){
         urlForNew = [[documents objectAtIndex:0] URLByAppendingPathComponent:dirname];
-        NSLog(@"%@", urlForNew);
+        // NSLog(@"%@", urlForNew);
         if (![self isValidPath:[urlForNew absoluteString]] && ![fm createDirectoryAtURL:urlForNew withIntermediateDirectories:YES attributes:nil error:&error]){
-            NSLog(@"problem making new directory");
+            //NSLog(@"problem making new directory");
             return NO;
         }
     }
     return YES;
+}
+
+//reads the filesystem.json file and populated our sharedDocs and privateDocs
+//with the app's filesystem on app load
+-(void) populateArraysWithFileSystem{
+    
+    NSError* error;
+    NSInteger iteration = 0;
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    NSString* filePath = [[NSBundle mainBundle] pathForResource:@"filesystem" ofType:@"json"];
+    //NSLog(@"%@",filePath);
+    NSData* filesystemdata = [NSData dataWithContentsOfFile:filePath];
+
+    NSDictionary* JSONDict = [NSJSONSerialization JSONObjectWithData:filesystemdata options:0 error:&error];
+    //NSLog(@"%@", JSONDict);
+    for(NSString* index in JSONDict){ //only iterates throug private and shared now, but can scale later
+        NSDictionary* fileGroup = [JSONDict objectForKey:index];
+        
+        for(NSString* fileName in fileGroup){
+            NSDictionary* individualFile = [fileGroup objectForKey:fileName];
+            NSString* name = [individualFile objectForKey:@"name"];
+            NSURL* url = [[NSURL alloc]initWithString:[individualFile objectForKey:@"url"]];
+            NSDate* created = [formatter dateFromString:[individualFile objectForKey:@"created"]];
+            BOOL isDirectory = [individualFile objectForKey:@"isDirectory"];
+            File* file = [[File alloc] initWithName:name andURL:url andDate:created andDirectoryFlag:isDirectory];
+            //in the future well need and object that stores each potential diretory as it's own key
+            //here well jsut say that on the first iteration well do private and second shared diretories
+            if(iteration == 1){
+                [_sharedDocs addObject:file];
+            }else{
+                [_privateDocs addObject:file];
+            }
+        }
+        iteration++;
+    }
+   // NSLog(@"Shared: %@",_sharedDocs);
+   // NSLog(@"Private: %@",_privateDocs);
+}
+
+//called everytime we exit the app or everytime the app crashes
+//we will use it to populate the filesystem again on app load
+-(void) saveFileSystemToJSON{
+    
+    //atomically write to filesystem.json to wipe the file.
+    NSError *error;
+    NSString* wipeFileSystem = @"";
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    NSString* filePath = [[NSBundle mainBundle] pathForResource:@"filesystem" ofType:@"json"];
+    //NSLog(@"%@", filePath);
+    [wipeFileSystem writeToFile:filePath atomically:YES encoding:NSUTF8StringEncoding error:&error];//wipes the file system
+    
+    /*File* file = [[File alloc] initWithName:@"file1blah.txt" andURL:[[NSURL alloc]initWithString:@"blah"] andDate:[NSDate date] andDirectoryFlag:0];
+    [_privateDocs addObject:file];
+    File* file2 = [[File alloc] initWithName:@"file2blah.txt" andURL:[[NSURL alloc]initWithString:@"blah"] andDate:[NSDate date] andDirectoryFlag:0];
+    [_sharedDocs addObject:file2];*/
+    
+    NSMutableDictionary *theFileSystem = [[NSMutableDictionary alloc] init];
+    NSMutableDictionary *privateDocs = [[NSMutableDictionary alloc] init];
+    NSMutableDictionary *sharedDocs = [[NSMutableDictionary alloc] init];
+    //non atomically write to filesystem to keep tacking on json objects
+    for(File* file in _privateDocs){
+        //isDirectory = @0 because we're not supporting direcotry creation yet.
+        NSDictionary *fileDict = [NSDictionary dictionaryWithObjectsAndKeys:file.name,@"name", [file.url absoluteString],@"url",[formatter stringFromDate:file.dateCreated],@"created",@0,@"isDirectory", nil];
+        [privateDocs setValue:fileDict forKey:file.name];
+    }
+    [theFileSystem setValue:privateDocs forKey:@"_privateDocs"];
+    for(File* file in _sharedDocs){
+        NSDictionary *fileDict = [NSDictionary dictionaryWithObjectsAndKeys:file.name,@"name", [file.url absoluteString],@"url",[formatter stringFromDate:file.dateCreated],@"created",@0,@"isDirectory", nil];
+        [sharedDocs setValue:fileDict forKey:file.name];
+    }
+    [theFileSystem setValue:sharedDocs forKey:@"_sharedDocs"];
+    NSData *JSONdata = [NSJSONSerialization dataWithJSONObject:theFileSystem options:0 error:nil];
+    [JSONdata writeToFile:filePath atomically:YES];
+   /* NSData* filesystemdata2 = [NSData dataWithContentsOfFile:filePath];
+    NSDictionary* JSONDict2 = [NSJSONSerialization JSONObjectWithData:filesystemdata2 options:0 error:&error];
+    NSLog(@"%@", JSONDict2);*/
 }
 
 //makes a set of dummy files for us to test useability
@@ -207,34 +283,25 @@ inDomains:NSUserDomainMask];
     
     NSArray* documents = [[NSFileManager defaultManager]URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask];
     NSString *private = [[[documents objectAtIndex:0] absoluteString] stringByAppendingString:@"private/"];
-    NSLog(private);
     NSString *shared = [[[documents objectAtIndex:0] absoluteString] stringByAppendingString:@"shared/"];
     NSString *testfile1 = [private stringByAppendingPathComponent:@"testfile1.txt"];
-    File *testfileobj1 = [[File alloc] initWithName:@"testfile1.txt" andURL:[NSURL URLWithString:testfile1]];
+    File *testfileobj1 = [[File alloc] initWithName:@"testfile1.txt" andURL:[NSURL URLWithString:testfile1] andDate:[NSDate date] andDirectoryFlag:0];
     [_privateDocs addObject:testfileobj1];
     NSString *testfile2 = [private stringByAppendingString:@"testfile2.txt"];
-    File *testfileobj2 = [[File alloc] initWithName:@"testfile2.txt" andURL:[NSURL URLWithString:testfile2]];
+    File *testfileobj2 = [[File alloc] initWithName:@"testfile2.txt" andURL:[NSURL URLWithString:testfile2] andDate:[NSDate date] andDirectoryFlag:0];
     [_privateDocs addObject:testfileobj2];
     NSString *testfile3 = [shared stringByAppendingString:@"testfile3.txt"];
-    File *testfileobj3 = [[File alloc] initWithName:@"testfile3.txt" andURL:[NSURL URLWithString:testfile3]];
+    File *testfileobj3 = [[File alloc] initWithName:@"testfile3.txt" andURL:[NSURL URLWithString:testfile3] andDate:[NSDate date] andDirectoryFlag:0];
     [_sharedDocs addObject:testfileobj3];
     NSString *testfile4 = [shared stringByAppendingString:@"testfile4.txt"];
-    File *testfileobj4 = [[File alloc] initWithName:@"testfile4.txt" andURL:[NSURL URLWithString:testfile4]];
+    File *testfileobj4 = [[File alloc] initWithName:@"testfile4.txt" andURL:[NSURL URLWithString:testfile4] andDate:[NSDate date] andDirectoryFlag:0];
     [_sharedDocs addObject:testfileobj4];
     NSString *string = @"text-test";
     NSError *writeError = nil;
     [string writeToFile:testfile1 atomically:YES encoding:NSUTF8StringEncoding error:&writeError];
-    NSLog(@"First: %@", writeError.localizedFailureReason);
-    NSLog(@"First: %@", testfileobj1.url);
     [string writeToFile:testfile2 atomically:YES encoding:NSUTF8StringEncoding error:&writeError];
-    NSLog(@"Second: %@", writeError.localizedFailureReason);
-    NSLog(@"First: %@", testfileobj2.url);
     [string writeToFile:testfile3 atomically:YES encoding:NSUTF8StringEncoding error:&writeError];
-    NSLog(@"Third: %@", writeError.localizedFailureReason);
-    NSLog(@"First: %@", testfileobj3.url);
     [string writeToFile:testfile4 atomically:YES encoding:NSUTF8StringEncoding error:&writeError];
-    NSLog(@"Fourth: %@", writeError.localizedFailureReason);
-    NSLog(@"First: %@", testfileobj4.url);
 }
 
 @end

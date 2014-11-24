@@ -1,0 +1,24 @@
+{
+    "_privateDocs":{
+        "file1":{
+            "name":"",
+            "url":"",
+            "created":"",
+            "isDirectory":0
+        },
+        "file2":{
+            "name":"",
+            "url":"",
+            "created":"",
+            "isDirectory":0
+        }
+    },
+    "_sharedDocs":{
+        "file1":{
+            "name":"",
+            "url":"",
+            "created":"",
+            "isDirectory":0
+        }
+    }
+}

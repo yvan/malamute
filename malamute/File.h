@@ -15,5 +15,5 @@
 @property (nonatomic, strong) NSString* sender;
 @property (nonatomic, strong) NSDate* dateCreated;
 @property (nonatomic) BOOL isDirectory;
--(instancetype)initWithName:(NSString*) name andURL:(NSURL*)url;
+-(instancetype)initWithName:(NSString*) name andURL:(NSURL*)url andDate:(NSDate*)date andDirectoryFlag:(BOOL)flag;
 @end

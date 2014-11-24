@@ -24,7 +24,9 @@
 -(void) saveDocumentsToSandbox:(NSArray*) documents;
 
 -(BOOL) moveFiles:(NSMutableArray*)selectedFiles from:(NSMutableArray*)firstDirectory to:(NSMutableArray*)secondDirectory withInfo:(BOOL)privateOrShared;
--(BOOL)createNewDir:(NSString*)dirname;
--(void)makeDummyFiles;
+-(BOOL) createNewDir:(NSString*)dirname;
+-(void) makeDummyFiles;
+-(void) populateArraysWithFileSystem;
+-(void) saveFileSystemToJSON;
 
 @end
