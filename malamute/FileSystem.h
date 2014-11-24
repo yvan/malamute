@@ -17,16 +17,15 @@
 @property (nonatomic, strong) NSString* documentsDirectory;
 
 -(void) printAllFiles;
+-(void) makeDummyFiles;
+-(void) saveFileSystemToJSON;
+-(BOOL) isValidPath:(NSString*) path;
+-(void) populateArraysWithFileSystem;
 -(NSMutableArray *)getAllDocDirFiles;
 -(void) deleteAllDocumentsFromSandbox;
--(BOOL) isValidPath:(NSString*) path;
--(void) saveDocumentToSandbox:(File*)document;
--(void) saveDocumentsToSandbox:(NSArray*) documents;
-
--(BOOL) moveFiles:(NSMutableArray*)selectedFiles from:(NSMutableArray*)firstDirectory to:(NSMutableArray*)secondDirectory withInfo:(BOOL)privateOrShared;
 -(BOOL) createNewDir:(NSString*)dirname;
--(void) makeDummyFiles;
--(void) populateArraysWithFileSystem;
--(void) saveFileSystemToJSON;
+-(void) saveFileToDocumentsDir:(File*)file;
+-(void) saveFilesToDocumentsDir:(NSArray*) files ;
+-(BOOL) moveFiles:(NSMutableArray*)selectedFiles from:(NSMutableArray*)firstDirectory to:(NSMutableArray*)secondDirectory withInfo:(BOOL)privateOrShared;
 
 @end

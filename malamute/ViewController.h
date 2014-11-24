@@ -25,12 +25,13 @@
 @property (nonatomic) AdvertiserWrapper *advertiserWrapper;
 
 @property (nonatomic) BOOL selectEnabled;
-@property (nonatomic) BOOL privateOrShared;// 0 for documents directory, 1 for shared directory
-@property (nonatomic) NSInteger buttonState; //0 is original "Select" 1 is "send to.."
+@property (nonatomic) BOOL privateOrShared;           /* - 0 for private directory, 1 for shared - */
+@property (nonatomic) NSInteger buttonState;          /* - 0 is original "Select" 1 is "Move to.." - */
+@property (nonatomic, strong) FileSystem *fileSystem; /* - our abstract representation of the filsystem - */
 @property (nonatomic) NSMutableArray *selectedFiles;
 @property (nonatomic, strong) NSString *selectedFile;
 
-@property (nonatomic, strong) FileSystem *fileSystem;
+
 
 -(IBAction) clickedSelectSendButton:(id)sender;
 -(IBAction) clickedSelectDirectoryButton:(id)sender;

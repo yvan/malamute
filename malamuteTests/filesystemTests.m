@@ -105,12 +105,12 @@ tests shouldn't.
 }
 -(void)testSavingDocs{
     [viewController didFinishReceivingResource:viewController.sessionWrapper.session resourceName:@"testfile123.txt" fromPeer:testPeer atURL:[NSURL fileURLWithPath:testFilePath] withError:nil];
-    [viewController.fileSystem saveDocumentToSandbox:(File*)viewController.fileSystem.sharedDocs[0]];
+    [viewController.fileSystem saveFileToDocumentsDir:(File*)viewController.fileSystem.sharedDocs[0]];
     XCTAssertTrue(viewController.fileSystem.sharedDocs[0] == viewController.fileSystem.privateDocs[0], @"Document should be on both shared and private docs after saving it");
 }
 -(void)testInValidUrl{
     [viewController didFinishReceivingResource:viewController.sessionWrapper.session resourceName:@"testfile123.txt" fromPeer:testPeer atURL:[NSURL fileURLWithPath:testFilePath] withError:nil];
-    [viewController.fileSystem saveDocumentToSandbox:(File*)viewController.fileSystem.sharedDocs[0]];
+    [viewController.fileSystem saveFileToDocumentsDir:(File*)viewController.fileSystem.sharedDocs[0]];
     XCTAssertTrue([viewController.fileSystem isValidPath:testFilePath]== false, @"File path should be invalid after saving it");
 }
 -(void)testValidUrl{

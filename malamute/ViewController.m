@@ -20,56 +20,49 @@ static BOOL const SHARED = 1;
 
 #pragma mark - FileUtility
 
-//didn't use NSRange bec. it's non obvious
+/* - didn't use NSRange bec. it's non obvious - */
 -(UIImageView *) assignIconForFileType:(NSString *) filename withBool:(BOOL)selected{
     
     NSInteger finalDot = 0;
     NSString *fileExtension = @"";
     
     for (NSInteger index=0; index<filename.length;index++){
-        if([filename characterAtIndex:index] == '.'){
-            finalDot = index;
-        }
-        if(index == filename.length-1){
-            
-            fileExtension = [filename substringFromIndex:finalDot+1];
-        }
-        if(finalDot == 0){
-            
-            fileExtension = @"directory";
-        }
+        if([filename characterAtIndex:index] == '.'){finalDot = index;}
+        if(index == filename.length-1){fileExtension = [filename substringFromIndex:finalDot+1];}
+        //if(finalDot == 0){fileExtension = @"directory";} //uncomment in future when we allow user to make directories
     }
 
     UIImageView *iconViewForCell;
+    UIImage *image;
     if(selected){
-        CGSize newSize = CGSizeMake(50.0, 50.0);
-        UIGraphicsBeginImageContextWithOptions(newSize, NO, 0.0);
-        UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"%@-sel.png", fileExtension]];
-        [image drawInRect:CGRectMake(0, 0, newSize.width, newSize.height)];
-        UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
-        UIGraphicsEndImageContext();
-        iconViewForCell = [[UIImageView alloc] initWithImage:newImage];
+        //CGSize newSize = CGSizeMake(50.0, 50.0);
+        //UIGraphicsBeginImageContextWithOptions(newSize, NO, 0.0);
+        image = [UIImage imageNamed:[NSString stringWithFormat:@"%@-sel.png", fileExtension]];
+        //[image drawInRect:CGRectMake(0, 0, newSize.width, newSize.height)];
+        //UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+        //UIGraphicsEndImageContext();
+        
     }else{
-        CGSize newSize = CGSizeMake(50.0, 50.0);
-        UIGraphicsBeginImageContextWithOptions(newSize, NO, 0.0);
-        UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"%@.png", fileExtension]];
-        [image drawInRect:CGRectMake(0, 0, newSize.width, newSize.height)];
-        UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
-        UIGraphicsEndImageContext();
-        iconViewForCell = [[UIImageView alloc] initWithImage:newImage];
+        //CGSize newSize = CGSizeMake(50.0, 50.0);
+        //UIGraphicsBeginImageContextWithOptions(newSize, NO, 0.0);
+        image = [UIImage imageNamed:[NSString stringWithFormat:@"%@.png", fileExtension]];
+        //[image drawInRect:CGRectMake(0, 0, newSize.width, newSize.height)];
+        //UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+        //UIGraphicsEndImageContext();
     }
-    iconViewForCell.frame = CGRectMake(iconViewForCell.frame.origin.x, iconViewForCell.frame.origin.y, 10, 10);
+    iconViewForCell = [[UIImageView alloc] initWithImage:image];
+    //conViewForCell.frame = CGRectMake(iconViewForCell.frame.origin.x, iconViewForCell.frame.origin.y, 10, 10);
     //iconViewForCell.contentMode = UIViewContentModeCenter;
-    iconViewForCell.clipsToBounds = YES;
+    //iconViewForCell.clipsToBounds = YES;
     return iconViewForCell;
 }
 
 #pragma mark - IBActions
 
--(IBAction) clickedSelectSendButton:(id)sender{ //shared
-    NSLog(@"blah1");
+-(IBAction) clickedSelectSendButton:(id)sender{
+    
     if(_privateOrShared == SHARED){//we are in shared folder
-        NSLog(@"blahshared");
+        
         if(_buttonState == 0){
             [_selectSendButton setTitle:@"Move to Private" forState:UIControlStateNormal];
             _buttonState = 1;
@@ -77,15 +70,15 @@ static BOOL const SHARED = 1;
             _collectionOfFiles.allowsMultipleSelection = YES;
         }
         else{
-           // [_fileSystem moveFiles:_selectedFiles from:_fileSystem.sharedDocs to:_fileSystem.privateDocs withInfo:_privateOrShared];
-            [_fileSystem saveDocumentsToSandbox:_selectedFiles];
+            //If we're in the shared folder we just move the docs to the private directory which is our documents folder
+            [_fileSystem saveFilesToDocumentsDir:_selectedFiles];
             [_selectedFiles removeAllObjects];
             [_selectSendButton setTitle:@"Sent! Select More files..." forState:UIControlStateNormal];
             _buttonState = 0;
             _selectEnabled = NO;
         }
     }else{//we are IN the private folder
-        NSLog(@"blahprivate");
+        
         if(_buttonState == 0){
             [_selectSendButton setTitle:@"Move to Shared" forState:UIControlStateNormal];
             _buttonState = 1;
@@ -93,7 +86,9 @@ static BOOL const SHARED = 1;
             _collectionOfFiles.allowsMultipleSelection = YES;
         }
         else{
-            //[_fileSystem moveFiles:_selectedFiles from:_fileSystem.privateDocs to:_fileSystem.sharedDocs withInfo:_privateOrShared];
+            //if we're in the pricate folder we don't move our documents anaywhere we put them
+            //in our shared docs array, and then we "send" them, which will put them in our
+            //recipients /tmp folder on their phone
             [_sessionWrapper sendFiles:_selectedFiles toPeers:_sessionWrapper.connectedPeerIDs];
             [_fileSystem.sharedDocs addObjectsFromArray:_selectedFiles];
             [_selectedFiles removeAllObjects];
@@ -162,11 +157,11 @@ static BOOL const SHARED = 1;
     return cell;
 }
 
-/*- (UICollectionReusableView *)co2llectionView:
+/* - -(UICollectionReusableView *)co2llectionView:
  (UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
  {
  return [[UICollectionReusableView alloc] init];
- }*/
+ } - */
 
 #pragma mark - UICollectionViewDelegate
 
@@ -220,15 +215,15 @@ static BOOL const SHARED = 1;
         NSLog(@"Error %@", [error localizedDescription]);
     }
     
+    //create a new file object for the received resource
     File* newFile = [[File alloc] init];
     newFile.name =resourceName;
     newFile.sender = peerID.displayName;
     newFile.dateCreated = [NSDate date];
     newFile.url = localURL;
-    
-    [_fileSystem.sharedDocs addObject:newFile];
-    //reload uicollection view
-    [_collectionOfFiles reloadData];
+
+    [_fileSystem.sharedDocs addObject:newFile]; //add the resource to sharedDocs once it's received.
+    [_collectionOfFiles reloadData]; //reload our collectionview
 }
 
 -(void) didStartReceivingResource:(MCSession *)session resourceName:(NSString *)resourceName fromPeer:(MCPeerID *)peerID withProgress:(NSProgress *)progress{
@@ -244,8 +239,7 @@ static BOOL const SHARED = 1;
     
 }
 
-/*** IMPLEMENT DELEGATE METHODS FROM EACH WRAPPER'S PROTOCOL HERE ***/
-
+/* - IMPLEMENT DELEGATE METHODS FROM EACH WRAPPER'S PROTOCOL HERE - */
 - (void)viewDidLoad {
 
     [super viewDidLoad];

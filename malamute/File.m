@@ -10,7 +10,7 @@
 
 @implementation File
 
-//inits a File object with a name and url path
+/* - inits a File object with a name and url path - */
 -(instancetype)initWithName:(NSString*) name andURL:(NSURL*)url andDate:(NSDate*)date andDirectoryFlag:(BOOL)flag{
     
     _name = [[NSString alloc] initWithString:name];
