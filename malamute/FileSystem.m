@@ -210,33 +210,32 @@ inDomains:NSUserDomainMask];
     NSInteger iteration = 0;
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     NSString* filePath = [[NSBundle mainBundle] pathForResource:@"filesystem" ofType:@"json"];
-    //NSLog(@"%@",filePath);
     NSData* filesystemdata = [NSData dataWithContentsOfFile:filePath];
-
     NSDictionary* JSONDict = [NSJSONSerialization JSONObjectWithData:filesystemdata options:0 error:&error];
-    //NSLog(@"%@", JSONDict);
+
     for(NSString* index in JSONDict){ //only iterates throug private and shared now, but can scale later
-        NSDictionary* fileGroup = [JSONDict objectForKey:index];
-        
-        for(NSString* fileName in fileGroup){
-            NSDictionary* individualFile = [fileGroup objectForKey:fileName];
-            NSString* name = [individualFile objectForKey:@"name"];
-            NSURL* url = [[NSURL alloc]initWithString:[individualFile objectForKey:@"url"]];
-            NSDate* created = [formatter dateFromString:[individualFile objectForKey:@"created"]];
-            BOOL isDirectory = [individualFile objectForKey:@"isDirectory"];
-            File* file = [[File alloc] initWithName:name andURL:url andDate:created andDirectoryFlag:isDirectory];
-            //in the future well need and object that stores each potential diretory as it's own key
-            //here well jsut say that on the first iteration well do private and second shared diretories
-            if(iteration == 1){
-                [_sharedDocs addObject:file];
-            }else{
-                [_privateDocs addObject:file];
+        if(![index isEqual:@"timestamp"]){
+            
+            NSDictionary* fileGroup = [JSONDict objectForKey:index];
+            
+            for(NSString* fileName in fileGroup){
+                NSDictionary* individualFile = [fileGroup objectForKey:fileName];
+                NSString* name = [individualFile objectForKey:@"name"];
+                NSURL* url = [[NSURL alloc]initWithString:[individualFile objectForKey:@"url"]];
+                NSDate* created = [formatter dateFromString:[individualFile objectForKey:@"created"]];
+                BOOL isDirectory = [individualFile objectForKey:@"isDirectory"];
+                File* file = [[File alloc] initWithName:name andURL:url andDate:created andDirectoryFlag:isDirectory];
+                //in the future well need and object that stores each potential diretory as it's own key
+                //here well jsut say that on the first iteration well do private and second shared diretories
+                if(iteration == 1){
+                    [_sharedDocs addObject:file];
+                }else{
+                    [_privateDocs addObject:file];
+                }
             }
+            iteration++;
         }
-        iteration++;
     }
-   // NSLog(@"Shared: %@",_sharedDocs);
-   // NSLog(@"Private: %@",_privateDocs);
 }
 
 //called everytime we exit the app or everytime the app crashes
@@ -251,11 +250,6 @@ inDomains:NSUserDomainMask];
     //NSLog(@"%@", filePath);
     [wipeFileSystem writeToFile:filePath atomically:YES encoding:NSUTF8StringEncoding error:&error];//wipes the file system
     
-    /*File* file = [[File alloc] initWithName:@"file1blah.txt" andURL:[[NSURL alloc]initWithString:@"blah"] andDate:[NSDate date] andDirectoryFlag:0];
-    [_privateDocs addObject:file];
-    File* file2 = [[File alloc] initWithName:@"file2blah.txt" andURL:[[NSURL alloc]initWithString:@"blah"] andDate:[NSDate date] andDirectoryFlag:0];
-    [_sharedDocs addObject:file2];*/
-    
     NSMutableDictionary *theFileSystem = [[NSMutableDictionary alloc] init];
     NSMutableDictionary *privateDocs = [[NSMutableDictionary alloc] init];
     NSMutableDictionary *sharedDocs = [[NSMutableDictionary alloc] init];
@@ -265,17 +259,17 @@ inDomains:NSUserDomainMask];
         NSDictionary *fileDict = [NSDictionary dictionaryWithObjectsAndKeys:file.name,@"name", [file.url absoluteString],@"url",[formatter stringFromDate:file.dateCreated],@"created",@0,@"isDirectory", nil];
         [privateDocs setValue:fileDict forKey:file.name];
     }
-    [theFileSystem setValue:privateDocs forKey:@"_privateDocs"];
+    [theFileSystem setValue:privateDocs forKey:@"_privateDocs"]; //load in the privateDocs
+    
     for(File* file in _sharedDocs){
         NSDictionary *fileDict = [NSDictionary dictionaryWithObjectsAndKeys:file.name,@"name", [file.url absoluteString],@"url",[formatter stringFromDate:file.dateCreated],@"created",@0,@"isDirectory", nil];
         [sharedDocs setValue:fileDict forKey:file.name];
     }
-    [theFileSystem setValue:sharedDocs forKey:@"_sharedDocs"];
+    [theFileSystem setValue:sharedDocs forKey:@"_sharedDocs"]; //load in the sharedDocs
+    [theFileSystem setValue:[formatter stringFromDate:[NSDate date]] forKey:@"timestamp"]; //set a new timestamp in our file.
+    
     NSData *JSONdata = [NSJSONSerialization dataWithJSONObject:theFileSystem options:0 error:nil];
     [JSONdata writeToFile:filePath atomically:YES];
-   /* NSData* filesystemdata2 = [NSData dataWithContentsOfFile:filePath];
-    NSDictionary* JSONDict2 = [NSJSONSerialization JSONObjectWithData:filesystemdata2 options:0 error:&error];
-    NSLog(@"%@", JSONDict2);*/
 }
 
 //makes a set of dummy files for us to test useability
