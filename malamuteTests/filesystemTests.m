@@ -158,6 +158,7 @@
 -(void)testSaveFileSystemToJSON{
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"yyyy-MM-dd 'at' HH:mm:ss"];
 
     //get the timestamp on the current file
     NSString* filePath = [[NSBundle mainBundle] pathForResource:@"filesystem" ofType:@"json"];
@@ -165,22 +166,22 @@
     NSDictionary* JSONDict = [NSJSONSerialization JSONObjectWithData:filesystemdata options:0 error:nil];
     NSDate* timestamp = [formatter dateFromString:[JSONDict valueForKey:@"timestamp"]];
     
-    //create some dumym data to write to the file anew
+    //create an atrificial timeout to prevent the times from being the same
+    
     File* file1 = [[File alloc] initWithName:@"malamute-test1.txt" andURL:[[NSURL alloc]initWithString:@"blah"] andDate:[NSDate date] andDirectoryFlag:@0];
     File* file2 = [[File alloc] initWithName:@"malamute-test1.txt" andURL:[[NSURL alloc]initWithString:@"blah"] andDate:[NSDate date] andDirectoryFlag:@0];
     [viewController.fileSystem.sharedDocs addObject:file1];
     [viewController.fileSystem.privateDocs addObject:file2];
     [viewController.fileSystem saveFileSystemToJSON]; //write the new data
-    
     //get the new timestamp
     NSString* filePathDummy = [[NSBundle mainBundle] pathForResource:@"filesystem" ofType:@"json"];
     NSData* filesystemdataDummy = [NSData dataWithContentsOfFile:filePathDummy];
     NSDictionary* DictStamp = [NSJSONSerialization JSONObjectWithData:filesystemdataDummy options:0 error:nil];
     NSDate* newTimestamp = [formatter dateFromString:[DictStamp valueForKey:@"timestamp"]];
-    
+
     //if the new one is greater than the old one then well assume that
     //the data was written successfully to the file anew
-    NSLog(@"DATE MADE NOW: %@", [formatter stringFromDate:[NSDate date]]);
+    NSLog(@"DATE MADE NOW: %@", [NSDate date]);
     NSLog(@"TIMESTAMP: %@", timestamp);
     NSLog(@"NEWTIMESTAMP: %@", newTimestamp);
     XCTAssertTrue(timestamp < newTimestamp);

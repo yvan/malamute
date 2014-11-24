@@ -209,6 +209,7 @@ inDomains:NSUserDomainMask];
     NSError* error;
     NSInteger iteration = 0;
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"yyyy-MM-dd 'at' HH:mm:ss"];
     NSString* filePath = [[NSBundle mainBundle] pathForResource:@"filesystem" ofType:@"json"];
     NSData* filesystemdata = [NSData dataWithContentsOfFile:filePath];
     NSDictionary* JSONDict = [NSJSONSerialization JSONObjectWithData:filesystemdata options:0 error:&error];
@@ -246,6 +247,7 @@ inDomains:NSUserDomainMask];
     NSError *error;
     NSString* wipeFileSystem = @"";
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"yyyy-MM-dd 'at' HH:mm:ss"];
     NSString* filePath = [[NSBundle mainBundle] pathForResource:@"filesystem" ofType:@"json"];
     //NSLog(@"%@", filePath);
     [wipeFileSystem writeToFile:filePath atomically:YES encoding:NSUTF8StringEncoding error:&error];//wipes the file system
@@ -266,7 +268,7 @@ inDomains:NSUserDomainMask];
         [sharedDocs setValue:fileDict forKey:file.name];
     }
     [theFileSystem setValue:sharedDocs forKey:@"_sharedDocs"]; //load in the sharedDocs
-    [theFileSystem setValue:[formatter stringFromDate:[NSDate date]] forKey:@"timestamp"]; //set a new timestamp in our file.
+    [theFileSystem setValue:[formatter stringFromDate:[NSDate date]] forKey:@"timestamp"];//put timestamp in our file.
     
     NSData *JSONdata = [NSJSONSerialization dataWithJSONObject:theFileSystem options:0 error:nil];
     [JSONdata writeToFile:filePath atomically:YES];
