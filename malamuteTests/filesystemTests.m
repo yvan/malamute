@@ -159,9 +159,6 @@
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"yyyy-MM-dd 'at' HH:mm:ss"];
-    NSString* filePath = [[NSBundle mainBundle] pathForResource:@"filesystem" ofType:@"json"];
-    
-
 
     //test new timestamp against this old one '2014-11-23 00:00:00 +0000'
     NSDate* oldTimestamp = [formatter dateFromString:@"2014-11-23 00:00:00"];
@@ -180,7 +177,6 @@
 
     //if the new one is greater than the old one then well assume that
     //the data was written successfully to the file anew
-    
     NSLog(@"TIMESTAMP: %@", oldTimestamp);
     NSLog(@"NEWTIMESTAMP: %@", newTimestamp);
     XCTAssertTrue(oldTimestamp < newTimestamp);
