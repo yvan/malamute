@@ -159,15 +159,14 @@
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"yyyy-MM-dd 'at' HH:mm:ss"];
-
-    //get the timestamp on the current file
     NSString* filePath = [[NSBundle mainBundle] pathForResource:@"filesystem" ofType:@"json"];
-    NSData* filesystemdata = [NSData dataWithContentsOfFile:filePath];
-    NSDictionary* JSONDict = [NSJSONSerialization JSONObjectWithData:filesystemdata options:0 error:nil];
-    NSDate* timestamp = [formatter dateFromString:[JSONDict valueForKey:@"timestamp"]];
     
-    //create an atrificial timeout to prevent the times from being the same
+
+
+    //test new timestamp against this old one '2014-11-23 00:00:00 +0000'
+    NSDate* oldTimestamp = [formatter dateFromString:@"2014-11-23 00:00:00"];
     
+    //create Dummy files and put them through the motions.
     File* file1 = [[File alloc] initWithName:@"malamute-test1.txt" andURL:[[NSURL alloc]initWithString:@"blah"] andDate:[NSDate date] andDirectoryFlag:@0];
     File* file2 = [[File alloc] initWithName:@"malamute-test1.txt" andURL:[[NSURL alloc]initWithString:@"blah"] andDate:[NSDate date] andDirectoryFlag:@0];
     [viewController.fileSystem.sharedDocs addObject:file1];
@@ -181,10 +180,11 @@
 
     //if the new one is greater than the old one then well assume that
     //the data was written successfully to the file anew
-    NSLog(@"DATE MADE NOW: %@", [NSDate date]);
-    NSLog(@"TIMESTAMP: %@", timestamp);
+    
+    NSLog(@"TIMESTAMP: %@", oldTimestamp);
     NSLog(@"NEWTIMESTAMP: %@", newTimestamp);
-    XCTAssertTrue(timestamp < newTimestamp);
+    XCTAssertTrue(oldTimestamp < newTimestamp);
+    
 }
 
 /*-(void) testDeleteDocs{

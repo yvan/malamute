@@ -20,8 +20,8 @@
     NSArray* documents = [[NSFileManager defaultManager]URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask];
     _documentsDirectory = [[documents objectAtIndex:0] absoluteString];
     
-    [self saveFileSystemToJSON];
-    [self populateArraysWithFileSystem];
+    //[self saveFileSystemToJSON];
+    //[self populateArraysWithFileSystem];
     [self createNewDir:@"private"];
     [self createNewDir:@"shared"];
     [self makeDummyFiles]; //comment out in prodution version
