@@ -105,26 +105,40 @@ static BOOL const SHARED = 1;
         
         [_selectSendButton setTitle:@"Select Files" forState:UIControlStateNormal];
         [_selectDirectoryModeShared setTitle:@"Shared" forState:UIControlStateNormal];
-        [_selectDirectoryModeShared setBackgroundColor: [UIColor colorWithRed:135.0/255.0 green:9.0/255.0 blue:22.0/255.0 alpha:1.0]];
-        [_selectDirectoryModePrivate setBackgroundColor: [UIColor colorWithRed:214.0/255.0 green:9.0/255.0 blue:22.0/255.0 alpha:1.0]];
-        _privateOrShared = SHARED;
+        
+        [_selectDirectoryModeShared setBackgroundColor: [UIColor colorWithRed:135.0/255.0
+                                                                 green:9.0/255.0
+                                                                 blue:22.0/255.0
+                                                                 alpha:1.0]];
+        [_selectDirectoryModePrivate setBackgroundColor: [UIColor colorWithRed:214.0/255.0
+                                                                  green:9.0/255.0
+                                                                  blue:22.0/255.0
+                                                                  alpha:1.0]];
         _buttonState = 0;
         _selectEnabled = NO;
-        [_selectedFiles removeAllObjects];
+        _privateOrShared = SHARED;
         [_collectionOfFiles reloadData];
+        [_selectedFiles removeAllObjects];
         NSLog(@"switch to shared");
     }
     if(sender == _selectDirectoryModePrivate){
-        [_selectSendButton setTitle:@"Select Files" forState:UIControlStateNormal];
         
+        [_selectSendButton setTitle:@"Select Files" forState:UIControlStateNormal];
         [_selectDirectoryModePrivate setTitle:@"Private" forState:UIControlStateNormal];
-        [_selectDirectoryModePrivate setBackgroundColor: [UIColor colorWithRed:135.0/255.0 green:9.0/255.0 blue:22.0/255.0 alpha:1.0]];
-        [_selectDirectoryModeShared setBackgroundColor: [UIColor colorWithRed:214.0/255.0 green:9.0/255.0 blue:22.0/255.0 alpha:1.0]];
-        _privateOrShared = PRIVATE;
+        
+        [_selectDirectoryModePrivate setBackgroundColor: [UIColor colorWithRed:135.0/255.0
+                                                                  green:9.0/255.0
+                                                                  blue:22.0/255.0
+                                                                  alpha:1.0]];
+        [_selectDirectoryModeShared setBackgroundColor: [UIColor colorWithRed:214.0/255.0
+                                                                 green:9.0/255.0
+                                                                 blue:22.0/255.0
+                                                                 alpha:1.0]];
         _buttonState = 0;
         _selectEnabled = NO;
-        [_selectedFiles removeAllObjects];
+        _privateOrShared = PRIVATE;
         [_collectionOfFiles reloadData];
+        [_selectedFiles removeAllObjects];
         NSLog(@"switch to private");
     }
 }
@@ -136,7 +150,6 @@ static BOOL const SHARED = 1;
 }
 
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
-    
     return _privateOrShared == PRIVATE ? [_fileSystem.privateDocs count]:[_fileSystem.sharedDocs count];
 }
 
@@ -168,13 +181,11 @@ static BOOL const SHARED = 1;
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     
     if(_selectEnabled){
-        FileCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"fileOrFolder" forIndexPath:indexPath];
+
         _selectedFile = _privateOrShared == PRIVATE ? [_fileSystem.privateDocs objectAtIndex:indexPath.row]:[_fileSystem.sharedDocs objectAtIndex:indexPath.row];
         [_selectedFiles addObject:_selectedFile];
-        cell.cellLabel.text = @"derp2";
         NSLog(@"touched");
-    }
-    else{
+    }else{
         [collectionView deselectItemAtIndexPath:indexPath animated:NO];
     }
     
@@ -184,9 +195,7 @@ static BOOL const SHARED = 1;
     
     
     if (_selectEnabled) {
-        //**Need to determine whether or not we're in Shared Folder or Documents Folder**//
-        //so add an entry for privateDocs, for now just do sharedDocs
-        _selectedFile = [_fileSystem.sharedDocs objectAtIndex:indexPath.row];
+        _selectedFile = _privateOrShared == PRIVATE ? [_fileSystem.privateDocs objectAtIndex:indexPath.row]:[_fileSystem.sharedDocs objectAtIndex:indexPath.row];
         [_selectedFiles removeObject:_selectedFile];
     }
     NSLog(@"untouched");
@@ -205,7 +214,6 @@ static BOOL const SHARED = 1;
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
     return UIEdgeInsetsMake(10, 10, 10, 10);
 }
-
 
 #pragma mark - SessionWrapperDelegate
 
@@ -243,24 +251,23 @@ static BOOL const SHARED = 1;
 - (void)viewDidLoad {
 
     [super viewDidLoad];
-    _privateOrShared = SHARED; //start us off in the shared directory
-    //Init document directory of file system
-    _fileSystem = [[FileSystem alloc] init];
-    _selectedFiles = [[NSMutableArray alloc] init];
+    _privateOrShared = SHARED;                      // start us off in the shared directory
+    _fileSystem = [[FileSystem alloc] init];        // create the filesystem and other objs
+    _selectedFiles = [[NSMutableArray alloc] init]; // we used to know which files to  move
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     _fileSystem.documentsDirectory = [[NSString alloc] initWithString:[paths objectAtIndex:0]];
     [_collectionOfFiles setDelegate:self];
     [_collectionOfFiles setDataSource:self];
     
     //set borders on buttons
-    [[_selectDirectoryModePrivate layer] setBorderWidth:0.5f];
-    [[_selectDirectoryModePrivate layer] setBorderColor:[UIColor blackColor].CGColor];
-    [[_selectDirectoryModeShared layer] setBorderWidth:0.5f];
-    [[_selectDirectoryModeShared layer] setBorderColor:[UIColor blackColor].CGColor];
     [[_selectSendButton layer] setBorderWidth:0.5f];
+    [[_selectDirectoryModeShared layer] setBorderWidth:0.5f];
+    [[_selectDirectoryModePrivate layer] setBorderWidth:0.5f];
     [[_selectSendButton layer] setBorderColor:[UIColor blackColor].CGColor];
-    
-    //Init session, adversiter, and browser wrapper
+    [[_selectDirectoryModeShared layer] setBorderColor:[UIColor blackColor].CGColor];
+    [[_selectDirectoryModePrivate layer] setBorderColor:[UIColor blackColor].CGColor];
+
+    //Init session, advertiser, and browser wrapper in that order
     _sessionWrapper = [[SessionWrapper alloc] initSessionWithName:@"yvan"];
     _advertiserWrapper = [[AdvertiserWrapper alloc] startAdvertising:_sessionWrapper.myPeerID];
     _browserWrapper = [[BrowserWrapper alloc] startBrowsing:_sessionWrapper.myPeerID];
@@ -269,12 +276,10 @@ static BOOL const SHARED = 1;
     //[_collectionOfFiles registerClass:[FileCollectionViewCell class] forCellWithReuseIdentifier:@"fileOrFolder"];
     
     [_collectionOfFiles reloadData];
-    //Do any additional setup after loading the view, typically from a nib.
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 @end

@@ -18,11 +18,12 @@
     self = [super init];
     _sharedDocs = [[NSMutableArray alloc] init];
     _privateDocs = [[NSMutableArray alloc] init];
-    NSArray* documents = [[NSFileManager defaultManager]URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask];
+    NSArray* documents = [[NSFileManager defaultManager] URLsForDirectory:
+                         NSDocumentDirectory inDomains:NSUserDomainMask];
     _documentsDirectory = [[documents objectAtIndex:0] absoluteString];
     
     [self populateArraysWithFileSystem];
-    [self makeDummyFiles]; //COMMENT OUT OF PRODUCTION VERSION
+    [self makeDummyFiles]; // YO COMMENT THIS PUNK ASS METHOD OUT OF PRODUCTION VERSION
     return self;
 }
 
@@ -86,13 +87,14 @@
     int suffix = 1;
     while(![self isValidPath:destinationPath]){
         //prompt user to rename the file
-        destinationPath = [_documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%i%@", suffix, file.name]];
+        destinationPath = [_documentsDirectory stringByAppendingPathComponent:
+                          [NSString stringWithFormat:@"%i%@", suffix, file.name]];
         suffix++;
     }
     
-    NSURL *destinationURL = [NSURL fileURLWithPath:destinationPath];
-    NSFileManager *fileManager = [NSFileManager defaultManager];
     NSError *errorCopy;
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSURL *destinationURL = [NSURL fileURLWithPath:destinationPath];
     
     [fileManager copyItemAtURL:file.url toURL:destinationURL error:&errorCopy];
     if (errorCopy) {
@@ -182,44 +184,36 @@
 -(BOOL)moveFiles:(NSMutableArray*)selectedFiles from:(NSMutableArray*)firstDirectory to:(NSMutableArray*)secondDirectory withInfo:(BOOL)privateOrShared{
 
     //Get documents directory
-    NSArray* directories = [[NSFileManager defaultManager]URLsForDirectory:NSDocumentDirectory
-inDomains:NSUserDomainMask];
+    NSArray* directories = [[NSFileManager defaultManager]
+                            URLsForDirectory:NSDocumentDirectory
+                            inDomains:NSUserDomainMask];
     
     if([directories count] > 0){
         
         NSURL* appSupportDir = (NSURL*)[directories objectAtIndex:0];
         NSString* privateSharedDirectoryExten;
-        if(privateOrShared){
-            privateSharedDirectoryExten = @"private";   //later on changed to the name created by user
-        }else{
-            
-            privateSharedDirectoryExten = @"shared";    //later on changed to the name created by user
-        }
+        if(privateOrShared){privateSharedDirectoryExten = @"private";}   //later on changed to the name created by user
+        else{privateSharedDirectoryExten = @"shared";}                   //later on changed to the name created by user
         
         // Perform the copy asynchronously.
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            NSFileManager* fm = [NSFileManager defaultManager];
+            
             NSError* error;
+            NSFileManager* fm = [NSFileManager defaultManager];
             
             for(File* file in selectedFiles){
                 
-                [firstDirectory removeObject:file]; //remove each file from the original directory array
                 [secondDirectory addObject:file];   //put each file in the new directory array
-                
-                NSURL* copyingFromDirectory = [[appSupportDir URLByAppendingPathComponent:privateSharedDirectoryExten] URLByAppendingPathComponent: file.name];
-                NSURL* copyingToDirectory;
-                
+                [firstDirectory removeObject:file]; //remove each file from the original directory array
+                NSURL* copyingFromDirectory = [[appSupportDir URLByAppendingPathComponent:privateSharedDirectoryExten]
+                                                        URLByAppendingPathComponent: file.name];
                 NSInteger finalDot = 0;
+                NSURL* copyingToDirectory;
                 NSString *fileExtension = @"";
                 
                 for (NSInteger index=0; index<file.name.length;index++){
-                    if([file.name characterAtIndex:index] == '.'){
-                        finalDot = index;
-                    }
-                    if(index == file.name.length-1){
-                        
-                        fileExtension = [file.name substringFromIndex:finalDot+1];
-                    }
+                    if([file.name characterAtIndex:index] == '.'){finalDot = index;}
+                    if(index == file.name.length-1){fileExtension = [file.name substringFromIndex:finalDot+1];}
                     /*if(finalDot == 0){ //uncomment in the future if we allow the user to make directories
                         
                         fileExtension = @"directory";
@@ -240,12 +234,10 @@ inDomains:NSUserDomainMask];
         
         NSURL* appSupportDir = (NSURL*)[directories objectAtIndex:0];
         NSString* appBundleID = [[NSBundle mainBundle] bundleIdentifier];
-        NSURL* pathToCheck = [[appSupportDir URLByAppendingPathComponent:appBundleID] URLByAppendingPathComponent: file.name];
-        NSLog(@"%@",pathToCheck);
-        if(![self isValidPath:[pathToCheck absoluteString]]){
-            
-            return NO;
-        }//all files sucessfully path transferred is never triggers.
+        NSURL* pathToCheck = [[appSupportDir URLByAppendingPathComponent:appBundleID]
+                                             URLByAppendingPathComponent: file.name];
+        //all files sucessfully path transferred is never triggers.
+        if(![self isValidPath:[pathToCheck absoluteString]]){return NO;}
     }
     return YES;
 }
@@ -256,17 +248,17 @@ inDomains:NSUserDomainMask];
    - */
 -(BOOL) createNewDir:(NSString*) dirname{
     
-    NSFileManager* fm = [NSFileManager defaultManager];
-    NSURL* urlForNew = nil;
+    //setup
     NSError* error;
-    //get all the url paths in teh documents directory
+    NSURL* urlForNew = nil;
+    NSFileManager* fm = [NSFileManager defaultManager];
     NSArray* documents = [fm URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask];
+    
+    //for each
     
     if([documents count] > 0){
         urlForNew = [[documents objectAtIndex:0] URLByAppendingPathComponent:dirname];
-        // NSLog(@"%@", urlForNew);
         if (![self isValidPath:[urlForNew absoluteString]] && ![fm createDirectoryAtURL:urlForNew withIntermediateDirectories:YES attributes:nil error:&error]){
-            //NSLog(@"problem making new directory");
             return NO;
         }
     }
@@ -280,19 +272,33 @@ inDomains:NSUserDomainMask];
     NSString *private = [[documents objectAtIndex:0] absoluteString];
     NSString *shared = [[[documents objectAtIndex:0] absoluteString] stringByAppendingString:@"tmp/"];
     NSString *testfile1 = [private stringByAppendingPathComponent:@"testfile1.txt"];
-    File *testfileobj1 = [[File alloc] initWithName:@"testfile1.txt" andURL:[NSURL URLWithString:testfile1] andDate:[NSDate date] andDirectoryFlag:0];
+    
+    File *testfileobj1 = [[File alloc] initWithName:@"testfile1.txt"
+                                       andURL:[NSURL URLWithString:testfile1]
+                                       andDate:[NSDate date]
+                                       andDirectoryFlag:0];
     [_privateDocs addObject:testfileobj1];
     NSString *testfile2 = [private stringByAppendingString:@"testfile2.txt"];
-    File *testfileobj2 = [[File alloc] initWithName:@"testfile2.txt" andURL:[NSURL URLWithString:testfile2] andDate:[NSDate date] andDirectoryFlag:0];
+    File *testfileobj2 = [[File alloc] initWithName:@"testfile2.txt"
+                                       andURL:[NSURL URLWithString:testfile2]
+                                       andDate:[NSDate date]
+                                       andDirectoryFlag:0];
     [_privateDocs addObject:testfileobj2];
     NSString *testfile3 = [shared stringByAppendingString:@"testfile3.txt"];
-    File *testfileobj3 = [[File alloc] initWithName:@"testfile3.txt" andURL:[NSURL URLWithString:testfile3] andDate:[NSDate date] andDirectoryFlag:0];
+    File *testfileobj3 = [[File alloc] initWithName:@"testfile3.txt"
+                                       andURL:[NSURL URLWithString:testfile3]
+                                       andDate:[NSDate date]
+                                       andDirectoryFlag:0];
     [_sharedDocs addObject:testfileobj3];
     NSString *testfile4 = [shared stringByAppendingString:@"testfile4.txt"];
-    File *testfileobj4 = [[File alloc] initWithName:@"testfile4.txt" andURL:[NSURL URLWithString:testfile4] andDate:[NSDate date] andDirectoryFlag:0];
+    File *testfileobj4 = [[File alloc] initWithName:@"testfile4.txt"
+                                       andURL:[NSURL URLWithString:testfile4]
+                                       andDate:[NSDate date]
+                                       andDirectoryFlag:0];
     [_sharedDocs addObject:testfileobj4];
-    NSString *string = @"text-test";
+    
     NSError *writeError = nil;
+    NSString *string = @"text-test";
     [string writeToFile:testfile1 atomically:YES encoding:NSUTF8StringEncoding error:&writeError];
     [string writeToFile:testfile2 atomically:YES encoding:NSUTF8StringEncoding error:&writeError];
     [string writeToFile:testfile3 atomically:YES encoding:NSUTF8StringEncoding error:&writeError];
