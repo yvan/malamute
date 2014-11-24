@@ -155,8 +155,11 @@ static BOOL const SHARED = 1;
 
 -(FileCollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     
-    FileCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"fileOrFolder" forIndexPath:indexPath];
-    //set the appropriate seleted iamge image (red in-filled image)
+    FileCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"fileOrFolder"
+                                                   forIndexPath:indexPath];
+    
+    //set the appropriate seleted iamge (red in-filled image) for a selected cell
+    //set the appropriate non-selected image (non red filled in) for non-selected cell
     if(_privateOrShared == PRIVATE){
         cell.backgroundView = [self assignIconForFileType:((File *)[_fileSystem.privateDocs objectAtIndex:indexPath.row]).name withBool:0];
         cell.selectedBackgroundView = [self assignIconForFileType:((File *)[_fileSystem.privateDocs objectAtIndex:indexPath.row]).name withBool:1];
@@ -184,21 +187,17 @@ static BOOL const SHARED = 1;
 
         _selectedFile = _privateOrShared == PRIVATE ? [_fileSystem.privateDocs objectAtIndex:indexPath.row]:[_fileSystem.sharedDocs objectAtIndex:indexPath.row];
         [_selectedFiles addObject:_selectedFile];
-        NSLog(@"touched");
     }else{
         [collectionView deselectItemAtIndexPath:indexPath animated:NO];
     }
-    
-    
 }
+
 - (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
-    
     
     if (_selectEnabled) {
         _selectedFile = _privateOrShared == PRIVATE ? [_fileSystem.privateDocs objectAtIndex:indexPath.row]:[_fileSystem.sharedDocs objectAtIndex:indexPath.row];
         [_selectedFiles removeObject:_selectedFile];
     }
-    NSLog(@"untouched");
 }
 
 #pragma mark - UICollectionViewDelegateFlowLayout
@@ -231,7 +230,7 @@ static BOOL const SHARED = 1;
     newFile.url = localURL;
 
     [_fileSystem.sharedDocs addObject:newFile]; //add the resource to sharedDocs once it's received.
-    [_collectionOfFiles reloadData]; //reload our collectionview
+    [_collectionOfFiles reloadData];            //reload our collectionview with new file reps.
 }
 
 -(void) didStartReceivingResource:(MCSession *)session resourceName:(NSString *)resourceName fromPeer:(MCPeerID *)peerID withProgress:(NSProgress *)progress{
