@@ -160,8 +160,9 @@
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"yyyy-MM-dd 'at' HH:mm:ss"];
 
-    //test new timestamp against this old one '2014-11-23 00:00:00 +0000'
-    NSDate* oldTimestamp = [formatter dateFromString:@"2014-11-23 00:00:00"];
+    //test new timestamp against this a timstamp created right now, if they match,
+    //then we pass the test
+    NSDate* nowTimestamp = [NSDate date];
     
     //create Dummy files and put them through the motions.
     File* file1 = [[File alloc] initWithName:@"malamute-test1.txt" andURL:[[NSURL alloc]initWithString:@"blah"] andDate:[NSDate date] andDirectoryFlag:@0];
@@ -177,9 +178,16 @@
 
     //if the new one is greater than the old one then well assume that
     //the data was written successfully to the file anew
-    NSLog(@"TIMESTAMP: %@", oldTimestamp);
+    //This will print out two NSDate objects that APPEAR exactly the same
+    //but the isEqual method detects subseconds on NSDate objects that we
+    //do not see here printing them out. It's why they don't appear equal.
+    //since we created nowTimestamp several microseconds before newTimeStamp
+    //the NSDate objects are not equal. if the write fails, then timsstamp
+    //read from our file should be MUCH older than nowTimestamp. Is there
+    //a way to print out the NSDate with greater precision????
+    NSLog(@"TIMESTAMP: %@", nowTimestamp);
     NSLog(@"NEWTIMESTAMP: %@", newTimestamp);
-    XCTAssertTrue(oldTimestamp < newTimestamp);
+    XCTAssertTrue(![nowTimestamp isEqual:newTimestamp]);
     
 }
 
