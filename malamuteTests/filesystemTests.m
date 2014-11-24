@@ -22,7 +22,20 @@
 }
 @end
 
+/*** - A NOTE ON TESTS ***/
+/* 
+they need to be implementation independent as much as possible,
+they shouldn't rely on the stuff inside of the function inside 
+test, they should objective test whether or not hte function 
+has done its job.In otherwords if we're supposed to write
+to a file then we check if that file contains what we
+want, it should not rely on specific variables that 
+may cahnge (within reason), implementations change,
+tests shouldn't.
+*/
 @implementation filesystemTests
+
+#pragma mark - Setup Tests
 
 - (void)setUp {
     [super setUp];
@@ -35,13 +48,7 @@
     testPeer = [[MCPeerID alloc] initWithDisplayName:@"testPeerID"];
     
     NSString* testFile1Name = @"testfile1.txt";
-    NSString* testFile2Name = @"testfile2.txt";
-    
-    //copy testFile from supporting files folder
-    
-    NSFileManager *fileManager = [NSFileManager defaultManager];
     testFilePath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent: testFile1Name];
-    
     testFile = [[NSFileManager defaultManager] contentsAtPath:testFilePath];
    
     // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -58,6 +65,8 @@
     testFile = nil;
     [viewController.fileSystem deleteAllDocumentsFromSandbox];
 }
+
+#pragma mark - Test FileSystem Basics
 
 - (void)testExample {
     // This is an example of a functional test case.
@@ -77,25 +86,27 @@
 }
 -(void) testPrivateDocuments{
     XCTAssertNotNil(viewController.fileSystem.privateDocs, @"Filesystem private documents array should not be nil");
-
+}
+-(void)testCreateNewDir{
+    XCTAssertTrue([viewController.fileSystem createNewDir:@"private"]);
+    XCTAssertTrue([viewController.fileSystem createNewDir:@"shared"]);
 }
 
 
+#pragma mark - Test Our FileSystem Abstractions / Their interactions with FileSystem
 
 -(void)testSharedDocsCount{
-    int count = [viewController.fileSystem.sharedDocs count];
+    NSInteger count = [viewController.fileSystem.sharedDocs count];
     XCTAssertTrue((count == 0), @"Shared Docs should be null in the beginning");
 }
 -(void)testPrivateDocsCount{
-    int count = [viewController.fileSystem.privateDocs count];
+    NSInteger count = [viewController.fileSystem.privateDocs count];
     XCTAssertTrue((count == 0), @"Private Docs should be null in the beginning");
 }
 -(void)testSavingDocs{
     [viewController didFinishReceivingResource:viewController.sessionWrapper.session resourceName:@"testfile123.txt" fromPeer:testPeer atURL:[NSURL fileURLWithPath:testFilePath] withError:nil];
     [viewController.fileSystem saveDocumentToSandbox:(File*)viewController.fileSystem.sharedDocs[0]];
-    NSMutableArray* files = [viewController.fileSystem getAllDocDirFiles];
     XCTAssertTrue(viewController.fileSystem.sharedDocs[0] == viewController.fileSystem.privateDocs[0], @"Document should be on both shared and private docs after saving it");
-    
 }
 -(void)testInValidUrl{
     [viewController didFinishReceivingResource:viewController.sessionWrapper.session resourceName:@"testfile123.txt" fromPeer:testPeer atURL:[NSURL fileURLWithPath:testFilePath] withError:nil];
@@ -103,10 +114,19 @@
     XCTAssertTrue([viewController.fileSystem isValidPath:testFilePath]== false, @"File path should be invalid after saving it");
 }
 -(void)testValidUrl{
-    NSFileManager *fileManager = [NSFileManager defaultManager];
     NSString* validPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent: @"123456890abcdefghijklmno.txt.pdf"];
     XCTAssertTrue([viewController.fileSystem isValidPath:validPath]== true, @"File path should be invalid after saving it");
 }
+
+/*-(void) testDeleteDocs{
+ [viewController didFinishReceivingResource:viewController.sessionWrapper.session resourceName:@"testfile1.txt" fromPeer:testPeer atURL:[NSURL fileURLWithPath:testFilePath] withError:nil];
+ [viewController didFinishReceivingResource:viewController.sessionWrapper.session resourceName:@"testfile2.txt" fromPeer:testPeer atURL:[NSURL fileURLWithPath:testFilePath] withError:nil];
+ [viewController didFinishReceivingResource:viewController.sessionWrapper.session resourceName:@"testfile3.txt" fromPeer:testPeer atURL:[NSURL fileURLWithPath:testFilePath] withError:nil];
+ XCTAssertTrue(([viewController.fileSystem.sharedDocs count] > 0), @"Docs should not be empty after receiving some files.");
+ [viewController.fileSystem deleteAllDocumdentsFromSandbox];
+ XCTAssertTrue(([viewController.fileSystem.sharedDocs count] == 0), @"Delete should delete all docs");
+ }*/
+
 
 -(void)testMoveSelectedFiles{
     
@@ -140,12 +160,6 @@
     XCTAssertTrue([viewController.fileSystem moveFiles:selectedFiles from:privateDirectory to:sharedDirectory withInfo:YES]);
 }
 
-
--(void)testCreateNewDir{
-    XCTAssertTrue([viewController.fileSystem createNewDir:@"private"]);
-    XCTAssertTrue([viewController.fileSystem createNewDir:@"shared"]);
-}
-
 -(void)testpopulateArraysWithFileSystem{
     
     [viewController.fileSystem populateArraysWithFileSystem];
@@ -176,7 +190,7 @@
     NSDictionary* DictStamp = [NSJSONSerialization JSONObjectWithData:filesystemdataDummy options:0 error:nil];
     NSDate* newTimestamp = [formatter dateFromString:[DictStamp valueForKey:@"timestamp"]];
 
-    //if the new one is greater than the old one then well assume that
+    /*if the new one is greater than the old one then well assume that
     //the data was written successfully to the file anew
     //This will print out two NSDate objects that APPEAR exactly the same
     //but the isEqual method detects subseconds on NSDate objects that we
@@ -184,21 +198,14 @@
     //since we created nowTimestamp several microseconds before newTimeStamp
     //the NSDate objects are not equal. if the write fails, then timsstamp
     //read from our file should be MUCH older than nowTimestamp. Is there
-    //a way to print out the NSDate with greater precision????
+    //a way to print out the NSDate with greater precision????*/
     NSLog(@"TIMESTAMP: %@", nowTimestamp);
     NSLog(@"NEWTIMESTAMP: %@", newTimestamp);
     XCTAssertTrue(![nowTimestamp isEqual:newTimestamp]);
     
 }
 
-/*-(void) testDeleteDocs{
-    [viewController didFinishReceivingResource:viewController.sessionWrapper.session resourceName:@"testfile1.txt" fromPeer:testPeer atURL:[NSURL fileURLWithPath:testFilePath] withError:nil];
-    [viewController didFinishReceivingResource:viewController.sessionWrapper.session resourceName:@"testfile2.txt" fromPeer:testPeer atURL:[NSURL fileURLWithPath:testFilePath] withError:nil];
-    [viewController didFinishReceivingResource:viewController.sessionWrapper.session resourceName:@"testfile3.txt" fromPeer:testPeer atURL:[NSURL fileURLWithPath:testFilePath] withError:nil];
-    XCTAssertTrue(([viewController.fileSystem.sharedDocs count] > 0), @"Docs should not be empty after receiving some files.");
-    [viewController.fileSystem deleteAllDocumdentsFromSandbox];
-    XCTAssertTrue(([viewController.fileSystem.sharedDocs count] == 0), @"Delete should delete all docs");
-}*/
+#pragma mark - MISC
 
 - (void)testPerformanceExample {
     // This is an example of a performance test case.
