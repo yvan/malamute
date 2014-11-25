@@ -71,25 +71,28 @@
 }
 
 -(void) saveFilesToDocumentsDir:(NSArray*) files {
+    NSLog(@"entered");
     for(int i = 0; i < [files count]; i++){
+        NSLog(@"entered2");
         File* fileToSave = (File*)[files objectAtIndex:i];
         [self saveFileToDocumentsDir:fileToSave];
     }
 }
 
 -(void) saveFileToDocumentsDir:(File*)file{
-    
+    NSLog(@"entered3");
     //move file from file's path to documents folder path, update file
     //add to private documents array
     NSString *destinationPath = [_documentsDirectory stringByAppendingPathComponent:file.name];
     int suffix = 1;
-    while(![self isValidPath:destinationPath]){
+    while([self isValidPath:destinationPath]){
+        NSLog(@"entere4");
         //prompt user to rename the file
         destinationPath = [_documentsDirectory stringByAppendingPathComponent:
                           [NSString stringWithFormat:@"%i%@", suffix, file.name]];
         suffix++;
     }
-    
+    NSLog(@"entere5");
     NSError *errorCopy;
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSURL *destinationURL = [NSURL fileURLWithPath:destinationPath];
