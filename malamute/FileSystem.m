@@ -21,9 +21,16 @@
     NSArray* documents = [[NSFileManager defaultManager] URLsForDirectory:
                          NSDocumentDirectory inDomains:NSUserDomainMask];
     _documentsDirectory = [[documents objectAtIndex:0] absoluteString];
-    
+    NSError* error;
+    NSString* filePath = [[NSBundle mainBundle] pathForResource:@"filesystem" ofType:@"json"];
+    NSData* filesystemdata = [NSData dataWithContentsOfFile:filePath];
+    NSDictionary* JSONDict = [NSJSONSerialization JSONObjectWithData:filesystemdata options:NSJSONReadingAllowFragments error:&error];
+    NSLog(@"Error: %@",error);
+    NSLog(@"File Contents: %@",JSONDict);
+    [self makeDummyFiles];
+    //[self saveFileSystemToJSON];
     [self populateArraysWithFileSystem];
-    [self makeDummyFiles]; // YO COMMENT THIS PUNK ASS METHOD OUT OF PRODUCTION VERSION
+    // YO COMMENT THIS PUNK ASS METHOD OUT OF PRODUCTION VERSION
     return self;
 }
 
@@ -153,7 +160,6 @@
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"yyyy-MM-dd 'at' HH:mm:ss"];
     NSString* filePath = [[NSBundle mainBundle] pathForResource:@"filesystem" ofType:@"json"];
-    //NSLog(@"%@", filePath);
     [wipeFileSystem writeToFile:filePath atomically:YES encoding:NSUTF8StringEncoding error:&error];//wipes the file system
     
     NSMutableDictionary *theFileSystem = [[NSMutableDictionary alloc] init];
@@ -162,13 +168,13 @@
     //non atomically write to filesystem to keep tacking on json objects
     for(File* file in _privateDocs){
         //isDirectory = @0 because we're not supporting direcotry creation yet.
-        NSDictionary *fileDict = [NSDictionary dictionaryWithObjectsAndKeys:file.name,@"name", [file.url absoluteString],@"url",[formatter stringFromDate:file.dateCreated],@"created",@0,@"isDirectory", nil];
+        NSDictionary *fileDict = [NSDictionary dictionaryWithObjectsAndKeys:file.name,@"name", [file.url absoluteString],@"url",[formatter stringFromDate:file.dateCreated],@"created",@"0",@"isDirectory", nil];
         [privateDocs setValue:fileDict forKey:file.name];
     }
     [theFileSystem setValue:privateDocs forKey:@"_privateDocs"]; //load in the privateDocs
     
     for(File* file in _sharedDocs){
-        NSDictionary *fileDict = [NSDictionary dictionaryWithObjectsAndKeys:file.name,@"name", [file.url absoluteString],@"url",[formatter stringFromDate:file.dateCreated],@"created",@0,@"isDirectory", nil];
+        NSDictionary *fileDict = [NSDictionary dictionaryWithObjectsAndKeys:file.name,@"name", [file.url absoluteString],@"url",[formatter stringFromDate:file.dateCreated],@"created",@"0",@"isDirectory", nil];
         [sharedDocs setValue:fileDict forKey:file.name];
     }
     [theFileSystem setValue:sharedDocs forKey:@"_sharedDocs"]; //load in the sharedDocs
