@@ -18,25 +18,16 @@
     self = [super init];
     _sharedDocs = [[NSMutableArray alloc] init];
     _privateDocs = [[NSMutableArray alloc] init];
-    NSArray* documents = [[NSFileManager defaultManager] URLsForDirectory:
-                         NSDocumentDirectory inDomains:NSUserDomainMask];
-    _documentsDirectory = [[documents objectAtIndex:0] absoluteString];
-    NSError* error;
-    NSString* filePath = [[NSBundle mainBundle] pathForResource:@"filesystem" ofType:@"json"];
-    NSData* filesystemdata = [NSData dataWithContentsOfFile:filePath];
-    NSDictionary* JSONDict = [NSJSONSerialization JSONObjectWithData:filesystemdata options:NSJSONReadingAllowFragments error:&error];
-    NSLog(@"Error: %@",error);
-    NSLog(@"File Contents: %@",JSONDict);
-    [self makeDummyFiles];
-    //[self saveFileSystemToJSON];
+    _documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0];
+    // [self makeDummyFiles];       // YO COMMENT THIS PUNK ASS METHOD OUT OF PRODUCTION VERSION
+    // [self saveFileSystemToJSON]; // KEEP UNCOMMENTED, THE FIRST PART OF THIS METHOD WIPES THE FILESYSTEM.
     [self populateArraysWithFileSystem];
-    // YO COMMENT THIS PUNK ASS METHOD OUT OF PRODUCTION VERSION
     return self;
 }
 
 /* - tests to see if a path is valid - */
 -(BOOL) isValidPath:(NSString*) path{
-    return !([[NSFileManager defaultManager] fileExistsAtPath:path]);
+    return [[NSFileManager defaultManager] fileExistsAtPath:path];
 }
 
 //prints all the files in privatedocs then shareddocs
@@ -120,7 +111,7 @@
     NSInteger iteration = 0;
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"yyyy-MM-dd 'at' HH:mm:ss"];
-    NSString* filePath = [[NSBundle mainBundle] pathForResource:@"filesystem" ofType:@"json"];
+     NSString *filePath = [_documentsDirectory stringByAppendingPathComponent:@"filesystem.json"];
     NSData* filesystemdata = [NSData dataWithContentsOfFile:filePath];
     NSDictionary* JSONDict = [NSJSONSerialization JSONObjectWithData:filesystemdata options:0 error:&error];
     
@@ -159,7 +150,7 @@
     NSString* wipeFileSystem = @"";
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"yyyy-MM-dd 'at' HH:mm:ss"];
-    NSString* filePath = [[NSBundle mainBundle] pathForResource:@"filesystem" ofType:@"json"];
+    NSString *filePath = [_documentsDirectory stringByAppendingPathComponent:@"filesystem.json"];
     [wipeFileSystem writeToFile:filePath atomically:YES encoding:NSUTF8StringEncoding error:&error];//wipes the file system
     
     NSMutableDictionary *theFileSystem = [[NSMutableDictionary alloc] init];
@@ -179,7 +170,6 @@
     }
     [theFileSystem setValue:sharedDocs forKey:@"_sharedDocs"]; //load in the sharedDocs
     [theFileSystem setValue:[formatter stringFromDate:[NSDate date]] forKey:@"timestamp"];//put timestamp in our file.
-    
     NSData *JSONdata = [NSJSONSerialization dataWithJSONObject:theFileSystem options:0 error:nil];
     [JSONdata writeToFile:filePath atomically:YES];
 }
@@ -275,7 +265,7 @@
 -(void) makeDummyFiles{
     
     NSArray* documents = [[NSFileManager defaultManager]URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask];
-    NSString *private = [[documents objectAtIndex:0] absoluteString];
+    NSString *private = [[[documents objectAtIndex:0] absoluteString] stringByAppendingString:@"private/"];
     NSString *shared = [[[documents objectAtIndex:0] absoluteString] stringByAppendingString:@"tmp/"];
     NSString *testfile1 = [private stringByAppendingPathComponent:@"testfile1.txt"];
     

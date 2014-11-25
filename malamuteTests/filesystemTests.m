@@ -185,7 +185,7 @@ tests shouldn't.
     [viewController.fileSystem.privateDocs addObject:file2];
     [viewController.fileSystem saveFileSystemToJSON]; //write the new data
     //get the new timestamp
-    NSString* filePathDummy = [[NSBundle mainBundle] pathForResource:@"filesystem" ofType:@"json"];
+    NSString *filePathDummy = [viewController.fileSystem.documentsDirectory stringByAppendingPathComponent:@"filesystem.json"];
     NSData* filesystemdataDummy = [NSData dataWithContentsOfFile:filePathDummy];
     NSDictionary* DictStamp = [NSJSONSerialization JSONObjectWithData:filesystemdataDummy options:0 error:nil];
     NSDate* newTimestamp = [formatter dateFromString:[DictStamp valueForKey:@"timestamp"]];
