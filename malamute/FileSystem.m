@@ -30,7 +30,7 @@
     return [[NSFileManager defaultManager] fileExistsAtPath:path];
 }
 
-//prints all the files in privatedocs then shareddocs
+/* - prints all the files in privatedocs then shareddocs - */
 -(void) printAllFiles{
     for(int i = 0; i < [_privateDocs count]; i++){
         NSLog(@"Private Doc %i:%@",i, _privateDocs[i]);
@@ -105,9 +105,11 @@
     [_privateDocs addObject:file];
 }
 
+#pragma mark - Filsystem State Methods
+
 /* - reads the filesystem.json file and populated our sharedDocs
- - and privateDocs with the app's filesystem on app load
- - */
+   - and privateDocs with the app's filesystem on app load
+   - */
 -(void) populateArraysWithFileSystem{
     
     NSError* error;
@@ -144,8 +146,8 @@
 }
 
 /* - called everytime we exit the app or everytime the app crashes
- - we will use it to populate the filesystem again on app load
- - */
+   - we will use it to populate the filesystem again on app load
+   - */
 -(void) saveFileSystemToJSON{
     
     //atomically write to filesystem.json to wipe the file.
@@ -176,6 +178,8 @@
     NSData *JSONdata = [NSJSONSerialization dataWithJSONObject:theFileSystem options:0 error:nil];
     [JSONdata writeToFile:filePath atomically:YES];
 }
+
+#pragma mark - moveFiles and createNewDir future use file manipulation
 
 /* - method will be useful in the future when we want to supprot diretory manipulation/creation
    - and want to move stuff between arbitrary directories.

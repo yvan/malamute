@@ -66,6 +66,7 @@ static NSString* const ServiceName = @"malamute";
     return _connectedPeerIDs[index];
 }
 
+#pragma mark - sendFiles specialized method to send resources
 /* - takes an array of files and an array of peerIds and sends
    - all of those files to those peer ids.
    - */
@@ -94,7 +95,6 @@ static NSString* const ServiceName = @"malamute";
 
 /* - REMOTE PEER HAS ALTERED ITS STATE SOMEHOW - */
 -(void)session:(MCSession *)session peer:(MCPeerID *)peerID didChangeState:(MCSessionState)state{
-    
     
 }
 

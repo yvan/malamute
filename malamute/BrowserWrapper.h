@@ -16,12 +16,12 @@
 
 @interface BrowserWrapper : NSObject <MCNearbyServiceBrowserDelegate>
 
-@property (nonatomic, readonly) MCNearbyServiceBrowser *autobrowser;
 @property (nonatomic, readonly) BOOL browsing;
 @property (nonatomic) id <BrowserWrapperDelegate> browserDelegate;
+@property (nonatomic, readonly) MCNearbyServiceBrowser *autobrowser;
 
--(instancetype) startBrowsing:(MCPeerID *)myPeerId;
 -(void) stopBrowsing;
 -(void) restartBrowsing;
+-(instancetype) startBrowsing:(MCPeerID *)myPeerId;
 
 @end

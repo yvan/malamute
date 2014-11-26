@@ -35,25 +35,12 @@ static BOOL const SHARED = 1;
     UIImageView *iconViewForCell;
     UIImage *image;
     if(selected){
-        //CGSize newSize = CGSizeMake(50.0, 50.0);
-        //UIGraphicsBeginImageContextWithOptions(newSize, NO, 0.0);
         image = [UIImage imageNamed:[NSString stringWithFormat:@"%@-sel.png", fileExtension]];
-        //[image drawInRect:CGRectMake(0, 0, newSize.width, newSize.height)];
-        //UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
-        //UIGraphicsEndImageContext();
         
     }else{
-        //CGSize newSize = CGSizeMake(50.0, 50.0);
-        //UIGraphicsBeginImageContextWithOptions(newSize, NO, 0.0);
         image = [UIImage imageNamed:[NSString stringWithFormat:@"%@.png", fileExtension]];
-        //[image drawInRect:CGRectMake(0, 0, newSize.width, newSize.height)];
-        //UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
-        //UIGraphicsEndImageContext();
     }
     iconViewForCell = [[UIImageView alloc] initWithImage:image];
-    //conViewForCell.frame = CGRectMake(iconViewForCell.frame.origin.x, iconViewForCell.frame.origin.y, 10, 10);
-    //iconViewForCell.contentMode = UIViewContentModeCenter;
-    //iconViewForCell.clipsToBounds = YES;
     return iconViewForCell;
 }
 
@@ -68,8 +55,7 @@ static BOOL const SHARED = 1;
             _buttonState = 1;
             _selectEnabled = YES;
             _collectionOfFiles.allowsMultipleSelection = YES;
-        }
-        else{
+        }else{
             //If we're in the shared folder we just move the docs to the private directory which is our documents folder
             [_fileSystem saveFilesToDocumentsDir:_selectedFiles];
             [_selectedFiles removeAllObjects];
@@ -84,8 +70,7 @@ static BOOL const SHARED = 1;
             _buttonState = 1;
             _selectEnabled = YES;
             _collectionOfFiles.allowsMultipleSelection = YES;
-        }
-        else{
+        }else{
             //if we're in the pricate folder we don't move our documents anaywhere we put them
             //in our shared docs array, and then we "send" them, which will put them in our
             //recipients /tmp folder on their phone
@@ -184,7 +169,6 @@ static BOOL const SHARED = 1;
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     
     if(_selectEnabled){
-
         _selectedFile = _privateOrShared == PRIVATE ? [_fileSystem.privateDocs objectAtIndex:indexPath.row]:[_fileSystem.sharedDocs objectAtIndex:indexPath.row];
         [_selectedFiles addObject:_selectedFile];
     }else{
@@ -239,12 +223,17 @@ static BOOL const SHARED = 1;
 
 -(void) inviteFoundPeer:(MCPeerID *)foreignPeerID{
     
+    [_browserWrapper.autobrowser invitePeer:foreignPeerID toSession:_sessionWrapper.session withContext:nil timeout:5.0];
 }
 
 -(void) acceptInvitationFromPeer:(MCPeerID *)foreignPeerID
                invitationHandler:(void (^)(BOOL, MCSession *))invitationHandler{
     
+    invitationHandler(YES, _sessionWrapper.session);
+    //took out a call to stopAdvertisingPeer here
 }
+
+#pragma mark - viewDidLoad and didReceiveMemoryWarning 
 
 /* - IMPLEMENT DELEGATE METHODS FROM EACH WRAPPER'S PROTOCOL HERE - */
 - (void)viewDidLoad {

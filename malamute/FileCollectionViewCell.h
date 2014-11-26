@@ -13,5 +13,4 @@
 @property (nonatomic, strong) IBOutlet UILabel *cellLabel;
 @property (nonatomic, strong) IBOutlet UIImageView *cellImage;
 
-
 @end

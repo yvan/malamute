@@ -10,10 +10,11 @@
 
 @interface File : NSObject
 
-@property (nonatomic, strong) NSString* name;
+@property (nonatomic) BOOL isDirectory;
 @property (nonatomic, strong) NSURL* url;
+@property (nonatomic, strong) NSString* name;
 @property (nonatomic, strong) NSString* sender;
 @property (nonatomic, strong) NSDate* dateCreated;
-@property (nonatomic) BOOL isDirectory;
+
 -(instancetype)initWithName:(NSString*) name andURL:(NSURL*)url andDate:(NSDate*)date andDirectoryFlag:(BOOL)flag;
 @end

@@ -10,19 +10,18 @@
 
 @protocol AdvertiserWrapperDelegate <NSObject>
 
--(void) acceptInvitationFromPeer:(MCPeerID *)foreignPeerID
-               invitationHandler:(void (^)(BOOL, MCSession *))invitationHandler;
+-(void) acceptInvitationFromPeer:(MCPeerID *)foreignPeerID invitationHandler:(void (^)(BOOL, MCSession *))invitationHandler;
 
 @end
 
 @interface AdvertiserWrapper : NSObject <MCNearbyServiceAdvertiserDelegate>
 
-@property (nonatomic, readonly) MCNearbyServiceAdvertiser *autoadvertiser;
 @property (nonatomic, readonly) BOOL advertising;
 @property (nonatomic) id <AdvertiserWrapperDelegate> advertiserDelegate;
+@property (nonatomic, readonly) MCNearbyServiceAdvertiser *autoadvertiser;
 
--(instancetype) startAdvertising:(MCPeerID *) myPeerId;
 -(void) stopAdvertising;
 -(void) restartAdvertising;
+-(instancetype) startAdvertising:(MCPeerID *) myPeerId;
 
 @end
