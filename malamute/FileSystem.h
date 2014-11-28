@@ -21,11 +21,12 @@
 -(void) saveFileSystemToJSON;
 -(BOOL) isValidPath:(NSString*) path;
 -(void) populateArraysWithFileSystem;
--(NSMutableArray *)getAllDocDirFiles;
+-(NSMutableArray *) getAllDocDirFiles;
 -(void) deleteAllDocumentsFromSandbox;
 -(BOOL) createNewDir:(NSString*)dirname;
 -(void) saveFileToDocumentsDir:(File*)file;
 -(void) saveFilesToDocumentsDir:(NSArray*) files ;
+-(void) createNewFile:(NSString *) fileName withURL:(NSURL*) url inDirectory:(NSMutableArray *) arrayName;
 -(BOOL) moveFiles:(NSMutableArray*)selectedFiles from:(NSMutableArray*)firstDirectory to:(NSMutableArray*)secondDirectory withInfo:(BOOL)privateOrShared;
 
 @end

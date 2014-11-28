@@ -105,6 +105,12 @@
     [_privateDocs addObject:file];
 }
 
+-(void) createNewFile:(NSString *) fileName withURL:(NSURL *) url inDirectory:(NSMutableArray *) arrayName{
+    
+    File* newFile = [[File alloc] initWithName:fileName andURL:url andDate:[NSDate date] andDirectoryFlag:0];
+    [arrayName addObject:newFile];
+}
+
 #pragma mark - Filsystem State Methods
 
 /* - reads the filesystem.json file and populated our sharedDocs

@@ -21,7 +21,7 @@ static BOOL const SHARED = 1;
 #pragma mark - FileUtility
 
 /* - didn't use NSRange bec. it's non obvious - */
--(UIImageView *) assignIconForFileType:(NSString *) filename withBool:(BOOL)selected{
+-(UIImageView *) assignIconForFileType:(NSString *) filename isSelected:(BOOL)selected isAddFileIcon:(BOOL)isAddFileIcon{
     
     NSInteger finalDot = 0;
     NSString *fileExtension = @"";
@@ -35,10 +35,11 @@ static BOOL const SHARED = 1;
     UIImageView *iconViewForCell;
     UIImage *image;
     if(selected){
-        image = [UIImage imageNamed:[NSString stringWithFormat:@"%@-sel.png", fileExtension]];
-        
+        if(isAddFileIcon){image = [UIImage imageNamed:@"addfile-sel.png"];}
+        else{image = [UIImage imageNamed:[NSString stringWithFormat:@"%@-sel.png", fileExtension]];}
     }else{
-        image = [UIImage imageNamed:[NSString stringWithFormat:@"%@.png", fileExtension]];
+        if(isAddFileIcon){image = [UIImage imageNamed:@"addfile.png"];}
+        else{image = [UIImage imageNamed:[NSString stringWithFormat:@"%@.png", fileExtension]];}
     }
     iconViewForCell = [[UIImageView alloc] initWithImage:image];
     return iconViewForCell;
@@ -128,6 +129,30 @@ static BOOL const SHARED = 1;
     }
 }
 
+#pragma mark - Summon Photo Library Utility
+
+-(void) summonPhotoLibrary{
+    
+    UIImagePickerController* libraryPicker = [[UIImagePickerController alloc] init];
+    [libraryPicker setDelegate:self];
+    libraryPicker.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
+    [self presentViewController:libraryPicker animated:YES completion:^(void){}];
+}
+
+#pragma mark - UIImagePickerControllerDelegate
+
+-(void) imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info{
+    NSLog(@"%@", info);
+    NSLog(@"media returned");
+    _privateOrShared == PRIVATE ? [_fileSystem createNewFile:@"image-test.jpg" withURL:[NSURL URLWithString:[_fileSystem.documentsDirectory stringByAppendingPathComponent:@"image-test.jpg"]] inDirectory:_fileSystem.privateDocs]:[_fileSystem createNewFile:@"image-test.jpg" withURL:[NSURL URLWithString:[_fileSystem.documentsDirectory stringByAppendingPathComponent:@"image-test-shared.jpg"]] inDirectory:_fileSystem.sharedDocs];
+    
+}
+
+-(void) imagePickerControllerDidCancel:(UIImagePickerController *)libraryPicker{
+    [self dismissViewControllerAnimated:libraryPicker completion:^(void){}];
+    [_collectionOfFiles reloadData];
+}
+
 #pragma mark - UICollectionViewDatasource
 
 - (NSInteger)numberOfSectionsInCollectionView: (UICollectionView *)collectionView {
@@ -135,24 +160,38 @@ static BOOL const SHARED = 1;
 }
 
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
-    return _privateOrShared == PRIVATE ? [_fileSystem.privateDocs count]:[_fileSystem.sharedDocs count];
+    //+1 is for the last cell which acts as a button to load in pictures, but also make new files.
+    return _privateOrShared == PRIVATE ? [_fileSystem.privateDocs count]+1:[_fileSystem.sharedDocs count]+1;
 }
 
 -(FileCollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     
     FileCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"fileOrFolder"
-                                                   forIndexPath:indexPath];
+                                                                             forIndexPath:indexPath];
     
     //set the appropriate seleted iamge (red in-filled image) for a selected cell
     //set the appropriate non-selected image (non red filled in) for non-selected cell
     if(_privateOrShared == PRIVATE){
-        cell.backgroundView = [self assignIconForFileType:((File *)[_fileSystem.privateDocs objectAtIndex:indexPath.row]).name withBool:0];
-        cell.selectedBackgroundView = [self assignIconForFileType:((File *)[_fileSystem.privateDocs objectAtIndex:indexPath.row]).name withBool:1];
+        if(indexPath.row == [_fileSystem.privateDocs count]){
+            FileCollectionViewCell *addFileCell = [collectionView dequeueReusableCellWithReuseIdentifier:@"addFile"
+                forIndexPath:indexPath];
+            addFileCell.backgroundView = [self assignIconForFileType:nil isSelected:0 isAddFileIcon:1];
+            //addFileCell.selectedBackgroundView = [self assignIconForFileType:nil isSelected:1 isAddFileIcon:1];
+            return addFileCell;
+        }
+        cell.backgroundView = [self assignIconForFileType:((File *)[_fileSystem.privateDocs objectAtIndex:indexPath.row]).name isSelected:0 isAddFileIcon:0];
+        cell.selectedBackgroundView = [self assignIconForFileType:((File *)[_fileSystem.privateDocs objectAtIndex:indexPath.row]).name isSelected:1 isAddFileIcon:0];
         cell.cellLabel.text = ((File *)[_fileSystem.privateDocs objectAtIndex:indexPath.row]).name;
-
     }else{
-        cell.backgroundView = [self assignIconForFileType:((File *)[_fileSystem.sharedDocs objectAtIndex:indexPath.row]).name withBool:0];
-        cell.selectedBackgroundView = [self assignIconForFileType:((File *)[_fileSystem.sharedDocs objectAtIndex:indexPath.row]).name withBool:1];
+        if(indexPath.row == [_fileSystem.sharedDocs count]){
+            FileCollectionViewCell *addFileCell = [collectionView dequeueReusableCellWithReuseIdentifier:@"addFile"
+                forIndexPath:indexPath];
+            addFileCell.backgroundView = [self assignIconForFileType:nil isSelected:0 isAddFileIcon:1];
+            //addFileCell.selectedBackgroundView = [self assignIconForFileType:nil isSelected:1 isAddFileIcon:1];
+            return addFileCell;
+        }
+        cell.backgroundView = [self assignIconForFileType:((File *)[_fileSystem.sharedDocs objectAtIndex:indexPath.row]).name isSelected:0 isAddFileIcon:0];
+        cell.selectedBackgroundView = [self assignIconForFileType:((File *)[_fileSystem.sharedDocs objectAtIndex:indexPath.row]).name isSelected:1 isAddFileIcon:0];
         cell.cellLabel.text = ((File *)[_fileSystem.sharedDocs objectAtIndex:indexPath.row]).name;
     }
     return cell;
@@ -168,19 +207,30 @@ static BOOL const SHARED = 1;
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     
-    if(_selectEnabled){
-        _selectedFile = _privateOrShared == PRIVATE ? [_fileSystem.privateDocs objectAtIndex:indexPath.row]:[_fileSystem.sharedDocs objectAtIndex:indexPath.row];
-        [_selectedFiles addObject:_selectedFile];
-    }else{
-        [collectionView deselectItemAtIndexPath:indexPath animated:NO];
+    NSInteger fileCount = _privateOrShared == PRIVATE ? [_fileSystem.privateDocs count]:[_fileSystem.sharedDocs count];
+    
+    if(indexPath.row == fileCount){//user clicked on Add File
+        [self summonPhotoLibrary];
+    }else{ //User clicked on an actual file icon
+        if(_selectEnabled){
+            _selectedFile = _privateOrShared == PRIVATE ? [_fileSystem.privateDocs objectAtIndex:indexPath.row]:[_fileSystem.sharedDocs objectAtIndex:indexPath.row];
+            [_selectedFiles addObject:_selectedFile];
+        }else{
+            [collectionView deselectItemAtIndexPath:indexPath animated:NO];
+        }
     }
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
-    
-    if (_selectEnabled) {
-        _selectedFile = _privateOrShared == PRIVATE ? [_fileSystem.privateDocs objectAtIndex:indexPath.row]:[_fileSystem.sharedDocs objectAtIndex:indexPath.row];
-        [_selectedFiles removeObject:_selectedFile];
+    NSInteger fileCount = _privateOrShared == PRIVATE ? [_fileSystem.privateDocs count]:[_fileSystem.sharedDocs count];
+
+    if(indexPath.row == fileCount){//user clicked on Add File
+        [self summonPhotoLibrary];
+    }else{ //User clicked on an actual file icon
+        if (_selectEnabled) {
+            _selectedFile = _privateOrShared == PRIVATE ? [_fileSystem.privateDocs objectAtIndex:indexPath.row]:[_fileSystem.sharedDocs objectAtIndex:indexPath.row];
+            [_selectedFiles removeObject:_selectedFile];
+        }
     }
 }
 

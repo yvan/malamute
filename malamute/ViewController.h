@@ -10,15 +10,18 @@
 #import "FileSystem.h"
 #import "SessionWrapper.h"
 #import "BrowserWrapper.h"
+#import "FileAddingCell.h"
 #import "AdvertiserWrapper.h"
 #import "FileCollectionViewCell.h"
 
-@interface ViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, SessionWrapperDelegate, BrowserWrapperDelegate, AdvertiserWrapperDelegate>
+/* - UIImagePickerControllerDelegate requires UINavigationControllerDelegate to work I guess? - */
+@interface ViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIImagePickerControllerDelegate, UINavigationControllerDelegate, SessionWrapperDelegate, BrowserWrapperDelegate, AdvertiserWrapperDelegate>
 
 @property (nonatomic, strong) IBOutlet UIButton *selectSendButton;
 @property (nonatomic, strong) IBOutlet UICollectionView *collectionOfFiles;
 @property (nonatomic, strong) IBOutlet UIButton *selectDirectoryModeShared;
 @property (nonatomic, strong) IBOutlet UIButton *selectDirectoryModePrivate;
+@property (nonatomic, strong) IBOutlet UIButton *getPhotoFromLibary;
 
 @property (nonatomic) SessionWrapper *sessionWrapper;
 @property (nonatomic) BrowserWrapper *browserWrapper;
@@ -32,7 +35,7 @@
 @property (nonatomic, strong) NSString *selectedFile;
 
 
-
+-(void) summonPhotoLibrary;
 -(IBAction) clickedSelectSendButton:(id)sender;
 -(IBAction) clickedSelectDirectoryButton:(id)sender;
 
