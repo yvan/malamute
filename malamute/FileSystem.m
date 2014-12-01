@@ -19,8 +19,8 @@
     _sharedDocs = [[NSMutableArray alloc] init];
     _privateDocs = [[NSMutableArray alloc] init];
     _documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0];
-    // [self makeDummyFiles];       // YO COMMENT THIS PUNK ASS METHOD OUT OF PRODUCTION VERSION
-    // [self saveFileSystemToJSON]; // KEEP UNCOMMENTED, THE FIRST PART OF THIS METHOD WIPES THE FILESYSTEM.
+    //[self makeDummyFiles];       // YO COMMENT THIS PUNK ASS METHOD OUT OF PRODUCTION VERSION
+    //[self saveFileSystemToJSON]; // KEEP UNCOMMENTED, THE FIRST PART OF THIS METHOD WIPES THE FILESYSTEM.
     [self populateArraysWithFileSystem];
     return self;
 }
@@ -111,7 +111,22 @@
     [arrayName addObject:newFile];
 }
 
-#pragma mark - Filsystem State Methods
+/* - Deleted a file based on it's index in the appropriate array - */
+
+-(void) deleteSingleFileFromApp:(NSInteger)fileIndex fromDirectory:(NSMutableArray *) arrayToDeleteFrom {
+    
+    NSError *deleteError;
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSString *filePath = [_documentsDirectory stringByAppendingPathComponent:((File *)[arrayToDeleteFrom objectAtIndex:fileIndex]).name];
+    BOOL success = [fileManager removeItemAtPath:filePath error:&deleteError];
+    NSLog(@"%@", [self getAllDocDirFiles]);
+    if (success) {
+        [_privateDocs removeObject:[arrayToDeleteFrom objectAtIndex:fileIndex]];
+        [_sharedDocs removeObject:[arrayToDeleteFrom objectAtIndex:fileIndex]];
+    }else{NSLog(@"Could not delete file -:%@ ",deleteError );}
+}
+
+#pragma mark - Filsystem State Methods 
 
 /* - reads the filesystem.json file and populated our sharedDocs
    - and privateDocs with the app's filesystem on app load
@@ -122,7 +137,7 @@
     NSInteger iteration = 0;
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"yyyy-MM-dd 'at' HH:mm:ss"];
-     NSString *filePath = [_documentsDirectory stringByAppendingPathComponent:@"filesystem.json"];
+    NSString *filePath = [_documentsDirectory stringByAppendingPathComponent:@"filesystem.json"];
     NSData* filesystemdata = [NSData dataWithContentsOfFile:filePath];
     NSDictionary* JSONDict = [NSJSONSerialization JSONObjectWithData:filesystemdata options:0 error:&error];
     
@@ -138,8 +153,8 @@
                 NSDate* created = [formatter dateFromString:[individualFile objectForKey:@"created"]];
                 BOOL isDirectory = [individualFile objectForKey:@"isDirectory"];
                 File* file = [[File alloc] initWithName:name andURL:url andDate:created andDirectoryFlag:isDirectory];
-                //in the future well need and object that stores each potential diretory as it's own key
-                //here well jsut say that on the first iteration well do private and second shared diretories
+                // - in the future well need and object that stores each potential diretory as it's own key - //
+                // - here well jsut say that on the first iteration well do private and second shared diretories - //
                 if(iteration == 1){
                     [_sharedDocs addObject:file];
                 }else{
@@ -277,9 +292,8 @@
 /* - makes a set of dummy files for us to test useability - */
 -(void) makeDummyFiles{
     
-    NSArray* documents = [[NSFileManager defaultManager]URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask];
-    NSString *private = [[[documents objectAtIndex:0] absoluteString] stringByAppendingString:@"private/"];
-    NSString *shared = [[[documents objectAtIndex:0] absoluteString] stringByAppendingString:@"tmp/"];
+    NSString *private = _documentsDirectory;
+    //NSString *shared = [_documentsDirectory stringByAppendingString:@"tmp/"];
     NSString *testfile1 = [private stringByAppendingPathComponent:@"testfile1.txt"];
     
     File *testfileobj1 = [[File alloc] initWithName:@"testfile1.txt"
@@ -287,24 +301,24 @@
                                        andDate:[NSDate date]
                                        andDirectoryFlag:0];
     [_privateDocs addObject:testfileobj1];
-    NSString *testfile2 = [private stringByAppendingString:@"testfile2.txt"];
+    NSString *testfile2 = [private stringByAppendingPathComponent:@"testfile2.txt"];
     File *testfileobj2 = [[File alloc] initWithName:@"testfile2.txt"
                                        andURL:[NSURL URLWithString:testfile2]
                                        andDate:[NSDate date]
                                        andDirectoryFlag:0];
     [_privateDocs addObject:testfileobj2];
-    NSString *testfile3 = [shared stringByAppendingString:@"testfile3.txt"];
+    NSString *testfile3 = [private stringByAppendingPathComponent:@"testfile3.txt"];
     File *testfileobj3 = [[File alloc] initWithName:@"testfile3.txt"
                                        andURL:[NSURL URLWithString:testfile3]
                                        andDate:[NSDate date]
                                        andDirectoryFlag:0];
-    [_sharedDocs addObject:testfileobj3];
-    NSString *testfile4 = [shared stringByAppendingString:@"testfile4.txt"];
+    [_privateDocs addObject:testfileobj3];
+    NSString *testfile4 = [private stringByAppendingPathComponent:@"testfile4.txt"];
     File *testfileobj4 = [[File alloc] initWithName:@"testfile4.txt"
                                        andURL:[NSURL URLWithString:testfile4]
                                        andDate:[NSDate date]
                                        andDirectoryFlag:0];
-    [_sharedDocs addObject:testfileobj4];
+    [_privateDocs addObject:testfileobj4];
     
     NSError *writeError = nil;
     NSString *string = @"text-test";

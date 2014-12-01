@@ -34,6 +34,7 @@ static BOOL const SHARED = 1;
 
     UIImageView *iconViewForCell;
     UIImage *image;
+    fileExtension = [fileExtension lowercaseString];
     if(selected){
         if(isAddFileIcon){image = [UIImage imageNamed:@"addfile-sel.png"];}
         else{image = [UIImage imageNamed:[NSString stringWithFormat:@"%@-sel.png", fileExtension]];}
@@ -47,40 +48,70 @@ static BOOL const SHARED = 1;
 
 #pragma mark - IBActions
 
+/* - select Send buttons include the blanket button and the move button 
+   - the delete button has it's own method called clickedDeleteButton
+   - */
 -(IBAction) clickedSelectSendButton:(id)sender{
     
     if(_privateOrShared == SHARED){//we are in shared folder
         
-        if(_buttonState == 0){
+        if(sender == _selectBlanketButton){
             [_selectSendButton setTitle:@"Move to Private" forState:UIControlStateNormal];
-            _buttonState = 1;
             _selectEnabled = YES;
+            [_selectSendButton setHidden:NO];
+            [_selectSendButton setEnabled:YES];
+            [_selectDeleteButton setHidden:NO];
+            [_selectDeleteButton setEnabled:YES];
+            [_selectBlanketButton setHidden:YES];
+            [_selectBlanketButton setEnabled:NO];
             _collectionOfFiles.allowsMultipleSelection = YES;
         }else{
-            //If we're in the shared folder we just move the docs to the private directory which is our documents folder
+            // - If we're in the shared folder we just move the docs to the private directory which is our - //
+            // - documents folder - //
             [_fileSystem saveFilesToDocumentsDir:_selectedFiles];
             [_selectedFiles removeAllObjects];
-            [_selectSendButton setTitle:@"Sent! Select More files..." forState:UIControlStateNormal];
-            _buttonState = 0;
+            [_selectSendButton setHidden:YES];
+            [_selectSendButton setEnabled:NO];
+            [_selectDeleteButton setHidden:YES];
+            [_selectDeleteButton setEnabled:NO];
+            [_selectBlanketButton setHidden:NO];
+            [_selectBlanketButton setEnabled:YES];
             _selectEnabled = NO;
+            // - deselects all the items we just performed an operation on nice n' fancy - //
+            for (int i=0; i < [_fileSystem.sharedDocs count]; i++) {
+                [_collectionOfFiles deselectItemAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0] animated:YES];
+            }
         }
     }else{//we are IN the private folder
         
-        if(_buttonState == 0){
+        if(sender == _selectBlanketButton){
             [_selectSendButton setTitle:@"Move to Shared" forState:UIControlStateNormal];
-            _buttonState = 1;
             _selectEnabled = YES;
+            [_selectSendButton setHidden:NO];
+            [_selectSendButton setEnabled:YES];
+            [_selectDeleteButton setHidden:NO];
+            [_selectDeleteButton setEnabled:YES];
+            [_selectBlanketButton setHidden:YES];
+            [_selectBlanketButton setEnabled:NO];
             _collectionOfFiles.allowsMultipleSelection = YES;
         }else{
-            //if we're in the pricate folder we don't move our documents anaywhere we put them
-            //in our shared docs array, and then we "send" them, which will put them in our
-            //recipients /tmp folder on their phone
+            // - if we're in the pricate folder we don't move our documents anaywhere we put them - //
+            // - in our shared docs array, and then we "send" them, which will put them in our - //
+            // - recipients /tmp folder on their phone - //
             [_sessionWrapper sendFiles:_selectedFiles toPeers:_sessionWrapper.connectedPeerIDs];
             [_fileSystem.sharedDocs addObjectsFromArray:_selectedFiles];
             [_selectedFiles removeAllObjects];
-            [_selectSendButton setTitle:@"Sent! Select More files..." forState:UIControlStateNormal];
-            _buttonState = 0;
+            [_selectSendButton setHidden:YES];
+            [_selectSendButton setEnabled:NO];
+            [_selectDeleteButton setHidden:YES];
+            [_selectDeleteButton setEnabled:NO];
+            [_selectBlanketButton setHidden:NO];
+            [_selectBlanketButton setEnabled:YES];
             _selectEnabled = NO;
+            // - deselects all the items we just performed an operation on nice n' fancy - //
+            for (int i=0; i < [_fileSystem.privateDocs count]; i++) {
+                [_collectionOfFiles deselectItemAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0] animated:YES];
+            }
         }
     }
 }
@@ -89,9 +120,8 @@ static BOOL const SHARED = 1;
     
     if(sender == _selectDirectoryModeShared){ //selectDirectoryMode Clicked
         
-        [_selectSendButton setTitle:@"Select Files" forState:UIControlStateNormal];
         [_selectDirectoryModeShared setTitle:@"Shared" forState:UIControlStateNormal];
-        
+        [_selectSendButton setTitle:@"Move to Private" forState:UIControlStateNormal]; // not necessary but improves the look of the title change.
         [_selectDirectoryModeShared setBackgroundColor: [UIColor colorWithRed:135.0/255.0
                                                                  green:9.0/255.0
                                                                  blue:22.0/255.0
@@ -100,17 +130,21 @@ static BOOL const SHARED = 1;
                                                                   green:9.0/255.0
                                                                   blue:22.0/255.0
                                                                   alpha:1.0]];
-        _buttonState = 0;
         _selectEnabled = NO;
         _privateOrShared = SHARED;
         [_collectionOfFiles reloadData];
         [_selectedFiles removeAllObjects];
-        NSLog(@"switch to shared");
+        [_selectSendButton setHidden:YES];
+        [_selectSendButton setEnabled:NO];
+        [_selectDeleteButton setHidden:YES];
+        [_selectDeleteButton setEnabled:NO];
+        [_selectBlanketButton setHidden:NO];
+        [_selectBlanketButton setEnabled:YES];
     }
     if(sender == _selectDirectoryModePrivate){
         
-        [_selectSendButton setTitle:@"Select Files" forState:UIControlStateNormal];
         [_selectDirectoryModePrivate setTitle:@"Private" forState:UIControlStateNormal];
+        [_selectSendButton setTitle:@"Move to Shared" forState:UIControlStateNormal]; //redundant but improves the look of transition on title change for this button.
         
         [_selectDirectoryModePrivate setBackgroundColor: [UIColor colorWithRed:135.0/255.0
                                                                   green:9.0/255.0
@@ -120,32 +154,88 @@ static BOOL const SHARED = 1;
                                                                  green:9.0/255.0
                                                                  blue:22.0/255.0
                                                                  alpha:1.0]];
-        _buttonState = 0;
         _selectEnabled = NO;
         _privateOrShared = PRIVATE;
         [_collectionOfFiles reloadData];
         [_selectedFiles removeAllObjects];
-        NSLog(@"switch to private");
+        [_selectSendButton setHidden:YES];
+        [_selectSendButton setEnabled:NO];
+        [_selectDeleteButton setHidden:YES];
+        [_selectDeleteButton setEnabled:NO];
+        [_selectBlanketButton setHidden:NO];
+        [_selectBlanketButton setEnabled:YES];
     }
 }
 
-#pragma mark - Summon Photo Library Utility
+-(IBAction) clickedDeleteButton:(id)sender{
 
--(void) summonPhotoLibrary{
+    for(int i=0; i< [_selectedFiles count]; i++){
+            
+        [_fileSystem deleteSingleFileFromApp:i fromDirectory:_selectedFiles];
+        [_fileSystem saveFileSystemToJSON]; // - we call it every loop iteration just to be safe. - //
+    }
+    [_selectedFiles removeAllObjects];
+    [_collectionOfFiles reloadData];
+    _selectEnabled = YES;
+    
+    [_selectSendButton setHidden:YES];
+    [_selectSendButton setEnabled:NO];
+    [_selectDeleteButton setHidden:YES];
+    [_selectDeleteButton setEnabled:NO];
+    [_selectBlanketButton setHidden:NO];
+    [_selectBlanketButton setEnabled:YES];
+}
+
+#pragma mark - Photo Library Utility
+
+-(void) summonPhotoLibrary {
     
     UIImagePickerController* libraryPicker = [[UIImagePickerController alloc] init];
     [libraryPicker setDelegate:self];
-    libraryPicker.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
+    libraryPicker.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;// or UIImagePickerControllerSourceTypePhotoLibrary
     [self presentViewController:libraryPicker animated:YES completion:^(void){}];
+}
+
+/* - Wrapper just in case we want to add pre save functionality later. - */
+-(void) savePictureToPhotoLibrary:(UIImage *)image {
+    
+    UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
 }
 
 #pragma mark - UIImagePickerControllerDelegate
 
--(void) imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info{
-    NSLog(@"%@", info);
-    NSLog(@"media returned");
-    _privateOrShared == PRIVATE ? [_fileSystem createNewFile:@"image-test.jpg" withURL:[NSURL URLWithString:[_fileSystem.documentsDirectory stringByAppendingPathComponent:@"image-test.jpg"]] inDirectory:_fileSystem.privateDocs]:[_fileSystem createNewFile:@"image-test.jpg" withURL:[NSURL URLWithString:[_fileSystem.documentsDirectory stringByAppendingPathComponent:@"image-test-shared.jpg"]] inDirectory:_fileSystem.sharedDocs];
+-(void) imagePickerController:(UIImagePickerController *)libraryPicker didFinishPickingMediaWithInfo:(NSDictionary *)info{
     
+    NSString* fileInfo = [[info objectForKey:UIImagePickerControllerReferenceURL] absoluteString]; // - UIImagePickerControllerMediaType not used - //
+    NSString *uniqueFileCode = [fileInfo substringWithRange:NSMakeRange(36, 36)];
+    NSString *fileExtension = [fileInfo substringWithRange:NSMakeRange(77,3)];
+    
+    UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
+    NSString  *path = [_fileSystem.documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@",uniqueFileCode,fileExtension]];
+
+    // - as far as I know these are the only two image representations supported from the iOS photo library - //
+    if([fileExtension isEqualToString:@"JPG"]){
+        
+        [UIImageJPEGRepresentation(image, 1.0) writeToFile:path atomically:YES];
+
+    }else if([fileExtension isEqualToString:@"PNG"]){
+     
+        [UIImagePNGRepresentation(image) writeToFile:path atomically:YES];
+    }
+    
+    _privateOrShared == PRIVATE ? [_fileSystem createNewFile:[NSString stringWithFormat:@"%@.%@",uniqueFileCode,fileExtension]
+                                               withURL:[NSURL URLWithString:[_fileSystem.documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@",uniqueFileCode,fileExtension]]]
+                                               inDirectory:_fileSystem.privateDocs]
+                                  :
+    
+                                  [_fileSystem createNewFile:[NSString stringWithFormat:@"%@.%@",uniqueFileCode,fileExtension]
+                                               withURL:[NSURL URLWithString:[_fileSystem.documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@",uniqueFileCode,fileExtension]]]
+                                               inDirectory:_fileSystem.sharedDocs];
+    
+    
+    [self dismissViewControllerAnimated:libraryPicker completion:^(void){}];
+    [_fileSystem saveFileSystemToJSON];
+    [_collectionOfFiles reloadData];
 }
 
 -(void) imagePickerControllerDidCancel:(UIImagePickerController *)libraryPicker{
@@ -160,7 +250,7 @@ static BOOL const SHARED = 1;
 }
 
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
-    //+1 is for the last cell which acts as a button to load in pictures, but also make new files.
+    // - +1 is for the last cell which acts as a button to load in pictures, but also make new files. - //
     return _privateOrShared == PRIVATE ? [_fileSystem.privateDocs count]+1:[_fileSystem.sharedDocs count]+1;
 }
 
@@ -169,8 +259,8 @@ static BOOL const SHARED = 1;
     FileCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"fileOrFolder"
                                                                              forIndexPath:indexPath];
     
-    //set the appropriate seleted iamge (red in-filled image) for a selected cell
-    //set the appropriate non-selected image (non red filled in) for non-selected cell
+    // - set the appropriate seleted iamge (red in-filled image) for a selected cell - //
+    // - set the appropriate non-selected image (non red filled in) for non-selected cell - //
     if(_privateOrShared == PRIVATE){
         if(indexPath.row == [_fileSystem.privateDocs count]){
             FileCollectionViewCell *addFileCell = [collectionView dequeueReusableCellWithReuseIdentifier:@"addFile"
@@ -233,6 +323,20 @@ static BOOL const SHARED = 1;
         }
     }
 }
+
+#pragma mark - Delete Cells Long Press Function
+
+/* -in the future we'll probably have to have a better way to delete
+   - stuff, this is kind of shitty
+   -
+-(void) activateDeletionMode:(UILongPressGestureRecognizer *)recognizer{
+    
+    NSLog(@"BLAH");
+    if (recognizer.state == UIGestureRecognizerStateBegan)
+    {
+        
+    }
+} - */
 
 #pragma mark - UICollectionViewDelegateFlowLayout
 
@@ -297,15 +401,30 @@ static BOOL const SHARED = 1;
     [_collectionOfFiles setDelegate:self];
     [_collectionOfFiles setDataSource:self];
     
-    //set borders on buttons
+    //set button styling
+    [_selectSendButton setHidden:YES];
+    [_selectSendButton setEnabled:NO];
+    [_selectDeleteButton setHidden:YES];
+    [_selectDeleteButton setEnabled:NO];
+    [_selectBlanketButton setHidden:NO];
+    [_selectBlanketButton setEnabled:YES];
     [[_selectSendButton layer] setBorderWidth:0.5f];
+    [[_selectDeleteButton layer] setBorderWidth:0.5f];
+    [[_selectBlanketButton layer] setBorderWidth:0.5f];
     [[_selectDirectoryModeShared layer] setBorderWidth:0.5f];
     [[_selectDirectoryModePrivate layer] setBorderWidth:0.5f];
     [[_selectSendButton layer] setBorderColor:[UIColor blackColor].CGColor];
+    [[_selectDeleteButton layer] setBorderColor:[UIColor blackColor].CGColor];
+    [[_selectBlanketButton layer] setBorderColor:[UIColor blackColor].CGColor];
     [[_selectDirectoryModeShared layer] setBorderColor:[UIColor blackColor].CGColor];
     [[_selectDirectoryModePrivate layer] setBorderColor:[UIColor blackColor].CGColor];
+    
+    //set the long press recognizer (i had this for deleting, but opted for a delete button)
+    /* - UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(activateDeletionMode:)];
+    longPress.delegate = self;
+    [_collectionOfFiles addGestureRecognizer:longPress]; - */
 
-    //Init session, advertiser, and browser wrapper in that order
+    //init session, advertiser, and browser wrapper in that order
     _sessionWrapper = [[SessionWrapper alloc] initSessionWithName:@"yvan"];
     _advertiserWrapper = [[AdvertiserWrapper alloc] startAdvertising:_sessionWrapper.myPeerID];
     _browserWrapper = [[BrowserWrapper alloc] startBrowsing:_sessionWrapper.myPeerID];
