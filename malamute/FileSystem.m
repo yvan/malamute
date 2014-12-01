@@ -19,9 +19,10 @@
     _sharedDocs = [[NSMutableArray alloc] init];
     _privateDocs = [[NSMutableArray alloc] init];
     _documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0];
-    //[self makeDummyFiles];       // YO COMMENT THIS PUNK ASS METHOD OUT OF PRODUCTION VERSION
+    //[self makeDummyFiles];       // YO COMMENT THIS METHOD OUT OF PRODUCTION VERSION
     //[self saveFileSystemToJSON]; // KEEP UNCOMMENTED, THE FIRST PART OF THIS METHOD WIPES THE FILESYSTEM.
     [self populateArraysWithFileSystem];
+    //[self forceDeleteAllItemsInDocuments];
     return self;
 }
 
@@ -55,7 +56,12 @@
     return allFiles;
 }
 
-/* - deletes...all documents from sandbox? what? - */
+/* - This doesn't delete all documents from the sandbox, 
+   - only the ones located in referenced in privateDocs
+   - I recommend getting rid of this method and the 
+   - method below in production, we don't want to 
+   - risk calling this on a real user's files.
+   - */
 -(void) deleteAllDocumentsFromSandbox{
     
     NSFileManager* fileManager = [NSFileManager defaultManager];
@@ -70,37 +76,55 @@
     _privateDocs = [self getAllDocDirFiles];
 }
 
+/* - different from deleteAllDocumentsFromSandbox above because
+   - it finds paths for garbage that isn't referenced 
+   - anymore and gets rid of it the method above 
+   - deletes ONLY referenced content.
+   - */
+-(void) forceDeleteAllItemsInDocuments{
+    NSFileManager *fileMgr = [NSFileManager defaultManager];
+    NSError *error = nil;
+    NSArray *directoryContents = [fileMgr contentsOfDirectoryAtPath:_documentsDirectory error:&error];
+    if (error == nil) {
+        for (NSString *path in directoryContents) {
+            NSString *fullPath = [_documentsDirectory stringByAppendingPathComponent:path];
+            BOOL removeSuccess = [fileMgr removeItemAtPath:fullPath error:&error];
+            if (!removeSuccess) {
+                NSLog(@"blah");
+            }
+        }
+    } else {
+        NSLog(@"blah2");
+    }
+}
+
 -(void) saveFilesToDocumentsDir:(NSArray*) files {
-    NSLog(@"entered");
+
     for(int i = 0; i < [files count]; i++){
-        NSLog(@"entered2");
+
         File* fileToSave = (File*)[files objectAtIndex:i];
         [self saveFileToDocumentsDir:fileToSave];
     }
 }
 
 -(void) saveFileToDocumentsDir:(File*)file{
-    NSLog(@"entered3");
+
     //move file from file's path to documents folder path, update file
     //add to private documents array
     NSString *destinationPath = [_documentsDirectory stringByAppendingPathComponent:file.name];
     int suffix = 1;
     while([self isValidPath:destinationPath]){
-        NSLog(@"entere4");
+
         //prompt user to rename the file
         destinationPath = [_documentsDirectory stringByAppendingPathComponent:
                           [NSString stringWithFormat:@"%i%@", suffix, file.name]];
         suffix++;
     }
-    NSLog(@"entere5");
     NSError *errorCopy;
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSURL *destinationURL = [NSURL fileURLWithPath:destinationPath];
-    
     [fileManager copyItemAtURL:file.url toURL:destinationURL error:&errorCopy];
-    if (errorCopy) {
-        NSLog(@"Error Copying the file %@", errorCopy);
-    }
+    if (errorCopy) {NSLog(@"Error Copying the file %@", errorCopy);}
     file.url = destinationURL;
     [_privateDocs addObject:file];
 }
@@ -126,7 +150,26 @@
     }else{NSLog(@"Could not delete file -:%@ ",deleteError );}
 }
 
-#pragma mark - Filsystem State Methods 
+/* - code stolen from 'assignIconForFileType' in ViewController.h, found myself using the code a lot
+   - NOTE: this function will totally break
+   - on files with more than one extension
+   - it needs to be updated for that.
+   - */
+-(NSString *) getFileExtension:(NSString *)filename{
+    
+    //code stolen from
+    NSInteger finalDot = 0;
+    NSString *fileExtension = @"";
+    
+    for (NSInteger index=0; index<filename.length;index++){
+        if([filename characterAtIndex:index] == '.'){finalDot = index;}
+        if(index == filename.length-1){fileExtension = [filename substringFromIndex:finalDot+1];}
+        //if(finalDot == 0){fileExtension = @"directory";} //uncomment in future when we allow user to make directories
+    }
+    return fileExtension;
+}
+
+#pragma mark - Filsystem State Methods
 
 /* - reads the filesystem.json file and populated our sharedDocs
    - and privateDocs with the app's filesystem on app load

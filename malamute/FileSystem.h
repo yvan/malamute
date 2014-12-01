@@ -9,7 +9,6 @@
 #import <Foundation/Foundation.h>
 #import "File.h"
 
-
 @interface FileSystem : NSObject
 
 @property (nonatomic, strong) NSMutableArray* sharedDocs;
@@ -26,6 +25,7 @@
 -(BOOL) createNewDir:(NSString*)dirname;
 -(void) saveFileToDocumentsDir:(File*)file;
 -(void) saveFilesToDocumentsDir:(NSArray*) files;
+-(NSString *) getFileExtension:(NSString *)filename;
 -(void) deleteSingleFileFromApp:(NSInteger)fileIndex fromDirectory:(NSMutableArray *) arrayToDeleteFrom;
 -(void) createNewFile:(NSString *) fileName withURL:(NSURL*) url inDirectory:(NSMutableArray *) arrayName;
 -(BOOL) moveFiles:(NSMutableArray*)selectedFiles from:(NSMutableArray*)firstDirectory to:(NSMutableArray*)secondDirectory withInfo:(BOOL)privateOrShared;

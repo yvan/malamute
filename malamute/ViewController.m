@@ -20,17 +20,14 @@ static BOOL const SHARED = 1;
 
 #pragma mark - FileUtility
 
-/* - didn't use NSRange bec. it's non obvious - */
+/* - didn't use NSRange bec. it's non obvious 
+   - NOTE: this function will totally break
+   - on files with more than one extension
+   - it needs to be updated for that.
+   - */
 -(UIImageView *) assignIconForFileType:(NSString *) filename isSelected:(BOOL)selected isAddFileIcon:(BOOL)isAddFileIcon{
     
-    NSInteger finalDot = 0;
-    NSString *fileExtension = @"";
-    
-    for (NSInteger index=0; index<filename.length;index++){
-        if([filename characterAtIndex:index] == '.'){finalDot = index;}
-        if(index == filename.length-1){fileExtension = [filename substringFromIndex:finalDot+1];}
-        //if(finalDot == 0){fileExtension = @"directory";} //uncomment in future when we allow user to make directories
-    }
+    NSString *fileExtension = [_fileSystem getFileExtension:filename];
 
     UIImageView *iconViewForCell;
     UIImage *image;
@@ -66,6 +63,18 @@ static BOOL const SHARED = 1;
             [_selectBlanketButton setEnabled:NO];
             _collectionOfFiles.allowsMultipleSelection = YES;
         }else{
+            // - theoretically this next part transfers files into my photo library as soon as i bring them
+            // - locally into my 'private' directory, ik it's inefficient, deal with it or fix it - //
+            for(int i = 0; i < [_selectedFiles count]; i++){
+                NSString *fileExtension = [_fileSystem getFileExtension:((File *)[_selectedFiles objectAtIndex:i]).name];
+                fileExtension = [fileExtension lowercaseString];
+                if ([fileExtension isEqualToString:@"png"] || [fileExtension isEqualToString:@"jpg"]) {
+                    NSURL *imageURL = ((File *)[_selectedFiles objectAtIndex:i]).url;
+                    NSData *imageData = [NSData dataWithContentsOfURL:imageURL];
+                    UIImage *image = [UIImage imageWithData:imageData];
+                    [self savePictureToPhotoLibrary:image];
+                }
+            }
             // - If we're in the shared folder we just move the docs to the private directory which is our - //
             // - documents folder - //
             [_fileSystem saveFilesToDocumentsDir:_selectedFiles];
@@ -287,12 +296,6 @@ static BOOL const SHARED = 1;
     return cell;
 }
 
-/* - -(UICollectionReusableView *)co2llectionView:
- (UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
- {
- return [[UICollectionReusableView alloc] init];
- } - */
-
 #pragma mark - UICollectionViewDelegate
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
@@ -323,20 +326,6 @@ static BOOL const SHARED = 1;
         }
     }
 }
-
-#pragma mark - Delete Cells Long Press Function
-
-/* -in the future we'll probably have to have a better way to delete
-   - stuff, this is kind of shitty
-   -
--(void) activateDeletionMode:(UILongPressGestureRecognizer *)recognizer{
-    
-    NSLog(@"BLAH");
-    if (recognizer.state == UIGestureRecognizerStateBegan)
-    {
-        
-    }
-} - */
 
 #pragma mark - UICollectionViewDelegateFlowLayout
 
@@ -418,11 +407,6 @@ static BOOL const SHARED = 1;
     [[_selectBlanketButton layer] setBorderColor:[UIColor blackColor].CGColor];
     [[_selectDirectoryModeShared layer] setBorderColor:[UIColor blackColor].CGColor];
     [[_selectDirectoryModePrivate layer] setBorderColor:[UIColor blackColor].CGColor];
-    
-    //set the long press recognizer (i had this for deleting, but opted for a delete button)
-    /* - UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(activateDeletionMode:)];
-    longPress.delegate = self;
-    [_collectionOfFiles addGestureRecognizer:longPress]; - */
 
     //init session, advertiser, and browser wrapper in that order
     _sessionWrapper = [[SessionWrapper alloc] initSessionWithName:@"yvan"];

@@ -179,8 +179,8 @@ tests shouldn't.
     NSDate* nowTimestamp = [NSDate date];
     
     //create Dummy files and put them through the motions.
-    File* file1 = [[File alloc] initWithName:@"malamute-test1.txt" andURL:[[NSURL alloc]initWithString:@"blah"] andDate:[NSDate date] andDirectoryFlag:@0];
-    File* file2 = [[File alloc] initWithName:@"malamute-test1.txt" andURL:[[NSURL alloc]initWithString:@"blah"] andDate:[NSDate date] andDirectoryFlag:@0];
+    File* file1 = [[File alloc] initWithName:@"malamute-test1.txt" andURL:[[NSURL alloc]initWithString:@"blah"] andDate:[NSDate date] andDirectoryFlag:0];
+    File* file2 = [[File alloc] initWithName:@"malamute-test1.txt" andURL:[[NSURL alloc]initWithString:@"blah"] andDate:[NSDate date] andDirectoryFlag:0];
     [viewController.fileSystem.sharedDocs addObject:file1];
     [viewController.fileSystem.privateDocs addObject:file2];
     [viewController.fileSystem saveFileSystemToJSON]; //write the new data
