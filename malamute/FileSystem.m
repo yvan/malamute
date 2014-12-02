@@ -274,19 +274,7 @@
                 [firstDirectory removeObject:file]; //remove each file from the original directory array
                 NSURL* copyingFromDirectory = [[appSupportDir URLByAppendingPathComponent:privateSharedDirectoryExten]
                                                         URLByAppendingPathComponent: file.name];
-                NSInteger finalDot = 0;
-                NSURL* copyingToDirectory;
-                NSString *fileExtension = @"";
-                
-                for (NSInteger index=0; index<file.name.length;index++){
-                    if([file.name characterAtIndex:index] == '.'){finalDot = index;}
-                    if(index == file.name.length-1){fileExtension = [file.name substringFromIndex:finalDot+1];}
-                    /*if(finalDot == 0){ //uncomment in the future if we allow the user to make directories
-                        
-                        fileExtension = @"directory";
-                    }*/
-                }
-                copyingToDirectory = [copyingFromDirectory  URLByAppendingPathExtension:fileExtension];
+                NSURL* copyingToDirectory = [copyingFromDirectory  URLByAppendingPathExtension:[self getFileExtension:file.name]];
                 
                 //MOVE TO THE NEW DIRECTORY (does a copy and deletes the old one)
                 if (![fm moveItemAtURL:copyingFromDirectory  toURL:copyingToDirectory error:&error]) {

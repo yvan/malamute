@@ -65,6 +65,7 @@ static BOOL const SHARED = 1;
         }else{
             // - theoretically this next part transfers files into my photo library as soon as i bring them
             // - locally into my 'private' directory, ik it's inefficient, deal with it or fix it - //
+            // - there may be naming conflicts here - //
             for(int i = 0; i < [_selectedFiles count]; i++){
                 NSString *fileExtension = [_fileSystem getFileExtension:((File *)[_selectedFiles objectAtIndex:i]).name];
                 fileExtension = [fileExtension lowercaseString];
@@ -244,6 +245,7 @@ static BOOL const SHARED = 1;
     
     [self dismissViewControllerAnimated:libraryPicker completion:^(void){}];
     [_fileSystem saveFileSystemToJSON];
+    //[_sessionWrapper sendFiles:_selectedFiles toPeers:_sessionWrapper.connectedPeerIDs];
     [_collectionOfFiles reloadData];
 }
 
