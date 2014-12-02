@@ -52,6 +52,7 @@ static NSString* const ServiceName = @"malamute";
    - advertising/browsing are done in respective helpers
    - */
 -(instancetype) initSessionWithName: (NSString *)name{
+    NSLog(@"started session");
     _connectedPeerIDs = [NSMutableArray new];
     _myPeerID = [[MCPeerID alloc] initWithDisplayName:name];
     _session = [[MCSession alloc] initWithPeer: _myPeerID];
@@ -71,7 +72,8 @@ static NSString* const ServiceName = @"malamute";
    - all of those files to those peer ids.
    - */
 -(void)sendFiles:(NSArray *)Files toPeers:(NSArray *)peerIDs{
-
+    
+    NSLog(@"sending files...");
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 
         for(int i = 0; i < [Files count]; i++){

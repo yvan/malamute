@@ -346,7 +346,7 @@ static BOOL const SHARED = 1;
 #pragma mark - SessionWrapperDelegate
 
 -(void) didFinishReceivingResource:(MCSession *)session resourceName:(NSString *)resourceName fromPeer:(MCPeerID *)peerID atURL:(NSURL *)localURL withError:(NSError *)error{
-
+   
     if (error) {
         NSLog(@"Error %@", [error localizedDescription]);
     }
@@ -364,17 +364,27 @@ static BOOL const SHARED = 1;
 
 -(void) didStartReceivingResource:(MCSession *)session resourceName:(NSString *)resourceName fromPeer:(MCPeerID *)peerID withProgress:(NSProgress *)progress{
     
+    NSLog(@"Started receivng resource");
+    
 }
+
+#pragma mark - BrowserWrapperDelegate
 
 -(void) inviteFoundPeer:(MCPeerID *)foreignPeerID{
     
+     NSLog(@"found peer and invited. DELEGATE");
+    
     [_browserWrapper.autobrowser invitePeer:foreignPeerID toSession:_sessionWrapper.session withContext:nil timeout:5.0];
+    //[_advertiserWrapper stopAdvertising];
 }
+
+#pragma mark - AdvertiserWrapperDelegate
 
 -(void) acceptInvitationFromPeer:(MCPeerID *)foreignPeerID
                invitationHandler:(void (^)(BOOL, MCSession *))invitationHandler{
     
     invitationHandler(YES, _sessionWrapper.session);
+    NSLog(@"invitation should have been accepted DELEGATE");
     //took out a call to stopAdvertisingPeer here
 }
 
@@ -414,6 +424,9 @@ static BOOL const SHARED = 1;
     _sessionWrapper = [[SessionWrapper alloc] initSessionWithName:@"yvan"];
     _advertiserWrapper = [[AdvertiserWrapper alloc] startAdvertising:_sessionWrapper.myPeerID];
     _browserWrapper = [[BrowserWrapper alloc] startBrowsing:_sessionWrapper.myPeerID];
+    _sessionWrapper.sessionDelegate = self;
+    _advertiserWrapper.advertiserDelegate = self;
+    _browserWrapper.browserDelegate = self;
     
     //DO NOT USE registerClass when we have made a ptototype cell on the storyboard.
     //[_collectionOfFiles registerClass:[FileCollectionViewCell class] forCellWithReuseIdentifier:@"fileOrFolder"];

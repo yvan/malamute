@@ -259,8 +259,8 @@
         
         NSURL* appSupportDir = (NSURL*)[directories objectAtIndex:0];
         NSString* privateSharedDirectoryExten;
-        if(privateOrShared){privateSharedDirectoryExten = @"private";}   //later on changed to the name created by user
-        else{privateSharedDirectoryExten = @"shared";}                   //later on changed to the name created by user
+        if(privateOrShared){privateSharedDirectoryExten = @"private";}   // - later on changed to the name created by user - //
+        else{privateSharedDirectoryExten = @"shared";}                   // - later on changed to the name created by user - //
         
         // Perform the copy asynchronously.
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{

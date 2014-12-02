@@ -22,7 +22,8 @@
 /* - external use, starts the advertising and returns the AdvertiserHelper object - */
 -(instancetype) startAdvertising:(MCPeerID *) myPeerId{
     
-    _autoadvertiser = [[MCNearbyServiceAdvertiser alloc] initWithPeer:myPeerId discoveryInfo:nil serviceType:@"AirDoc"];
+    NSLog(@"started advertising");
+    _autoadvertiser = [[MCNearbyServiceAdvertiser alloc] initWithPeer:myPeerId discoveryInfo:nil serviceType:@"malamute"];
     _autoadvertiser.delegate = self;
     [_autoadvertiser startAdvertisingPeer];
     _advertising = YES;
@@ -48,6 +49,7 @@
 -(void) advertiser:(MCNearbyServiceAdvertiser *)advertiser didReceiveInvitationFromPeer:(MCPeerID *)foreignPeerID withContext:(NSData *)context invitationHandler:(void (^)(BOOL, MCSession *))invitationHandler{
     
     [_advertiserDelegate acceptInvitationFromPeer:foreignPeerID invitationHandler:(void (^)(BOOL, MCSession *))invitationHandler];
+    NSLog(@"RECEIVED INVITE FROM PEER NON DELEGATE");
 }
 
 -(void) advertiser:(MCNearbyServiceAdvertiser *)advertiser didNotStartAdvertisingPeer:(NSError *)error{
