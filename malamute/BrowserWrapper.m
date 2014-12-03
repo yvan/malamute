@@ -22,8 +22,8 @@
 /* - Starts browsing for other/forgeign peers - */
 -(instancetype) startBrowsing:(MCPeerID *)myPeerID{
     
-    NSLog(@"started browsing");
-    //THIS NEXT PART SEARCHES FOR OTHER PEERS WHO ARE ADVERTISING THEMSELVES.
+    NSLog(@"%s STARTED BROWSING WITH MY PEERID: %@", __PRETTY_FUNCTION__, myPeerID);
+    
     _autobrowser = [[MCNearbyServiceBrowser alloc] initWithPeer:myPeerID serviceType:@"malamute"];
     _autobrowser.delegate = self;
     [_autobrowser startBrowsingForPeers];
@@ -50,8 +50,9 @@
 /* - triggered automatically when our brower object "autobrowser" find a foreign peer - */
 -(void) browser:(MCNearbyServiceBrowser *)browser foundPeer:(MCPeerID *)foreignPeerID withDiscoveryInfo:(NSDictionary *)info{
     
+    NSLog(@"%s FOUND PEER WITH PEERID: %@", __PRETTY_FUNCTION__, foreignPeerID);
+    
     [_browserDelegate inviteFoundPeer:foreignPeerID];
-    NSLog(@"FOUND PEER NON-DELEGATE");
 }
 
 /* - triggered automatically when our brower object "autobrowser" find a foreign peer - */

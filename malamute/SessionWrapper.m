@@ -52,10 +52,13 @@ static NSString* const ServiceName = @"malamute";
    - advertising/browsing are done in respective helpers
    - */
 -(instancetype) initSessionWithName: (NSString *)name{
-    NSLog(@"started session");
+    
+     NSLog(@"%s STARTED SESSION WITH NAME: %@", __PRETTY_FUNCTION__, name);
+    
     _myPeerID = [[MCPeerID alloc] initWithDisplayName:name];
     _session = [[MCSession alloc] initWithPeer: _myPeerID];
     _session.delegate = self;
+    
     return self;
 }
 
@@ -72,29 +75,20 @@ static NSString* const ServiceName = @"malamute";
    - */
 -(void)sendFiles:(NSArray *)Files toPeers:(NSArray *)peerIDs{
     
-    NSLog(@"sending files...");
-    //dispatch_async(dispatch_get_global_queue(0,0), ^{
-    
+    // - this way of formulating the URL is slightly different from filename.url's way of formulating the URL and apparently - //
+    // - for sending resources the .url field's way on the File object does not work. We need the code below - //
     NSURL *docDirURL = [[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:YES error:nil];
     
-        for(int i = 0; i < [Files count]; i++){
-            NSLog(@"%i", i);
-            File* fileToSend = [Files objectAtIndex:i];
-            NSURL *urlToSend = [docDirURL URLByAppendingPathComponent:fileToSend.name];
-            NSLog(@"%lu", (unsigned long)[peerIDs count]);
-            for(int j =0; j < [peerIDs count]; j++){
-                NSLog(@"%i", j);
-                NSLog(@"%@", fileToSend.url);
-                MCPeerID* idToSend = [peerIDs objectAtIndex:j];
-                
-                [_session sendResourceAtURL:urlToSend withName:fileToSend.name toPeer: idToSend withCompletionHandler:^(NSError *error) {
-                    if(error){
-                        NSLog(@"%@",[error localizedDescription]);
-                    }
-                }];
-            }
+    for(int i = 0; i < [Files count]; i++){
+        File* fileToSend = [Files objectAtIndex:i];
+        NSURL *urlToSend = [docDirURL URLByAppendingPathComponent:fileToSend.name];
+        for(int j =0; j < [peerIDs count]; j++){
+            MCPeerID* idToSend = [peerIDs objectAtIndex:j];
+            [_session sendResourceAtURL:urlToSend withName:fileToSend.name toPeer: idToSend withCompletionHandler:^(NSError *error) {
+                if(error){NSLog(@"%@",[error localizedDescription]);}
+            }];
         }
-    //});
+    }
 }
 
 #pragma mark - MCSessionDelegate

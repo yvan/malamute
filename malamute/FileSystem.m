@@ -90,11 +90,11 @@
             NSString *fullPath = [_documentsDirectory stringByAppendingPathComponent:path];
             BOOL removeSuccess = [fileMgr removeItemAtPath:fullPath error:&error];
             if (!removeSuccess) {
-                NSLog(@"blah");
+                NSLog(@"%s DELETE ALL ITEMS IN DOCS ERROR: %@", __PRETTY_FUNCTION__, error);
             }
         }
     } else {
-        NSLog(@"blah2");
+        NSLog(@"%s COULD NOT DELETE ALL ITEMS FROM: %@", __PRETTY_FUNCTION__, directoryContents);
     }
 }
 
@@ -143,11 +143,10 @@
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSString *filePath = [_documentsDirectory stringByAppendingPathComponent:((File *)[arrayToDeleteFrom objectAtIndex:fileIndex]).name];
     BOOL success = [fileManager removeItemAtPath:filePath error:&deleteError];
-    NSLog(@"%@", [self getAllDocDirFiles]);
     if (success) {
         [_privateDocs removeObject:[arrayToDeleteFrom objectAtIndex:fileIndex]];
         [_sharedDocs removeObject:[arrayToDeleteFrom objectAtIndex:fileIndex]];
-    }else{NSLog(@"Could not delete file -:%@ ",deleteError );}
+    }else{NSLog(@"%s COULD NOT DELETE FILE: %@", __PRETTY_FUNCTION__, deleteError);}
 }
 
 /* - code stolen from 'assignIconForFileType' in ViewController.h, found myself using the code a lot
@@ -279,7 +278,7 @@
                 //MOVE TO THE NEW DIRECTORY (does a copy and deletes the old one)
                 if (![fm moveItemAtURL:copyingFromDirectory  toURL:copyingToDirectory error:&error]) {
                     
-                   NSLog(@"%@",error);
+                   NSLog(@"%s MOVE ITEM ERROR: %@", __PRETTY_FUNCTION__, error);
                 }
             }
         });

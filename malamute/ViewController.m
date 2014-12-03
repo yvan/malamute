@@ -364,14 +364,14 @@ static BOOL const SHARED = 1;
 
 -(void) didStartReceivingResource:(MCSession *)session resourceName:(NSString *)resourceName fromPeer:(MCPeerID *)peerID withProgress:(NSProgress *)progress{
     
-    NSLog(@"Started receivng resource");
+    NSLog(@"%s STARTED RECIVEING RESOURCE: %@, FROM PEER: %@", __PRETTY_FUNCTION__, resourceName, peerID);
 }
 
 #pragma mark - BrowserWrapperDelegate
 
 -(void) inviteFoundPeer:(MCPeerID *)foreignPeerID{
     
-     NSLog(@"found peer and invited. DELEGATE");
+     NSLog(@"%s INVITED FOREIGN PEER: %@", __PRETTY_FUNCTION__, foreignPeerID);
     
     [_browserWrapper.autobrowser invitePeer:foreignPeerID toSession:_sessionWrapper.session withContext:nil timeout:5.0];
     //[_advertiserWrapper stopAdvertising];
@@ -383,7 +383,7 @@ static BOOL const SHARED = 1;
                invitationHandler:(void (^)(BOOL, MCSession *))invitationHandler{
     
     invitationHandler(YES, _sessionWrapper.session);
-    NSLog(@"invitation should have been accepted DELEGATE");
+    NSLog(@"%s INVITATION FROM PEER %@ ACCEPTED", __PRETTY_FUNCTION__, foreignPeerID);
     //took out a call to stopAdvertisingPeer here
 }
 
