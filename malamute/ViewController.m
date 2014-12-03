@@ -108,7 +108,7 @@ static BOOL const SHARED = 1;
             // - if we're in the pricate folder we don't move our documents anaywhere we put them - //
             // - in our shared docs array, and then we "send" them, which will put them in our - //
             // - recipients /tmp folder on their phone - //
-            [_sessionWrapper sendFiles:_selectedFiles toPeers:_sessionWrapper.connectedPeerIDs];
+            [_sessionWrapper sendFiles:_selectedFiles toPeers:_sessionWrapper.session.connectedPeers];
             [_fileSystem.sharedDocs addObjectsFromArray:_selectedFiles];
             [_selectedFiles removeAllObjects];
             [_selectSendButton setHidden:YES];
@@ -365,7 +365,6 @@ static BOOL const SHARED = 1;
 -(void) didStartReceivingResource:(MCSession *)session resourceName:(NSString *)resourceName fromPeer:(MCPeerID *)peerID withProgress:(NSProgress *)progress{
     
     NSLog(@"Started receivng resource");
-    
 }
 
 #pragma mark - BrowserWrapperDelegate
