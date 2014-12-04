@@ -197,6 +197,13 @@ static BOOL const SHARED = 1;
     [_selectBlanketButton setEnabled:YES];
 }
 
+#pragma mark - Special Effects Functions
+
+-(void)connectionStatusLabelFade{
+    
+    _connectionStatusLabel.hidden = YES;
+}
+
 #pragma mark - Photo Library Utility
 
 -(void) summonPhotoLibrary {
@@ -384,6 +391,7 @@ static BOOL const SHARED = 1;
     
     _connectionStatusLabel.text = [NSString stringWithFormat:@"Invited: %@", foreignPeerID.displayName];
     [_browserWrapper.autobrowser invitePeer:foreignPeerID toSession:_sessionWrapper.session withContext:nil timeout:5.0];
+    [NSTimer scheduledTimerWithTimeInterval:2.5 target:self selector:@selector(connectionStatusLabelFade) userInfo:nil repeats:NO];
 }
 
 #pragma mark - AdvertiserWrapperDelegate
@@ -394,6 +402,7 @@ static BOOL const SHARED = 1;
     invitationHandler(YES, _sessionWrapper.session);
     _connectionStatusLabel.text = [NSString stringWithFormat:@"Connected to: %@", foreignPeerID.displayName];
     NSLog(@"%s INVITATION FROM PEER %@ ACCEPTED", __PRETTY_FUNCTION__, foreignPeerID);
+    [NSTimer scheduledTimerWithTimeInterval:2.5 target:self selector:@selector(connectionStatusLabelFade) userInfo:nil repeats:NO];
     // - took out a call to stopAdvertisingPeer here - //
 }
 
@@ -430,7 +439,7 @@ static BOOL const SHARED = 1;
     [[_selectDirectoryModePrivate layer] setBorderColor:[UIColor blackColor].CGColor];
 
     // - init session, advertiser, and browser wrapper in that order - //
-    _sessionWrapper = [[SessionWrapper alloc] initSessionWithName:@"enrique"];
+    _sessionWrapper = [[SessionWrapper alloc] initSessionWithName:@"yvan"];
     _advertiserWrapper = [[AdvertiserWrapper alloc] startAdvertising:_sessionWrapper.myPeerID];
     _browserWrapper = [[BrowserWrapper alloc] startBrowsing:_sessionWrapper.myPeerID];
     _sessionWrapper.sessionDelegate = self;
