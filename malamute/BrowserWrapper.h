@@ -11,6 +11,7 @@
 @protocol BrowserWrapperDelegate <NSObject>
 
 -(void) inviteFoundPeer:(MCPeerID *)foreignPeerID;
+-(void) alertToLostPeer:(MCPeerID *)lostForeignPeerID;
 
 @end
 
