@@ -234,15 +234,21 @@ static BOOL const SHARED = 1;
         [UIImagePNGRepresentation(image) writeToFile:path atomically:YES];
     }
     
-    _privateOrShared == PRIVATE ? [_fileSystem createNewFile:[NSString stringWithFormat:@"%@.%@",uniqueFileCode,fileExtension]
-                                               withURL:[NSURL URLWithString:[_fileSystem.documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@",uniqueFileCode,fileExtension]]]
-                                               inDirectory:_fileSystem.privateDocs]
-                                  :
     
-                                  [_fileSystem createNewFile:[NSString stringWithFormat:@"%@.%@",uniqueFileCode,fileExtension]
-                                               withURL:[NSURL URLWithString:[_fileSystem.documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@",uniqueFileCode,fileExtension]]]
-                                               inDirectory:_fileSystem.sharedDocs];
-    
+    if(_privateOrShared == PRIVATE){
+        [_fileSystem createNewFile:[NSString stringWithFormat:@"%@.%@",uniqueFileCode,fileExtension]
+                           withURL:[NSURL URLWithString:[_fileSystem.documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@",uniqueFileCode,fileExtension]]]
+                       inDirectory:_fileSystem.privateDocs];
+    }
+    else{
+        File* newfile = [_fileSystem createNewFile:[NSString stringWithFormat:@"%@.%@",uniqueFileCode,fileExtension]
+                           withURL:[NSURL URLWithString:[_fileSystem.documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@",uniqueFileCode,fileExtension]]]
+                       inDirectory:_fileSystem.sharedDocs];
+        NSArray* fileArr = [[NSArray alloc] initWithObjects:newfile, nil];
+        
+        [_sessionWrapper sendFiles:fileArr toPeers:_sessionWrapper.session.connectedPeers];
+
+    }
     
     [self dismissViewControllerAnimated:libraryPicker completion:^(void){}];
     [_fileSystem saveFileSystemToJSON];
@@ -424,7 +430,7 @@ static BOOL const SHARED = 1;
     [[_selectDirectoryModePrivate layer] setBorderColor:[UIColor blackColor].CGColor];
 
     // - init session, advertiser, and browser wrapper in that order - //
-    _sessionWrapper = [[SessionWrapper alloc] initSessionWithName:@"yvan"];
+    _sessionWrapper = [[SessionWrapper alloc] initSessionWithName:@"enrique"];
     _advertiserWrapper = [[AdvertiserWrapper alloc] startAdvertising:_sessionWrapper.myPeerID];
     _browserWrapper = [[BrowserWrapper alloc] startBrowsing:_sessionWrapper.myPeerID];
     _sessionWrapper.sessionDelegate = self;

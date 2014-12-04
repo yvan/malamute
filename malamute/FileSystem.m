@@ -129,10 +129,11 @@
     [_privateDocs addObject:file];
 }
 
--(void) createNewFile:(NSString *) fileName withURL:(NSURL *) url inDirectory:(NSMutableArray *) arrayName{
+-(File*) createNewFile:(NSString *) fileName withURL:(NSURL *) url inDirectory:(NSMutableArray *) arrayName{
     
     File* newFile = [[File alloc] initWithName:fileName andURL:url andDate:[NSDate date] andDirectoryFlag:0];
     [arrayName addObject:newFile];
+    return newFile;
 }
 
 /* - Deleted a file based on it's index in the appropriate array - */
