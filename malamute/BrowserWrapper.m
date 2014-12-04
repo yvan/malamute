@@ -59,6 +59,8 @@
 -(void) browser:(MCNearbyServiceBrowser *)browser lostPeer:(MCPeerID *)foreignPeerID {
     
     NSLog(@"%s LOST PEER: %@", __PRETTY_FUNCTION__, foreignPeerID);
+    
+    [_browserDelegate alertToLostPeer:foreignPeerID];
 }
 /* - triggers if there was an error in initially searching for peers - */
 -(void) browser:(MCNearbyServiceBrowser *)browser didNotStartBrowsingForPeers:(NSError *)error{

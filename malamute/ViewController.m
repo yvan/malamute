@@ -394,6 +394,12 @@ static BOOL const SHARED = 1;
     [NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(connectionStatusLabelFade) userInfo:nil repeats:NO];
 }
 
+-(void) alertToLostPeer:(MCPeerID *)lostForeignPeerID{
+    
+    _connectionStatusLabel.text = [NSString stringWithFormat:@"Lost Connection to: %@", lostForeignPeerID.displayName];
+    [NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(connectionStatusLabelFade) userInfo:nil repeats:NO];
+}
+
 #pragma mark - AdvertiserWrapperDelegate
 
 -(void) acceptInvitationFromPeer:(MCPeerID *)foreignPeerID
