@@ -348,6 +348,8 @@ static BOOL const SHARED = 1;
 
 -(void) didFinishReceivingResource:(MCSession *)session resourceName:(NSString *)resourceName fromPeer:(MCPeerID *)peerID atURL:(NSURL *)localURL withError:(NSError *)error{
    
+    NSLog(@"%s FINISHED RECIVEING RESOURCE: %@, FROM PEER: %@", __PRETTY_FUNCTION__, resourceName, peerID);
+
     if (error) {
         NSLog(@"Error %@", [error localizedDescription]);
     }
@@ -374,6 +376,7 @@ static BOOL const SHARED = 1;
     
      NSLog(@"%s INVITED FOREIGN PEER: %@", __PRETTY_FUNCTION__, foreignPeerID);
     
+    _connectionStatusLabel.text = [NSString stringWithFormat:@"Invited: %@", foreignPeerID.displayName];
     [_browserWrapper.autobrowser invitePeer:foreignPeerID toSession:_sessionWrapper.session withContext:nil timeout:5.0];
 }
 
@@ -383,7 +386,7 @@ static BOOL const SHARED = 1;
                invitationHandler:(void (^)(BOOL, MCSession *))invitationHandler{
     
     invitationHandler(YES, _sessionWrapper.session);
-    
+    _connectionStatusLabel.text = [NSString stringWithFormat:@"Connected to: %@", foreignPeerID.displayName];
     NSLog(@"%s INVITATION FROM PEER %@ ACCEPTED", __PRETTY_FUNCTION__, foreignPeerID);
     // - took out a call to stopAdvertisingPeer here - //
 }

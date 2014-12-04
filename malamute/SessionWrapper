@@ -83,7 +83,6 @@ static NSString* const ServiceName = @"malamute";
     for(int i = 0; i < [Files count]; i++){
         File* fileToSend = [Files objectAtIndex:i];
         NSURL *urlToSend = [docDirURL URLByAppendingPathComponent:fileToSend.name];
-        NSLog(@"%s SENDING FILE AT URL: %@", __PRETTY_FUNCTION__, urlToSend);
         for(int j =0; j < [peerIDs count]; j++){
             MCPeerID* idToSend = [peerIDs objectAtIndex:j];
             [_session sendResourceAtURL:urlToSend withName:fileToSend.name toPeer: idToSend withCompletionHandler:^(NSError *error) {

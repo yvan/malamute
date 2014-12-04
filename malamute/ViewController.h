@@ -19,11 +19,12 @@
 
 @property (nonatomic, strong) IBOutlet UIButton *selectSendButton;
 @property (nonatomic, strong) IBOutlet UIButton *selectDeleteButton;
+@property (nonatomic, strong) IBOutlet UIButton *getPhotoFromLibary;
 @property (nonatomic, strong) IBOutlet UIButton *selectBlanketButton;
+@property (nonatomic, strong) IBOutlet UILabel *connectionStatusLabel;
 @property (nonatomic, strong) IBOutlet UICollectionView *collectionOfFiles;
 @property (nonatomic, strong) IBOutlet UIButton *selectDirectoryModeShared;
 @property (nonatomic, strong) IBOutlet UIButton *selectDirectoryModePrivate;
-@property (nonatomic, strong) IBOutlet UIButton *getPhotoFromLibary;
 
 @property (nonatomic) SessionWrapper *sessionWrapper;
 @property (nonatomic) BrowserWrapper *browserWrapper;

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
@@ -178,6 +178,12 @@
                                     <action selector="clickedSelectSendButton:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="RxU-Nd-igU"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cId-Xg-czU">
+                                <rect key="frame" x="200" y="289" width="200" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
@@ -242,6 +248,9 @@
                             <mask key="constraints">
                                 <exclude reference="App-9D-hWX"/>
                                 <exclude reference="WpG-ij-Nbh"/>
+                                <exclude reference="lAn-NM-EU7"/>
+                                <exclude reference="lGe-br-hbw"/>
+                                <exclude reference="xwW-NF-LBZ"/>
                                 <exclude reference="3uV-Mo-CyT"/>
                                 <exclude reference="8d4-U5-Tih"/>
                                 <exclude reference="AQi-ma-XaD"/>
@@ -249,9 +258,6 @@
                                 <exclude reference="cM5-2h-jHl"/>
                                 <exclude reference="oHS-Fz-Lwe"/>
                                 <exclude reference="zGr-oM-eRT"/>
-                                <exclude reference="lAn-NM-EU7"/>
-                                <exclude reference="lGe-br-hbw"/>
-                                <exclude reference="xwW-NF-LBZ"/>
                                 <exclude reference="88S-KD-xk3"/>
                                 <exclude reference="VGu-9Q-iki"/>
                                 <exclude reference="2Le-Oh-x9d"/>
@@ -276,6 +282,7 @@
                     </view>
                     <connections>
                         <outlet property="collectionOfFiles" destination="4Tu-Y7-NRX" id="suZ-PO-MdO"/>
+                        <outlet property="connectionStatusLabel" destination="cId-Xg-czU" id="6jQ-Jc-PNR"/>
                         <outlet property="selectBlanketButton" destination="O5A-aI-BlV" id="nv1-V9-dlX"/>
                         <outlet property="selectDeleteButton" destination="9Qs-gq-h8d" id="npa-e8-Osj"/>
                         <outlet property="selectDirectoryModePrivate" destination="PbL-WE-cJh" id="c6b-Wl-bgJ"/>
