@@ -201,7 +201,7 @@ static BOOL const SHARED = 1;
 
 -(void)connectionStatusLabelFade{
     
-    _connectionStatusLabel.hidden = YES;
+    _connectionStatusLabel.text = @"";
 }
 
 #pragma mark - Photo Library Utility
