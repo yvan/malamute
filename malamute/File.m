@@ -11,12 +11,12 @@
 @implementation File
 
 /* - inits a File object with a name and url path - */
--(instancetype)initWithName:(NSString*) name andURL:(NSURL*)url andDate:(NSDate*)date andDirectoryFlag:(BOOL)flag{
+-(instancetype)initWithName:(NSString*) name andURL:(NSURL*)url andDate:(NSDate*)date andDirectoryFlag:(BOOL)isDirectory{
     
     _name = [[NSString alloc] initWithString:name];
     _url = url;
     _dateCreated = date;
-    _isDirectory = flag;
+    _isDirectory = isDirectory;
     return self;
 }
 

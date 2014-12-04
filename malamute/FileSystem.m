@@ -109,8 +109,8 @@
 
 -(void) saveFileToDocumentsDir:(File*)file{
 
-    //move file from file's path to documents folder path, update file
-    //add to private documents array
+    // - move file from file's path to documents folder path, update file - //
+    // - add to private documents array - //
     NSString *destinationPath = [_documentsDirectory stringByAppendingPathComponent:file.name];
     int suffix = 1;
     while([self isValidPath:destinationPath]){
@@ -183,7 +183,7 @@
     NSData* filesystemdata = [NSData dataWithContentsOfFile:filePath];
     NSDictionary* JSONDict = [NSJSONSerialization JSONObjectWithData:filesystemdata options:0 error:&error];
     
-    for(NSString* index in JSONDict){ //only iterates throug private and shared now, but can scale later
+    for(NSString* index in JSONDict){ // - only iterates throug private and shared now, but can scale later - //
         if(![index isEqual:@"timestamp"]){
             
             NSDictionary* fileGroup = [JSONDict objectForKey:index];
@@ -213,7 +213,7 @@
    - */
 -(void) saveFileSystemToJSON{
     
-    //atomically write to filesystem.json to wipe the file.
+    // - atomically write to filesystem.json to wipe the file. - //
     NSError *error;
     NSString* wipeFileSystem = @"";
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
@@ -224,9 +224,9 @@
     NSMutableDictionary *theFileSystem = [[NSMutableDictionary alloc] init];
     NSMutableDictionary *privateDocs = [[NSMutableDictionary alloc] init];
     NSMutableDictionary *sharedDocs = [[NSMutableDictionary alloc] init];
-    //non atomically write to filesystem to keep tacking on json objects
+    // - non atomically write to filesystem to keep tacking on json objects - //
     for(File* file in _privateDocs){
-        //isDirectory = @0 because we're not supporting direcotry creation yet.
+        // - isDirectory = 0 because we're not supporting direcotry creation yet. - //
         NSDictionary *fileDict = [NSDictionary dictionaryWithObjectsAndKeys:file.name,@"name", [file.url absoluteString],@"url",[formatter stringFromDate:file.dateCreated],@"created",@"0",@"isDirectory", nil];
         [privateDocs setValue:fileDict forKey:file.name];
     }
@@ -236,8 +236,8 @@
         NSDictionary *fileDict = [NSDictionary dictionaryWithObjectsAndKeys:file.name,@"name", [file.url absoluteString],@"url",[formatter stringFromDate:file.dateCreated],@"created",@"0",@"isDirectory", nil];
         [sharedDocs setValue:fileDict forKey:file.name];
     }
-    [theFileSystem setValue:sharedDocs forKey:@"_sharedDocs"]; //load in the sharedDocs
-    [theFileSystem setValue:[formatter stringFromDate:[NSDate date]] forKey:@"timestamp"];//put timestamp in our file.
+    [theFileSystem setValue:sharedDocs forKey:@"_sharedDocs"]; // - load in the sharedDocs - //
+    [theFileSystem setValue:[formatter stringFromDate:[NSDate date]] forKey:@"timestamp"];// - put timestamp in our file. - //
     NSData *JSONdata = [NSJSONSerialization dataWithJSONObject:theFileSystem options:0 error:nil];
     [JSONdata writeToFile:filePath atomically:YES];
 }
@@ -249,7 +249,7 @@
    - */
 -(BOOL)moveFiles:(NSMutableArray*)selectedFiles from:(NSMutableArray*)firstDirectory to:(NSMutableArray*)secondDirectory withInfo:(BOOL)privateOrShared{
 
-    //Get documents directory
+    // - Get documents directory - //
     NSArray* directories = [[NSFileManager defaultManager]
                             URLsForDirectory:NSDocumentDirectory
                             inDomains:NSUserDomainMask];
@@ -261,7 +261,7 @@
         if(privateOrShared){privateSharedDirectoryExten = @"private";}   // - later on changed to the name created by user - //
         else{privateSharedDirectoryExten = @"shared";}                   // - later on changed to the name created by user - //
         
-        // Perform the copy asynchronously.
+        // - Perform the copy asynchronously, might want to get rid of this asynchonaity - //
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             
             NSError* error;
@@ -269,13 +269,13 @@
             
             for(File* file in selectedFiles){
                 
-                [secondDirectory addObject:file];   //put each file in the new directory array
-                [firstDirectory removeObject:file]; //remove each file from the original directory array
+                [secondDirectory addObject:file];   // - put each file in the new directory array - //
+                [firstDirectory removeObject:file]; // - remove each file from the original directory array -//
                 NSURL* copyingFromDirectory = [[appSupportDir URLByAppendingPathComponent:privateSharedDirectoryExten]
                                                         URLByAppendingPathComponent: file.name];
                 NSURL* copyingToDirectory = [copyingFromDirectory  URLByAppendingPathExtension:[self getFileExtension:file.name]];
                 
-                //MOVE TO THE NEW DIRECTORY (does a copy and deletes the old one)
+                // - MOVE TO THE NEW DIRECTORY (does a copy and deletes the old one) - //
                 if (![fm moveItemAtURL:copyingFromDirectory  toURL:copyingToDirectory error:&error]) {
                     
                    NSLog(@"%s MOVE ITEM ERROR: %@", __PRETTY_FUNCTION__, error);

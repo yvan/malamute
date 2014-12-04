@@ -58,7 +58,6 @@ static NSString* const ServiceName = @"malamute";
     _myPeerID = [[MCPeerID alloc] initWithDisplayName:name];
     _session = [[MCSession alloc] initWithPeer: _myPeerID];
     _session.delegate = self;
-    
     return self;
 }
 
@@ -71,7 +70,8 @@ static NSString* const ServiceName = @"malamute";
 
 #pragma mark - sendFiles specialized method to send resources
 /* - takes an array of files and an array of peerIds and sends
-   - all of those files to those peer ids.
+   - all of those files to those peer ids, remake into
+   - asynchonous function w/ dispatch???
    - */
 -(void)sendFiles:(NSArray *)Files toPeers:(NSArray *)peerIDs{
     

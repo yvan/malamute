@@ -47,6 +47,7 @@
 
 #pragma mark - MCAdvertiserDelegate
 
+/* - triggers automatically when we get an invitiation from a foreign peer, calls a delegate method in ViewController.m - */
 -(void) advertiser:(MCNearbyServiceAdvertiser *)advertiser didReceiveInvitationFromPeer:(MCPeerID *)foreignPeerID withContext:(NSData *)context invitationHandler:(void (^)(BOOL, MCSession *))invitationHandler{
     
     NSLog(@"%s RECIEVED INVITATION FROM PEER WITH PEERID: %@", __PRETTY_FUNCTION__, foreignPeerID);
@@ -54,6 +55,7 @@
     [_advertiserDelegate acceptInvitationFromPeer:foreignPeerID invitationHandler:(void (^)(BOOL, MCSession *))invitationHandler];
 }
 
+/* - triggers automatically when we failed to start advertising in the first place, does not call a delegate method in ViewController.m - */
 -(void) advertiser:(MCNearbyServiceAdvertiser *)advertiser didNotStartAdvertisingPeer:(NSError *)error{
     
     NSLog(@"%s %@",__PRETTY_FUNCTION__, error);

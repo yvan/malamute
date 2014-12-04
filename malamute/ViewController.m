@@ -50,7 +50,7 @@ static BOOL const SHARED = 1;
    - */
 -(IBAction) clickedSelectSendButton:(id)sender{
     
-    if(_privateOrShared == SHARED){//we are in shared folder
+    if(_privateOrShared == SHARED){// - we are in shared folder - //
         
         if(sender == _selectBlanketButton){
             [_selectSendButton setTitle:@"Move to Private" forState:UIControlStateNormal];
@@ -92,7 +92,7 @@ static BOOL const SHARED = 1;
                 [_collectionOfFiles deselectItemAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0] animated:YES];
             }
         }
-    }else{//we are IN the private folder
+    }else{// - we are IN the private folder - //
         
         if(sender == _selectBlanketButton){
             [_selectSendButton setTitle:@"Move to Shared" forState:UIControlStateNormal];
@@ -128,7 +128,7 @@ static BOOL const SHARED = 1;
 
 -(IBAction) clickedSelectDirectoryButton:(id)sender{
     
-    if(sender == _selectDirectoryModeShared){ //selectDirectoryMode Clicked
+    if(sender == _selectDirectoryModeShared){ // - selectDirectoryMode Clicked - //
         
         [_selectDirectoryModeShared setTitle:@"Shared" forState:UIControlStateNormal];
         [_selectSendButton setTitle:@"Move to Private" forState:UIControlStateNormal]; // not necessary but improves the look of the title change.
@@ -153,8 +153,9 @@ static BOOL const SHARED = 1;
     }
     if(sender == _selectDirectoryModePrivate){
         
+        // - redundant but improves the look of transition on title change for this button. - //
         [_selectDirectoryModePrivate setTitle:@"Private" forState:UIControlStateNormal];
-        [_selectSendButton setTitle:@"Move to Shared" forState:UIControlStateNormal]; //redundant but improves the look of transition on title change for this button.
+        [_selectSendButton setTitle:@"Move to Shared" forState:UIControlStateNormal];
         
         [_selectDirectoryModePrivate setBackgroundColor: [UIColor colorWithRed:135.0/255.0
                                                                   green:9.0/255.0
@@ -202,7 +203,7 @@ static BOOL const SHARED = 1;
     
     UIImagePickerController* libraryPicker = [[UIImagePickerController alloc] init];
     [libraryPicker setDelegate:self];
-    libraryPicker.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;// or UIImagePickerControllerSourceTypePhotoLibrary
+    libraryPicker.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;// - or UIImagePickerControllerSourceTypePhotoLibrary - //
     [self presentViewController:libraryPicker animated:YES completion:^(void){}];
 }
 
@@ -304,9 +305,9 @@ static BOOL const SHARED = 1;
     
     NSInteger fileCount = _privateOrShared == PRIVATE ? [_fileSystem.privateDocs count]:[_fileSystem.sharedDocs count];
     
-    if(indexPath.row == fileCount){//user clicked on Add File
+    if(indexPath.row == fileCount){// - user clicked on Add File - //
         [self summonPhotoLibrary];
-    }else{ //User clicked on an actual file icon
+    }else{ // - User clicked on an actual file icon - //
         if(_selectEnabled){
             _selectedFile = _privateOrShared == PRIVATE ? [_fileSystem.privateDocs objectAtIndex:indexPath.row]:[_fileSystem.sharedDocs objectAtIndex:indexPath.row];
             [_selectedFiles addObject:_selectedFile];
@@ -319,9 +320,9 @@ static BOOL const SHARED = 1;
 - (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
     NSInteger fileCount = _privateOrShared == PRIVATE ? [_fileSystem.privateDocs count]:[_fileSystem.sharedDocs count];
 
-    if(indexPath.row == fileCount){//user clicked on Add File
+    if(indexPath.row == fileCount){// - user clicked on Add File - //
         [self summonPhotoLibrary];
-    }else{ //User clicked on an actual file icon
+    }else{ // - User clicked on an actual file icon - //
         if (_selectEnabled) {
             _selectedFile = _privateOrShared == PRIVATE ? [_fileSystem.privateDocs objectAtIndex:indexPath.row]:[_fileSystem.sharedDocs objectAtIndex:indexPath.row];
             [_selectedFiles removeObject:_selectedFile];
@@ -351,15 +352,15 @@ static BOOL const SHARED = 1;
         NSLog(@"Error %@", [error localizedDescription]);
     }
     
-    //create a new file object for the received resource
+    // - create a new file object for the received resource - //
     File* newFile = [[File alloc] init];
     newFile.name =resourceName;
     newFile.sender = peerID.displayName;
     newFile.dateCreated = [NSDate date];
     newFile.url = localURL;
 
-    [_fileSystem.sharedDocs addObject:newFile]; //add the resource to sharedDocs once it's received.
-    [_collectionOfFiles reloadData];            //reload our collectionview with new file reps.
+    [_fileSystem.sharedDocs addObject:newFile]; // - add the resource to sharedDocs once it's received. - //
+    [_collectionOfFiles reloadData];            // - reload our collectionview with new file reps. - //
 }
 
 -(void) didStartReceivingResource:(MCSession *)session resourceName:(NSString *)resourceName fromPeer:(MCPeerID *)peerID withProgress:(NSProgress *)progress{
@@ -374,7 +375,6 @@ static BOOL const SHARED = 1;
      NSLog(@"%s INVITED FOREIGN PEER: %@", __PRETTY_FUNCTION__, foreignPeerID);
     
     [_browserWrapper.autobrowser invitePeer:foreignPeerID toSession:_sessionWrapper.session withContext:nil timeout:5.0];
-    //[_advertiserWrapper stopAdvertising];
 }
 
 #pragma mark - AdvertiserWrapperDelegate
@@ -383,8 +383,9 @@ static BOOL const SHARED = 1;
                invitationHandler:(void (^)(BOOL, MCSession *))invitationHandler{
     
     invitationHandler(YES, _sessionWrapper.session);
+    
     NSLog(@"%s INVITATION FROM PEER %@ ACCEPTED", __PRETTY_FUNCTION__, foreignPeerID);
-    //took out a call to stopAdvertisingPeer here
+    // - took out a call to stopAdvertisingPeer here - //
 }
 
 #pragma mark - viewDidLoad and didReceiveMemoryWarning 
@@ -393,9 +394,9 @@ static BOOL const SHARED = 1;
 - (void)viewDidLoad {
 
     [super viewDidLoad];
-    _privateOrShared = SHARED;                      // start us off in the shared directory
-    _fileSystem = [[FileSystem alloc] init];        // create the filesystem and other objs
-    _selectedFiles = [[NSMutableArray alloc] init]; // we used to know which files to  move
+    _privateOrShared = SHARED;                      // - start us off in the shared directory - //
+    _fileSystem = [[FileSystem alloc] init];        // - create the filesystem and other objs - //
+    _selectedFiles = [[NSMutableArray alloc] init]; // - we used to know which files to  move - //
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     _fileSystem.documentsDirectory = [[NSString alloc] initWithString:[paths objectAtIndex:0]];
     [_collectionOfFiles setDelegate:self];
@@ -419,7 +420,7 @@ static BOOL const SHARED = 1;
     [[_selectDirectoryModeShared layer] setBorderColor:[UIColor blackColor].CGColor];
     [[_selectDirectoryModePrivate layer] setBorderColor:[UIColor blackColor].CGColor];
 
-    //init session, advertiser, and browser wrapper in that order
+    // - init session, advertiser, and browser wrapper in that order - //
     _sessionWrapper = [[SessionWrapper alloc] initSessionWithName:@"yvan"];
     _advertiserWrapper = [[AdvertiserWrapper alloc] startAdvertising:_sessionWrapper.myPeerID];
     _browserWrapper = [[BrowserWrapper alloc] startBrowsing:_sessionWrapper.myPeerID];
@@ -427,7 +428,7 @@ static BOOL const SHARED = 1;
     _advertiserWrapper.advertiserDelegate = self;
     _browserWrapper.browserDelegate = self;
     
-    //DO NOT USE registerClass when we have made a ptototype cell on the storyboard.
+    // - DO NOT USE registerClass when we have made a ptototype cell on the storyboard. - //
     //[_collectionOfFiles registerClass:[FileCollectionViewCell class] forCellWithReuseIdentifier:@"fileOrFolder"];
     
     [_collectionOfFiles reloadData];
