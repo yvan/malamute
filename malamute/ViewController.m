@@ -259,7 +259,6 @@ static BOOL const SHARED = 1;
     
     [self dismissViewControllerAnimated:libraryPicker completion:^(void){}];
     [_fileSystem saveFileSystemToJSON];
-    //[_sessionWrapper sendFiles:_selectedFiles toPeers:_sessionWrapper.connectedPeerIDs];
     [_collectionOfFiles reloadData];
 }
 
