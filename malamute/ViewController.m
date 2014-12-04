@@ -373,9 +373,9 @@ static BOOL const SHARED = 1;
     newFile.sender = peerID.displayName;
     newFile.dateCreated = [NSDate date];
     newFile.url = localURL;
-
-    [_fileSystem.sharedDocs addObject:newFile]; // - add the resource to sharedDocs once it's received. - //
-    [_collectionOfFiles reloadData];            // - reload our collectionview with new file reps. - //
+    newFile.isDirectory = false;
+    [_fileSystem.sharedDocs addObject:newFile];// - add the resource to sharedDocs once it's received. - //
+    [_collectionOfFiles reloadData]; // - reload our collectionview with new file reps. - //
 }
 
 -(void) didStartReceivingResource:(MCSession *)session resourceName:(NSString *)resourceName fromPeer:(MCPeerID *)peerID withProgress:(NSProgress *)progress{
