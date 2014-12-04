@@ -259,7 +259,10 @@ static BOOL const SHARED = 1;
     
     [self dismissViewControllerAnimated:libraryPicker completion:^(void){}];
     [_fileSystem saveFileSystemToJSON];
-    [_collectionOfFiles reloadData];
+    
+    // - for some reason we need to do this in dispatch, thesis is that somehow IO operations, and reloadData isn't working properly during these, putting it inside dispatch makes it thread safe.
+
+    dispatch_async(dispatch_get_main_queue(), ^{[_collectionOfFiles reloadData];});
 }
 
 -(void) imagePickerControllerDidCancel:(UIImagePickerController *)libraryPicker{
