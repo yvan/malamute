@@ -106,7 +106,7 @@
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="O5A-aI-BlV">
                                 <rect key="frame" x="0.0" y="442" width="600" height="120"/>
-                                <color key="backgroundColor" red="0.84079908290000005" green="0.03448211768" blue="0.085475290280000005" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.83921568627450982" green="0.035294117647058823" blue="0.086274509803921567" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="O5A-aI-BlV" secondAttribute="height" multiplier="5:1" constant="-300" id="77v-qx-uud"/>
                                     <constraint firstAttribute="width" secondItem="O5A-aI-BlV" secondAttribute="height" multiplier="5:2" id="PIi-z1-eQG"/>

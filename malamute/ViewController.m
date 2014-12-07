@@ -110,6 +110,7 @@ static BOOL const SHARED = 1;
             // - recipients /tmp folder on their phone - //
             [_sessionWrapper sendFiles:_selectedFiles toPeers:_sessionWrapper.session.connectedPeers];
             [_fileSystem.sharedDocs addObjectsFromArray:_selectedFiles];
+            //[_fileSystem.filesIHaveShared addObjectsFromArray:_selectedFiles];
             [_selectedFiles removeAllObjects];
             [_selectSendButton setHidden:YES];
             [_selectSendButton setEnabled:NO];
@@ -241,7 +242,6 @@ static BOOL const SHARED = 1;
         [UIImagePNGRepresentation(image) writeToFile:path atomically:YES];
     }
     
-    
     if(_privateOrShared == PRIVATE){
         [_fileSystem createNewFile:[NSString stringWithFormat:@"%@.%@",uniqueFileCode,fileExtension]
                            withURL:[NSURL URLWithString:[_fileSystem.documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@",uniqueFileCode,fileExtension]]]
@@ -253,8 +253,8 @@ static BOOL const SHARED = 1;
                        inDirectory:_fileSystem.sharedDocs];
         NSArray* fileArr = [[NSArray alloc] initWithObjects:newfile, nil];
         
+        //[_fileSystem.filesIHaveShared addObject:newfile];
         [_sessionWrapper sendFiles:fileArr toPeers:_sessionWrapper.session.connectedPeers];
-
     }
     
     [self dismissViewControllerAnimated:libraryPicker completion:^(void){}];
@@ -396,7 +396,12 @@ static BOOL const SHARED = 1;
 -(void) inviteFoundPeer:(MCPeerID *)foreignPeerID{
     
      NSLog(@"%s INVITED FOREIGN PEER: %@", __PRETTY_FUNCTION__, foreignPeerID);
-    
+    // - This is intended to send files in each session participant's shared directory
+    // - to new users joining the session, uncommented this would work as is, but
+    // - we felt like there were other complications we didn't really have time
+    // - to deal with, spotty connection will trigger massive file sending and we
+    // - don't have a perfect solution for this as is.
+    //[_sessionWrapper sendFiles:_fileSystem.filesIHaveShared toPeers:[[NSArray alloc] initWithObjects:foreignPeerID, nil]];
     _connectionStatusLabel.text = [NSString stringWithFormat:@"Invited: %@", foreignPeerID.displayName];
     [_browserWrapper.autobrowser invitePeer:foreignPeerID toSession:_sessionWrapper.session withContext:nil timeout:5.0];
     [NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(connectionStatusLabelFade) userInfo:nil repeats:NO];
@@ -414,6 +419,8 @@ static BOOL const SHARED = 1;
                invitationHandler:(void (^)(BOOL, MCSession *))invitationHandler{
     
     invitationHandler(YES, _sessionWrapper.session);
+    //
+    //[_sessionWrapper sendFiles:_fileSystem.filesIHaveShared toPeers:[[NSArray alloc] initWithObjects:foreignPeerID, nil]];
     _connectionStatusLabel.text = [NSString stringWithFormat:@"Connected to: %@", foreignPeerID.displayName];
     NSLog(@"%s INVITATION FROM PEER %@ ACCEPTED", __PRETTY_FUNCTION__, foreignPeerID);
     [NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(connectionStatusLabelFade) userInfo:nil repeats:NO];
@@ -453,7 +460,7 @@ static BOOL const SHARED = 1;
     [[_selectDirectoryModePrivate layer] setBorderColor:[UIColor blackColor].CGColor];
 
     // - init session, advertiser, and browser wrapper in that order - //
-    _sessionWrapper = [[SessionWrapper alloc] initSessionWithName:@"enrique"];
+    _sessionWrapper = [[SessionWrapper alloc] initSessionWithName:@"yvancomputer"];
     _advertiserWrapper = [[AdvertiserWrapper alloc] startAdvertising:_sessionWrapper.myPeerID];
     _browserWrapper = [[BrowserWrapper alloc] startBrowsing:_sessionWrapper.myPeerID];
     _sessionWrapper.sessionDelegate = self;
