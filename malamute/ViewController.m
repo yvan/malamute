@@ -180,15 +180,12 @@ static BOOL const SHARED = 1;
 }
 
 -(IBAction) clickedDeleteButton:(id)sender{
-
-    for(int i=0; i< [_selectedFiles count]; i++){
-            
-        [_fileSystem deleteSingleFileFromApp:i fromDirectory:_selectedFiles];
-        [_fileSystem saveFileSystemToJSON]; // - we call it every loop iteration just to be safe. - //
-    }
+    
+    [_fileSystem deleteFilesFromApp:_selectedFiles];
+    
     [_selectedFiles removeAllObjects];
     [_collectionOfFiles reloadData];
-    _selectEnabled = YES;
+    _selectEnabled = NO;
     
     [_selectSendButton setHidden:YES];
     [_selectSendButton setEnabled:NO];
@@ -196,6 +193,8 @@ static BOOL const SHARED = 1;
     [_selectDeleteButton setEnabled:NO];
     [_selectBlanketButton setHidden:NO];
     [_selectBlanketButton setEnabled:YES];
+    
+    [_fileSystem saveFileSystemToJSON]; 
 }
 
 #pragma mark - Special Effects Functions

@@ -27,6 +27,7 @@
 -(void) saveFileToDocumentsDir:(File*)file;
 -(void) saveFilesToDocumentsDir:(NSArray*) files;
 -(NSString *) getFileExtension:(NSString *)filename;
+-(void) deleteFilesFromApp:(NSArray*)files;
 -(void) deleteSingleFileFromApp:(NSInteger)fileIndex fromDirectory:(NSMutableArray *) arrayToDeleteFrom;
 -(File*) createNewFile:(NSString *) fileName withURL:(NSURL*) url inDirectory:(NSMutableArray *) arrayName;
 -(BOOL) moveFiles:(NSMutableArray*)selectedFiles from:(NSMutableArray*)firstDirectory to:(NSMutableArray*)secondDirectory withInfo:(BOOL)privateOrShared;

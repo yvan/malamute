@@ -136,7 +136,27 @@
     return newFile;
 }
 
-/* - Deleted a file based on it's index in the appropriate array - */
+/* - Delete a bunch of files from the sandbox, private and shared arrays -*/
+-(void) deleteFilesFromApp:(NSArray*)files{
+    
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSError *deleteError;
+
+    
+    for(int i = 0 ; i < [files count] ; i++){
+        File* fileToDelete = (File*)[files objectAtIndex:i];
+        [_privateDocs removeObjectIdenticalTo:fileToDelete];
+        [_sharedDocs removeObjectIdenticalTo:fileToDelete];
+        
+        NSString *filePath = [_documentsDirectory stringByAppendingPathComponent:fileToDelete.name];
+        [fileManager removeItemAtPath:filePath error:&deleteError];
+        if(deleteError){
+            NSLog(@"%s %@", __PRETTY_FUNCTION__, [deleteError description]);
+        }
+    }
+}
+
+/* - Deleted a file based on it's index in the appropriate array - */ //DO WE STILL USE THIS NOW? I DON'T THINK SO
 
 -(void) deleteSingleFileFromApp:(NSInteger)fileIndex fromDirectory:(NSMutableArray *) arrayToDeleteFrom {
     
