@@ -19,8 +19,9 @@
     _sharedDocs = [[NSMutableArray alloc] init];
     _privateDocs = [[NSMutableArray alloc] init];
     _documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0];
-    //[self makeDummyFiles];       // YO COMMENT THIS METHOD OUT OF PRODUCTION VERSION
-    //[self saveFileSystemToJSON]; // KEEP UNCOMMENTED, THE FIRST PART OF THIS METHOD WIPES THE FILESYSTEM.
+   // [self makeDummyFiles];       // YO COMMENT THIS METHOD OUT OF PRODUCTION VERSION
+    //
+   // [self saveFileSystemToJSON]; // KEEP UNCOMMENTED, THE FIRST PART OF THIS METHOD WIPES THE FILESYSTEM.
     [self populateArraysWithFileSystem];
     //[self forceDeleteAllItemsInDocuments];
     return self;
@@ -143,11 +144,10 @@
     NSError *deleteError;
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSString *filePath = [_documentsDirectory stringByAppendingPathComponent:((File *)[arrayToDeleteFrom objectAtIndex:fileIndex]).name];
-    BOOL success = [fileManager removeItemAtPath:filePath error:&deleteError];
-    if (success) {
-        [_privateDocs removeObject:[arrayToDeleteFrom objectAtIndex:fileIndex]];
-        [_sharedDocs removeObject:[arrayToDeleteFrom objectAtIndex:fileIndex]];
-    }else{NSLog(@"%s COULD NOT DELETE FILE: %@", __PRETTY_FUNCTION__, deleteError);}
+    [fileManager removeItemAtPath:filePath error:&deleteError];
+    
+    [_privateDocs removeObject:[arrayToDeleteFrom objectAtIndex:fileIndex]];
+    [_sharedDocs removeObject:[arrayToDeleteFrom objectAtIndex:fileIndex]];
 }
 
 /* - code stolen from 'assignIconForFileType' in ViewController.h, found myself using the code a lot
