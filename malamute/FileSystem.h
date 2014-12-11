@@ -23,7 +23,6 @@
 
 /* Deleting */
 -(void) deleteFilesFromApp:(NSArray*)files;
--(void) deleteSingleFileFromApp:(NSInteger)fileIndex fromDirectory:(NSMutableArray *) arrayToDeleteFrom;
 -(void) forceDeleteAllItemsInDocuments;
 
 /* Saving */
