@@ -2,8 +2,8 @@
 //  filesystemTests.m
 //  malamute
 //
-//  Created by Quique Lores on 11/5/14.
-//  Copyright (c) 2014 Yvan Scher. All rights reserved.
+//  Created by Quique Lores & Yvan Scher on 11/5/14.
+//  Copyright (c) 2014 Yvan Scher & Enrique Lores. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
@@ -42,7 +42,7 @@ tests shouldn't.
     app = [UIApplication sharedApplication];
     viewController = [[ViewController alloc] init];
     [viewController viewDidLoad];
-    [viewController.fileSystem deleteAllDocumentsFromSandbox];
+    [viewController.fileSystem forceDeleteAllItemsInDocuments];
     [viewController.fileSystem.sharedDocs removeAllObjects];
     [viewController.fileSystem.privateDocs removeAllObjects];
     testPeer = [[MCPeerID alloc] initWithDisplayName:@"testPeerID"];
@@ -63,7 +63,7 @@ tests shouldn't.
     testPeer = nil;
     testFilePath = nil;
     testFile = nil;
-    [viewController.fileSystem deleteAllDocumentsFromSandbox];
+    [viewController.fileSystem forceDeleteAllItemsInDocuments];
 }
 
 #pragma mark - Test FileSystem Basics

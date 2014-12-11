@@ -2,8 +2,8 @@
 //  MCTests.m
 //  malamute
 //
-//  Created by Quique Lores on 11/7/14.
-//  Copyright (c) 2014 Yvan Scher. All rights reserved.
+//  Created by Quique Lores & Enrique Lores on 11/7/14.
+//  Copyright (c) 2014 Yvan Scher & Enrique Lores. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
@@ -58,7 +58,7 @@
     testPeer = nil;
     testFilePath = nil;
     testFile = nil;
-    [viewController.fileSystem deleteAllDocumentsFromSandbox];
+    [viewController.fileSystem forceDeleteAllItemsInDocuments];
 
 }
 

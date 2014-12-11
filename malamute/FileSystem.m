@@ -2,8 +2,8 @@
 //  FileSystem.m
 //  malamute
 //
-//  Created by Quique Lores on 11/11/14.
-//  Copyright (c) 2014 Yvan Scher. All rights reserved.
+//  Created by Quique Lores & Yvan Scher on 11/11/14.
+//  Copyright (c) 2014 Yvan Scher & Enrique Lores. All rights reserved.
 //
 
 #import "FileSystem.h"
@@ -19,11 +19,16 @@
     _sharedDocs = [[NSMutableArray alloc] init];
     _privateDocs = [[NSMutableArray alloc] init];
     _documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0];
-   // [self makeDummyFiles];       // YO COMMENT THIS METHOD OUT OF PRODUCTION VERSION
-    //
-   // [self saveFileSystemToJSON]; // KEEP UNCOMMENTED, THE FIRST PART OF THIS METHOD WIPES THE FILESYSTEM.
-    [self populateArraysWithFileSystem];
+    
+    if([self fileSystemExists]){
+        [self populateArraysWithFileSystem];
+    }
+    
+    // COMMENT THE NEXT TWO LINES METHOD OUT OF PRODUCTION VERSION
+    //[self makeDummyFiles];
+    //[self saveFileSystemToJSON];
     //[self forceDeleteAllItemsInDocuments];
+    
     return self;
 }
 
@@ -43,39 +48,6 @@
 }
 
 #pragma mark - File Manipulation Methods
-
-/* - gets all the files in teh documents directory - */
--(NSMutableArray *)getAllDocDirFiles{
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSError *error;
-    NSMutableArray *allFiles = (NSMutableArray*) [fileManager contentsOfDirectoryAtPath:_documentsDirectory error:&error];
-    
-    if (error) {
-        NSLog(@"%@", error);
-        return nil;
-    }
-    return allFiles;
-}
-
-/* - This doesn't delete all documents from the sandbox, 
-   - only the ones located in referenced in privateDocs
-   - I recommend getting rid of this method and the 
-   - method below in production, we don't want to 
-   - risk calling this on a real user's files.
-   - */
--(void) deleteAllDocumentsFromSandbox{
-    
-    NSFileManager* fileManager = [NSFileManager defaultManager];
-    NSError* error;
-    for(int i = 0; i <[_privateDocs count]; i++){
-        NSURL* docUrl = [((File*)_privateDocs[i]) url];
-        [fileManager removeItemAtURL:docUrl error:&error ];
-    }
-    if(error){
-        NSLog(@"ERROR DELETING ALL FILES %@", [error localizedDescription]);
-    }
-    _privateDocs = [self getAllDocDirFiles];
-}
 
 /* - different from deleteAllDocumentsFromSandbox above because
    - it finds paths for garbage that isn't referenced 
@@ -98,7 +70,7 @@
         NSLog(@"%s COULD NOT DELETE ALL ITEMS FROM: %@", __PRETTY_FUNCTION__, directoryContents);
     }
 }
-
+/* Saves a bunch of Files to the Documents directory, updating the Files' URLs */
 -(void) saveFilesToDocumentsDir:(NSArray*) files {
 
     for(int i = 0; i < [files count]; i++){
@@ -107,7 +79,7 @@
         [self saveFileToDocumentsDir:fileToSave];
     }
 }
-
+/* Saves a single File to the Documents directory, updating the File's URL */
 -(void) saveFileToDocumentsDir:(File*)file{
 
     // - move file from file's path to documents folder path, update file - //
@@ -137,18 +109,34 @@
     return newFile;
 }
 
-/* - Deleted a file based on it's index in the appropriate array - */
-
--(void) deleteSingleFileFromApp:(NSInteger)fileIndex fromDirectory:(NSMutableArray *) arrayToDeleteFrom {
+/* - Delete a bunch of files from the sandbox, private and shared arrays -*/
+-(void) deleteFilesFromApp:(NSArray*)files{
     
-    NSError *deleteError;
     NSFileManager *fileManager = [NSFileManager defaultManager];
+<<<<<<< HEAD
     NSString *filePath = [_documentsDirectory stringByAppendingPathComponent:((File *)[arrayToDeleteFrom objectAtIndex:fileIndex]).name];
     [fileManager removeItemAtPath:filePath error:&deleteError];
     
     [_privateDocs removeObject:[arrayToDeleteFrom objectAtIndex:fileIndex]];
     [_sharedDocs removeObject:[arrayToDeleteFrom objectAtIndex:fileIndex]];
+=======
+    NSError *deleteError;
+
+    
+    for(int i = 0 ; i < [files count] ; i++){
+        File* fileToDelete = (File*)[files objectAtIndex:i];
+        [_privateDocs removeObjectIdenticalTo:fileToDelete];
+        [_sharedDocs removeObjectIdenticalTo:fileToDelete];
+        
+        NSString *filePath = [_documentsDirectory stringByAppendingPathComponent:fileToDelete.name];
+        [fileManager removeItemAtPath:filePath error:&deleteError];
+        if(deleteError){
+            NSLog(@"%s %@", __PRETTY_FUNCTION__, [deleteError description]);
+        }
+    }
+>>>>>>> 3eff347aefcf32dd3eb871c9e7aef9be1fef0547
 }
+
 
 /* - code stolen from 'assignIconForFileType' in ViewController.h, found myself using the code a lot
    - NOTE: this function will totally break
@@ -170,6 +158,13 @@
 }
 
 #pragma mark - Filsystem State Methods
+
+/* checks if we have a backup of the file system */
+-(BOOL) fileSystemExists{
+    NSString *fileSystemPath = [_documentsDirectory stringByAppendingPathComponent:@"filesystem.json"];
+    
+    return [[NSFileManager defaultManager] fileExistsAtPath:fileSystemPath];
+}
 
 /* - reads the filesystem.json file and populated our sharedDocs
    - and privateDocs with the app's filesystem on app load
