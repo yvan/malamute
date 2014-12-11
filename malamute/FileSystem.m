@@ -113,15 +113,7 @@
 -(void) deleteFilesFromApp:(NSArray*)files{
     
     NSFileManager *fileManager = [NSFileManager defaultManager];
-<<<<<<< HEAD
-    NSString *filePath = [_documentsDirectory stringByAppendingPathComponent:((File *)[arrayToDeleteFrom objectAtIndex:fileIndex]).name];
-    [fileManager removeItemAtPath:filePath error:&deleteError];
-    
-    [_privateDocs removeObject:[arrayToDeleteFrom objectAtIndex:fileIndex]];
-    [_sharedDocs removeObject:[arrayToDeleteFrom objectAtIndex:fileIndex]];
-=======
     NSError *deleteError;
-
     
     for(int i = 0 ; i < [files count] ; i++){
         File* fileToDelete = (File*)[files objectAtIndex:i];
@@ -134,7 +126,6 @@
             NSLog(@"%s %@", __PRETTY_FUNCTION__, [deleteError description]);
         }
     }
->>>>>>> 3eff347aefcf32dd3eb871c9e7aef9be1fef0547
 }
 
 
