@@ -16,20 +16,32 @@
 @property (nonatomic, strong) NSMutableArray* filesIHaveShared;
 @property (nonatomic, strong) NSString* documentsDirectory;
 
--(void) printAllFiles;
--(void) makeDummyFiles;
--(void) saveFileSystemToJSON;
--(BOOL) isValidPath:(NSString*) path;
--(void) populateArraysWithFileSystem;
--(NSMutableArray *) getAllDocDirFiles;
--(void) deleteAllDocumentsFromSandbox;
+/* Creating */
+-(File*) createNewFile:(NSString *) fileName withURL:(NSURL*) url inDirectory:(NSMutableArray *) arrayName;
 -(BOOL) createNewDir:(NSString*)dirname;
--(void) saveFileToDocumentsDir:(File*)file;
--(void) saveFilesToDocumentsDir:(NSArray*) files;
--(NSString *) getFileExtension:(NSString *)filename;
+
+
+/* Deleting */
 -(void) deleteFilesFromApp:(NSArray*)files;
 -(void) deleteSingleFileFromApp:(NSInteger)fileIndex fromDirectory:(NSMutableArray *) arrayToDeleteFrom;
--(File*) createNewFile:(NSString *) fileName withURL:(NSURL*) url inDirectory:(NSMutableArray *) arrayName;
--(BOOL) moveFiles:(NSMutableArray*)selectedFiles from:(NSMutableArray*)firstDirectory to:(NSMutableArray*)secondDirectory withInfo:(BOOL)privateOrShared;
+-(void) forceDeleteAllItemsInDocuments;
+
+/* Saving */
+-(void) saveFileToDocumentsDir:(File*)file;
+-(void) saveFilesToDocumentsDir:(NSArray*) files;
+
+/* File System Backup */
+-(void) saveFileSystemToJSON;
+-(void) populateArraysWithFileSystem;
+
+/* Testing */
+-(void) printAllFiles;
+-(void) makeDummyFiles;
+
+/* Miscellaneous */
+-(BOOL) isValidPath:(NSString*) path;
+-(NSString *) getFileExtension:(NSString *)filename;
+-(BOOL)moveFiles:(NSMutableArray*)selectedFiles from:(NSMutableArray*)firstDirectory to:(NSMutableArray*)secondDirectory withInfo:(BOOL)privateOrShared;
+
 
 @end

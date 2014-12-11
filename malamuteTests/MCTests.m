@@ -61,7 +61,7 @@
     testPeer = nil;
     testFilePath = nil;
     testFile = nil;
-    [viewController.fileSystem deleteAllDocumentsFromSandbox];
+    [viewController.fileSystem forceDeleteAllItemsInDocuments];
 
 }
 

@@ -48,39 +48,6 @@
 
 #pragma mark - File Manipulation Methods
 
-/* - gets all the files in teh documents directory - */
--(NSMutableArray *)getAllDocDirFiles{
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSError *error;
-    NSMutableArray *allFiles = (NSMutableArray*) [fileManager contentsOfDirectoryAtPath:_documentsDirectory error:&error];
-    
-    if (error) {
-        NSLog(@"%@", error);
-        return nil;
-    }
-    return allFiles;
-}
-
-/* - This doesn't delete all documents from the sandbox, 
-   - only the ones located in referenced in privateDocs
-   - I recommend getting rid of this method and the 
-   - method below in production, we don't want to 
-   - risk calling this on a real user's files.
-   - */
--(void) deleteAllDocumentsFromSandbox{
-    
-    NSFileManager* fileManager = [NSFileManager defaultManager];
-    NSError* error;
-    for(int i = 0; i <[_privateDocs count]; i++){
-        NSURL* docUrl = [((File*)_privateDocs[i]) url];
-        [fileManager removeItemAtURL:docUrl error:&error ];
-    }
-    if(error){
-        NSLog(@"ERROR DELETING ALL FILES %@", [error localizedDescription]);
-    }
-    _privateDocs = [self getAllDocDirFiles];
-}
-
 /* - different from deleteAllDocumentsFromSandbox above because
    - it finds paths for garbage that isn't referenced 
    - anymore and gets rid of it the method above 
@@ -102,7 +69,7 @@
         NSLog(@"%s COULD NOT DELETE ALL ITEMS FROM: %@", __PRETTY_FUNCTION__, directoryContents);
     }
 }
-
+/* Saves a bunch of Files to the Documents directory, updating the Files' URLs */
 -(void) saveFilesToDocumentsDir:(NSArray*) files {
 
     for(int i = 0; i < [files count]; i++){
@@ -111,7 +78,7 @@
         [self saveFileToDocumentsDir:fileToSave];
     }
 }
-
+/* Saves a single File to the Documents directory, updating the File's URL */
 -(void) saveFileToDocumentsDir:(File*)file{
 
     // - move file from file's path to documents folder path, update file - //
@@ -161,19 +128,6 @@
     }
 }
 
-/* - Deleted a file based on it's index in the appropriate array - */ //DO WE STILL USE THIS NOW? I DON'T THINK SO
-
--(void) deleteSingleFileFromApp:(NSInteger)fileIndex fromDirectory:(NSMutableArray *) arrayToDeleteFrom {
-    
-    NSError *deleteError;
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSString *filePath = [_documentsDirectory stringByAppendingPathComponent:((File *)[arrayToDeleteFrom objectAtIndex:fileIndex]).name];
-    BOOL success = [fileManager removeItemAtPath:filePath error:&deleteError];
-    if (success) {
-        [_privateDocs removeObject:[arrayToDeleteFrom objectAtIndex:fileIndex]];
-        [_sharedDocs removeObject:[arrayToDeleteFrom objectAtIndex:fileIndex]];
-    }else{NSLog(@"%s COULD NOT DELETE FILE: %@", __PRETTY_FUNCTION__, deleteError);}
-}
 
 /* - code stolen from 'assignIconForFileType' in ViewController.h, found myself using the code a lot
    - NOTE: this function will totally break
@@ -196,6 +150,7 @@
 
 #pragma mark - Filsystem State Methods
 
+/* checks if we have a backup of the file system */
 -(BOOL) fileSystemExists{
     NSString *fileSystemPath = [_documentsDirectory stringByAppendingPathComponent:@"filesystem.json"];
     

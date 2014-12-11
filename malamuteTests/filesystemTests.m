@@ -42,7 +42,7 @@ tests shouldn't.
     app = [UIApplication sharedApplication];
     viewController = [[ViewController alloc] init];
     [viewController viewDidLoad];
-    [viewController.fileSystem deleteAllDocumentsFromSandbox];
+    [viewController.fileSystem forceDeleteAllItemsInDocuments];
     [viewController.fileSystem.sharedDocs removeAllObjects];
     [viewController.fileSystem.privateDocs removeAllObjects];
     testPeer = [[MCPeerID alloc] initWithDisplayName:@"testPeerID"];
@@ -63,7 +63,7 @@ tests shouldn't.
     testPeer = nil;
     testFilePath = nil;
     testFile = nil;
-    [viewController.fileSystem deleteAllDocumentsFromSandbox];
+    [viewController.fileSystem forceDeleteAllItemsInDocuments];
 }
 
 #pragma mark - Test FileSystem Basics
