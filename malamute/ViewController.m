@@ -2,8 +2,8 @@
 //  ViewController.m
 //  malamute
 //
-//  Created by Yvan Scher on 10/31/14.
-//  Copyright (c) 2014 Yvan Scher. All rights reserved.
+//  Created by Yvan Scher & Enrique Lores on 10/31/14.
+//  Copyright (c) 2014 Yvan Scher & Enrique Lores. All rights reserved.
 //
 
 #import "ViewController.h"
@@ -21,7 +21,7 @@ static BOOL const SHARED = 1;
 #pragma mark - FileUtility
 
 /* - didn't use NSRange bec. it's non obvious 
-   - NOTE: this function will totally break
+   - NOTE: this function will break
    - on files with more than one extension
    - it needs to be updated for that.
    - */
@@ -465,9 +465,6 @@ static BOOL const SHARED = 1;
     _sessionWrapper.sessionDelegate = self;
     _advertiserWrapper.advertiserDelegate = self;
     _browserWrapper.browserDelegate = self;
-    
-    // - DO NOT USE registerClass when we have made a ptototype cell on the storyboard. - //
-    //[_collectionOfFiles registerClass:[FileCollectionViewCell class] forCellWithReuseIdentifier:@"fileOrFolder"];
     
     [_collectionOfFiles reloadData];
 }

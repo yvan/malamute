@@ -2,8 +2,8 @@
 //  ViewController.h
 //  malamute
 //
-//  Created by Yvan Scher on 10/31/14.
-//  Copyright (c) 2014 Yvan Scher. All rights reserved.
+//  Created by Yvan Scher & Enrique Lores on 10/31/14.
+//  Copyright (c) 2014 Yvan Scher & Enrique Lores. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
@@ -14,7 +14,6 @@
 #import "AdvertiserWrapper.h"
 #import "FileCollectionViewCell.h"
 
-/* - UIImagePickerControllerDelegate requires UINavigationControllerDelegate to work I guess? - */
 @interface ViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, SessionWrapperDelegate, BrowserWrapperDelegate, AdvertiserWrapperDelegate>
 
 @property (nonatomic, strong) IBOutlet UIButton *selectSendButton;
