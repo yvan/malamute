@@ -19,10 +19,15 @@
     _sharedDocs = [[NSMutableArray alloc] init];
     _privateDocs = [[NSMutableArray alloc] init];
     _documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0];
-    //[self makeDummyFiles];       // YO COMMENT THIS METHOD OUT OF PRODUCTION VERSION
-    //[self saveFileSystemToJSON]; // KEEP UNCOMMENTED, THE FIRST PART OF THIS METHOD WIPES THE FILESYSTEM.
-    [self populateArraysWithFileSystem];
-    //[self forceDeleteAllItemsInDocuments];
+    
+    if([self fileSystemExists]){
+        [self populateArraysWithFileSystem];
+    }
+    
+    // COMMENT THE NEXT TWO LINES METHOD OUT OF PRODUCTION VERSION
+    //[self makeDummyFiles];
+    //[self saveFileSystemToJSON];
+    
     return self;
 }
 
@@ -190,6 +195,12 @@
 }
 
 #pragma mark - Filsystem State Methods
+
+-(BOOL) fileSystemExists{
+    NSString *fileSystemPath = [_documentsDirectory stringByAppendingPathComponent:@"filesystem.json"];
+    
+    return [[NSFileManager defaultManager] fileExistsAtPath:fileSystemPath];
+}
 
 /* - reads the filesystem.json file and populated our sharedDocs
    - and privateDocs with the app's filesystem on app load
