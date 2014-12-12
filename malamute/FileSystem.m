@@ -24,7 +24,7 @@
         [self populateArraysWithFileSystem];
     }
     
-    // COMMENT THE NEXT TWO LINES METHOD OUT OF PRODUCTION VERSION
+    // - COMMENT THE NEXT 3 LINES METHOD OUT OF PRODUCTION VERSION - //
     //[self makeDummyFiles];
     //[self saveFileSystemToJSON];
     //[self forceDeleteAllItemsInDocuments];
@@ -127,7 +127,6 @@
         }
     }
 }
-
 
 /* - code stolen from 'assignIconForFileType' in ViewController.h, found myself using the code a lot
    - NOTE: this function will totally break
@@ -277,7 +276,7 @@
         NSString* appBundleID = [[NSBundle mainBundle] bundleIdentifier];
         NSURL* pathToCheck = [[appSupportDir URLByAppendingPathComponent:appBundleID]
                                              URLByAppendingPathComponent: file.name];
-        //all files sucessfully path transferred is never triggers.
+        // - all files sucessfully path transferred is never triggers - //
         if(![self isValidPath:[pathToCheck absoluteString]]){return NO;}
     }
     return YES;
@@ -294,8 +293,6 @@
     NSURL* urlForNew = nil;
     NSFileManager* fm = [NSFileManager defaultManager];
     NSArray* documents = [fm URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask];
-    
-    //for each
     
     if([documents count] > 0){
         urlForNew = [[documents objectAtIndex:0] URLByAppendingPathComponent:dirname];

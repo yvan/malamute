@@ -39,7 +39,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		E9616C491A03FBAE004BFEA4 /* malamute.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = malamute.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E9616C491A03FBAE004BFEA4 /* malamute.temp_caseinsensitive_rename.temp_caseinsensitive_rename.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = malamute.temp_caseinsensitive_rename.temp_caseinsensitive_rename.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E9616C4D1A03FBAE004BFEA4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E9616C4E1A03FBAE004BFEA4 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		E9616C501A03FBAE004BFEA4 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -49,7 +49,7 @@
 		E9616C571A03FBAE004BFEA4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		E9616C591A03FBAE004BFEA4 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		E9616C5C1A03FBAF004BFEA4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		E9616C621A03FBAF004BFEA4 /* malamuteTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = malamuteTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E9616C621A03FBAF004BFEA4 /* malamute.temp_caseinsensitive_rename.temp_caseinsensitive_renameTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = malamute.temp_caseinsensitive_rename.temp_caseinsensitive_renameTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E9616C671A03FBAF004BFEA4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E9616C681A03FBAF004BFEA4 /* malamuteTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = malamuteTests.m; sourceTree = "<group>"; };
 		E9616C721A040163004BFEA4 /* SessionWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SessionWrapper.h; sourceTree = "<group>"; };
@@ -100,8 +100,8 @@
 		E9616C4A1A03FBAE004BFEA4 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				E9616C491A03FBAE004BFEA4 /* malamute.app */,
-				E9616C621A03FBAF004BFEA4 /* malamuteTests.xctest */,
+				E9616C491A03FBAE004BFEA4 /* malamute.temp_caseinsensitive_rename.temp_caseinsensitive_rename.app */,
+				E9616C621A03FBAF004BFEA4 /* malamute.temp_caseinsensitive_rename.temp_caseinsensitive_renameTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -166,9 +166,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		E9616C481A03FBAE004BFEA4 /* malamute */ = {
+		E9616C481A03FBAE004BFEA4 /* malamute.temp_caseinsensitive_rename.temp_caseinsensitive_rename */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E9616C6C1A03FBAF004BFEA4 /* Build configuration list for PBXNativeTarget "malamute" */;
+			buildConfigurationList = E9616C6C1A03FBAF004BFEA4 /* Build configuration list for PBXNativeTarget "malamute.temp_caseinsensitive_rename.temp_caseinsensitive_rename" */;
 			buildPhases = (
 				E9616C451A03FBAE004BFEA4 /* Sources */,
 				E9616C461A03FBAE004BFEA4 /* Frameworks */,
@@ -178,14 +178,14 @@
 			);
 			dependencies = (
 			);
-			name = malamute;
+			name = malamute.temp_caseinsensitive_rename.temp_caseinsensitive_rename;
 			productName = malamute;
-			productReference = E9616C491A03FBAE004BFEA4 /* malamute.app */;
+			productReference = E9616C491A03FBAE004BFEA4 /* malamute.temp_caseinsensitive_rename.temp_caseinsensitive_rename.app */;
 			productType = "com.apple.product-type.application";
 		};
-		E9616C611A03FBAF004BFEA4 /* malamuteTests */ = {
+		E9616C611A03FBAF004BFEA4 /* malamute.temp_caseinsensitive_rename.temp_caseinsensitive_renameTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E9616C6F1A03FBAF004BFEA4 /* Build configuration list for PBXNativeTarget "malamuteTests" */;
+			buildConfigurationList = E9616C6F1A03FBAF004BFEA4 /* Build configuration list for PBXNativeTarget "malamute.temp_caseinsensitive_rename.temp_caseinsensitive_renameTests" */;
 			buildPhases = (
 				E9616C5E1A03FBAF004BFEA4 /* Sources */,
 				E9616C5F1A03FBAF004BFEA4 /* Frameworks */,
@@ -196,9 +196,9 @@
 			dependencies = (
 				E9616C641A03FBAF004BFEA4 /* PBXTargetDependency */,
 			);
-			name = malamuteTests;
+			name = malamute.temp_caseinsensitive_rename.temp_caseinsensitive_renameTests;
 			productName = malamuteTests;
-			productReference = E9616C621A03FBAF004BFEA4 /* malamuteTests.xctest */;
+			productReference = E9616C621A03FBAF004BFEA4 /* malamute.temp_caseinsensitive_rename.temp_caseinsensitive_renameTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -233,8 +233,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				E9616C481A03FBAE004BFEA4 /* malamute */,
-				E9616C611A03FBAF004BFEA4 /* malamuteTests */,
+				E9616C481A03FBAE004BFEA4 /* malamute.temp_caseinsensitive_rename.temp_caseinsensitive_rename */,
+				E9616C611A03FBAF004BFEA4 /* malamute.temp_caseinsensitive_rename.temp_caseinsensitive_renameTests */,
 			);
 		};
 /* End PBXProject section */
@@ -295,7 +295,7 @@
 /* Begin PBXTargetDependency section */
 		E9616C641A03FBAF004BFEA4 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = E9616C481A03FBAE004BFEA4 /* malamute */;
+			target = E9616C481A03FBAE004BFEA4 /* malamute.temp_caseinsensitive_rename.temp_caseinsensitive_rename */;
 			targetProxy = E9616C631A03FBAF004BFEA4 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -404,7 +404,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = malamute/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = malamute.temp_caseinsensitive_rename.temp_caseinsensitive_rename;
 				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
@@ -417,7 +417,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = malamute/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = malamute.temp_caseinsensitive_rename.temp_caseinsensitive_rename;
 				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
@@ -436,7 +436,7 @@
 				);
 				INFOPLIST_FILE = malamuteTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = malamute.temp_caseinsensitive_rename.temp_caseinsensitive_renameTests;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/malamute.app/malamute";
 			};
 			name = Debug;
@@ -451,7 +451,7 @@
 				);
 				INFOPLIST_FILE = malamuteTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = malamute.temp_caseinsensitive_rename.temp_caseinsensitive_renameTests;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/malamute.app/malamute";
 			};
 			name = Release;
@@ -468,7 +468,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E9616C6C1A03FBAF004BFEA4 /* Build configuration list for PBXNativeTarget "malamute" */ = {
+		E9616C6C1A03FBAF004BFEA4 /* Build configuration list for PBXNativeTarget "malamute.temp_caseinsensitive_rename.temp_caseinsensitive_rename" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E9616C6D1A03FBAF004BFEA4 /* Debug */,
@@ -477,7 +477,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E9616C6F1A03FBAF004BFEA4 /* Build configuration list for PBXNativeTarget "malamuteTests" */ = {
+		E9616C6F1A03FBAF004BFEA4 /* Build configuration list for PBXNativeTarget "malamute.temp_caseinsensitive_rename.temp_caseinsensitive_renameTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E9616C701A03FBAF004BFEA4 /* Debug */,

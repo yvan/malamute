@@ -459,7 +459,7 @@ static BOOL const SHARED = 1;
     [[_selectDirectoryModePrivate layer] setBorderColor:[UIColor blackColor].CGColor];
 
     // - init session, advertiser, and browser wrapper in that order - //
-    _sessionWrapper = [[SessionWrapper alloc] initSessionWithName:@"yvanphone"];
+    _sessionWrapper = [[SessionWrapper alloc] initSessionWithName:@"blah"];
     _advertiserWrapper = [[AdvertiserWrapper alloc] startAdvertising:_sessionWrapper.myPeerID];
     _browserWrapper = [[BrowserWrapper alloc] startBrowsing:_sessionWrapper.myPeerID];
     _sessionWrapper.sessionDelegate = self;
