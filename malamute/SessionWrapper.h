@@ -14,9 +14,13 @@
 
 -(void)didStartReceivingResource:(MCSession *)session resourceName:(NSString *)resourceName fromPeer:(MCPeerID *)peerID withProgress:(NSProgress *)progress;
 
+-(void)didReceiveData:(NSData *)data fromPeer:(MCPeerID *)peerID;
+
 @end
 
-@interface SessionWrapper : NSObject <MCSessionDelegate>
+@interface SessionWrapper : NSObject <MCSessionDelegate>{
+    
+}
 
 @property (nonatomic) MCSession *session;
 @property (nonatomic, readonly) MCPeerID *myPeerID;
@@ -28,6 +32,8 @@
 -(NSUInteger) numberConnectedPeers;
 -(MCPeerID *) getPeerAtIndex:(NSUInteger)index;
 -(instancetype) initSessionWithName: (NSString *)name;
--(void)sendFiles:(NSArray *)Files toPeers:(NSArray *)peerIDs;
+-(void) sendFiles:(NSArray *)Files toPeers:(NSArray *)peerIDs;
+-(void) sendAcknowledgementOfReceiptToPeer:(MCPeerID *) foreignPeerID;
+-(void) sendHeader:(NSString *)header toPeer:(MCPeerID *) foreignPeerID;
 
 @end

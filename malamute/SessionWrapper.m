@@ -68,6 +68,41 @@ static NSString* const ServiceName = @"malamute";
     return _session.connectedPeers[index];
 }
 
+#pragma mark - dealing with acnowledgement and receipt
+/* - verifies that the recipient has received a data
+   - this method will be used to queue up the file
+   - and resend it if verification isn't received
+   - note that the session reliably resends data
+   - for messages automatically, but not for
+   - files.
+   - */
+-(void) sendAcknowledgementOfReceiptToPeer:(MCPeerID *) foreignPeerID{
+    
+    NSError* error;
+    NSData* data = [@"ACK" dataUsingEncoding:NSUTF8StringEncoding];
+    NSArray *peerArray = [[NSArray alloc] initWithObjects:foreignPeerID, nil];
+    [_session sendData:data toPeers:peerArray withMode:MCSessionSendDataReliable  error:&error];
+    NSLog(@"%s ERROR: %@", __PRETTY_FUNCTION__, error);
+}
+
+/* - Basically whenever we send a file to our peer
+   - we will use this method to ALSO send a msg
+   - that tells them we sent them a file.
+   - Only sends to one peer, explicity.
+   - Headers are: 'FIL' for file.
+   - and 'MSG' for message.
+   - make special class
+   - for headers?
+   - */
+-(void) sendHeader:(NSString *)header toPeer:(MCPeerID *) foreignPeerID{
+    
+    NSError* error;
+    NSData* data = [header dataUsingEncoding:NSUTF8StringEncoding];
+    NSArray *peerArray = [[NSArray alloc] initWithObjects:foreignPeerID, nil];
+    [_session sendData:data toPeers:peerArray withMode:MCSessionSendDataReliable  error:&error];
+    NSLog(@"%s ERROR: %@", __PRETTY_FUNCTION__, error);
+}
+
 #pragma mark - sendFiles specialized method to send resources
 /* - takes an array of files and an array of peerIds and sends
    - all of those files to those peer ids, remake into
@@ -89,6 +124,7 @@ static NSString* const ServiceName = @"malamute";
             [_session sendResourceAtURL:urlToSend withName:fileToSend.name toPeer: idToSend withCompletionHandler:^(NSError *error) {
                 if(error){NSLog(@"%@",[error localizedDescription]);}
             }];
+            //[self sendHeader:@"FIL" toPeer:idToSend];
         }
     }
 }
@@ -120,6 +156,7 @@ static NSString* const ServiceName = @"malamute";
 /* - RECEIVED DATA FROM REMOTE PEER - */
 -(void) session:(MCSession *)session didReceiveData:(NSData *)data fromPeer:(MCPeerID *)peerID{
     
+    [_sessionDelegate didReceiveData:data fromPeer:peerID];
 }
 
 /* - I should probably figure out what this method actually does...not in the docs...THANKS OBAMA - */

@@ -23,13 +23,13 @@ each file's representation. The other important asp
 ## Networking
 
 We used the Multipeer Connectivity (MC) Framework to beam files from User to User. After
-having used the MC framework on a previous hackathon project (<a href="https://twitter.com/yvanscher">wave</a>) we knew that it
+having used the MC framework on a previous hackathon project (<a href="https://github.com/yvanscher/wave">wave</a>) we knew that it
 would be problematic to throw all the MC delegate methods and session objects
 into the main ViewController class. So we created wrappers for the Session, Browser, and
-Advertiser. This modularity is cleaner from a reader's perspective, it's maintainable, and
-allows us to re-use the same wrappers on different projects. The ViewController is a delegate
-of each wrapper and the wrappers send information in one direction to the ViewController
-which then effects the appropriate changes in the FileSystem and View.
+Advertiser. I have put the the Multipeer Wrapper as a separate boilerplate called
+<a href="https://github.com/yvanscher/passably-connected">passably-connected</a> on github. This modularity is cleaner from a reader's perspective, it's
+maintainable, andallows us to re-use the same wrappers on different projects. The
+ViewController is a delegateof each wrapper and the wrappers send information in one direction to the ViewControllerwhich then effects the appropriate changes in the FileSystem and View.
 
 ## FileSystem
 

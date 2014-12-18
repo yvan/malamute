@@ -385,7 +385,7 @@ static BOOL const SHARED = 1;
 -(void) didStartReceivingResource:(MCSession *)session resourceName:(NSString *)resourceName fromPeer:(MCPeerID *)peerID withProgress:(NSProgress *)progress{
     
     NSLog(@"%s STARTED RECIVEING RESOURCE: %@, FROM PEER: %@", __PRETTY_FUNCTION__, resourceName, peerID);
-    //[_sessionWrapper sendAcknowledgementOfReceiptToPeer:peerID];
+    [_sessionWrapper sendAcknowledgementOfReceiptToPeer:peerID];
 }
 
 -(void)didReceiveData:(NSData *)data fromPeer:(MCPeerID *)peerID{
@@ -429,10 +429,12 @@ static BOOL const SHARED = 1;
                invitationHandler:(void (^)(BOOL, MCSession *))invitationHandler{
     
     invitationHandler(YES, _sessionWrapper.session);
+    //
+    //[_sessionWrapper sendFiles:_fileSystem.filesIHaveShared toPeers:[[NSArray alloc] initWithObjects:foreignPeerID, nil]];
     _connectionStatusLabel.text = [NSString stringWithFormat:@"Connected to: %@", foreignPeerID.displayName];
     NSLog(@"%s INVITATION FROM PEER %@ ACCEPTED", __PRETTY_FUNCTION__, foreignPeerID);
     [NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(connectionStatusLabelFade) userInfo:nil repeats:NO];
-    [_advertiserWrapper stopAdvertising];
+    // - took out a call to stopAdvertisingPeer here - //
 }
 
 #pragma mark - viewDidLoad and didReceiveMemoryWarning 
