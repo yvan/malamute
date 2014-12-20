@@ -432,7 +432,7 @@ static BOOL const SHARED = 1;
     _connectionStatusLabel.text = [NSString stringWithFormat:@"Connected to: %@", foreignPeerID.displayName];
     NSLog(@"%s INVITATION FROM PEER %@ ACCEPTED", __PRETTY_FUNCTION__, foreignPeerID);
     [NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(connectionStatusLabelFade) userInfo:nil repeats:NO];
-    [_advertiserWrapper stopAdvertising];
+    //[_advertiserWrapper stopAdvertising];
 }
 
 #pragma mark - viewDidLoad and didReceiveMemoryWarning 
