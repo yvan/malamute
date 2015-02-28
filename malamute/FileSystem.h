@@ -14,6 +14,7 @@
 @property (nonatomic, strong) NSMutableArray* sharedDocs;
 @property (nonatomic, strong) NSMutableArray* privateDocs;
 @property (nonatomic, strong) NSMutableArray* filesIHaveShared;
+@property (nonatomic, strong) NSMutableArray* currentPathStack;
 @property (nonatomic, strong) NSString* documentsDirectory;
 
 /* Creating */

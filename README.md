@@ -1,4 +1,4 @@
-malamute
+malamute :dog2:
 ========
 
 Malamute is a little file manager that allows your share files with nearby

@@ -111,11 +111,11 @@ tests shouldn't.
 -(void)testInValidUrl{
     [viewController didFinishReceivingResource:viewController.sessionWrapper.session resourceName:@"testfile123.txt" fromPeer:testPeer atURL:[NSURL fileURLWithPath:testFilePath] withError:nil];
     [viewController.fileSystem saveFileToDocumentsDir:(File*)viewController.fileSystem.sharedDocs[0]];
-    XCTAssertTrue([viewController.fileSystem isValidPath:testFilePath]== false, @"File path should be invalid after saving it");
+    XCTAssertTrue([viewController.fileSystem isValidPath:testFilePath] == false, @"File path should be invalid after saving it");
 }
 -(void)testValidUrl{
     NSString* validPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent: @"123456890abcdefghijklmno.txt.pdf"];
-    XCTAssertTrue([viewController.fileSystem isValidPath:validPath]== true, @"File path should be invalid after saving it");
+    XCTAssertTrue([viewController.fileSystem isValidPath:validPath] == true, @"File path should be invalid after saving it");
 }
 
 /*-(void) testDeleteDocs{

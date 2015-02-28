@@ -142,7 +142,6 @@
     for (NSInteger index=0; index<filename.length;index++){
         if([filename characterAtIndex:index] == '.'){finalDot = index;}
         if(index == filename.length-1){fileExtension = [filename substringFromIndex:finalDot+1];}
-        //if(finalDot == 0){fileExtension = @"directory";} //uncomment in future when we allow user to make directories
     }
     return fileExtension;
 }
