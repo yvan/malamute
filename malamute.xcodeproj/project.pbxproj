@@ -13,17 +13,14 @@
 		E9616C581A03FBAE004BFEA4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E9616C561A03FBAE004BFEA4 /* Main.storyboard */; };
 		E9616C5A1A03FBAE004BFEA4 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E9616C591A03FBAE004BFEA4 /* Images.xcassets */; };
 		E9616C5D1A03FBAF004BFEA4 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = E9616C5B1A03FBAF004BFEA4 /* LaunchScreen.xib */; };
-		E9616C691A03FBAF004BFEA4 /* malamuteTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E9616C681A03FBAF004BFEA4 /* malamuteTests.m */; };
 		E9616C741A040163004BFEA4 /* SessionWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = E9616C731A040163004BFEA4 /* SessionWrapper.m */; };
 		E9616C771A04022D004BFEA4 /* AdvertiserWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = E9616C761A04022D004BFEA4 /* AdvertiserWrapper.m */; };
 		E9616C7A1A0402BB004BFEA4 /* BrowserWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = E9616C791A0402BB004BFEA4 /* BrowserWrapper.m */; };
 		E972A0691A1FF0280034FE02 /* FileCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E972A0681A1FF0280034FE02 /* FileCollectionViewCell.m */; };
-		F33C42291A0ACFF600189C4F /* filesystemTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F33C42281A0ACFF600189C4F /* filesystemTests.m */; };
 		F37DE4301A114D620022D837 /* testfile1.txt in Resources */ = {isa = PBXBuildFile; fileRef = F37DE42F1A114D620022D837 /* testfile1.txt */; };
 		F37DE4311A114D620022D837 /* testfile1.txt in Resources */ = {isa = PBXBuildFile; fileRef = F37DE42F1A114D620022D837 /* testfile1.txt */; };
 		F37DE4331A114D6A0022D837 /* testfile2.txt in Resources */ = {isa = PBXBuildFile; fileRef = F37DE4321A114D6A0022D837 /* testfile2.txt */; };
 		F37DE4341A114D6A0022D837 /* testfile2.txt in Resources */ = {isa = PBXBuildFile; fileRef = F37DE4321A114D6A0022D837 /* testfile2.txt */; };
-		F3A0F9D91A0D4AE4005BFB24 /* MCTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F3A0F9D81A0D4AE4005BFB24 /* MCTests.m */; };
 		F3FEA0171A1303AF003E88AE /* FileSystem.m in Sources */ = {isa = PBXBuildFile; fileRef = F3FEA0161A1303AF003E88AE /* FileSystem.m */; };
 		F3FEA01A1A1306B1003E88AE /* File.m in Sources */ = {isa = PBXBuildFile; fileRef = F3FEA0191A1306B1003E88AE /* File.m */; };
 /* End PBXBuildFile section */
@@ -284,9 +281,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F33C42291A0ACFF600189C4F /* filesystemTests.m in Sources */,
-				E9616C691A03FBAF004BFEA4 /* malamuteTests.m in Sources */,
-				F3A0F9D91A0D4AE4005BFB24 /* MCTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
