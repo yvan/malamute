@@ -4,7 +4,7 @@ malamute :dog2:
 Malamute is a little file manager that allows your share files with nearby
 friends. It doesn't require a network wifi or internet connection.
 
-Currently the best implementation we have lets you pick some photos are share
+Currently the best implementation we have lets you pick some photos and share
 them with a best bud or best gal.
 
 Note of warning: All UI elements were made with autolayout to work on any device.
